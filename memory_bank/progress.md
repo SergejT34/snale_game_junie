@@ -47,3 +47,13 @@ How to Run Locally
   - or: python3 -m http.server
 - Open http://localhost:3000 (serve default) or http://localhost:8000 (python) in your browser.
 - Controls: Arrow keys/WASD. Use the Restart button after Game Over. Difficulty can be changed via the selector.
+
+---
+
+Updated: 2025-08-23 19:21 (local)
+
+Publishing
+- See README.md for step-by-step instructions to:
+  - Push this project to a new/existing GitHub repository
+  - Publish via GitHub Pages using either Settings (branch → root) or GitHub Actions (included workflow)
+- Tip: Keep `.nojekyll` to disable Jekyll and serve ES modules/assets as-is.
