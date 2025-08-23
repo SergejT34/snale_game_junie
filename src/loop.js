@@ -17,9 +17,14 @@ export function createGame(renderer, dom) {
   let cleanupInput = bindInput(state);
   let intervalId = null;
 
+  let lastStatus = state.status;
   function tick() {
     step(state);
     renderer.render(state);
+    if (state.status === 'over' && lastStatus !== 'over') {
+      dom?.onGameOver?.(state.score);
+    }
+    lastStatus = state.status;
     if (state.status === 'over') stop();
   }
 

@@ -24,6 +24,12 @@
 - None required beyond browser APIs
 - Optional dev dependency: a static file server for local development
 
+## Persistence Decisions
+- Leaderboard stored in browser localStorage under key `snake.leaderboard.v1`.
+- Schema: array of entries `{ name: string, score: number, ts: epochMillis }`.
+- Sorted by score desc, then timestamp asc; capped to top 10 entries.
+- Input for name collected via prompt() on Game Over to avoid complex UI; default name "Player".
+
 ## Tool Usage Patterns
 - Prefer pure functions for state transitions to improve predictability and testability
 - Use a direction queue for input to avoid mid-tick mutations

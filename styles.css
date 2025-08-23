@@ -14,3 +14,13 @@ body { display: flex; flex-direction: column; background: #0e0f14; color: #e8eaf
 .btn:focus { outline: 2px solid #a7c4ff; outline-offset: 2px; }
 .footer { text-align: center; padding: 0.5rem; color: #b0b7c3; }
 .visually-hidden { position: absolute !important; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px); white-space: nowrap; clip-path: inset(50%); border: 0; padding: 0; margin: -1px; }
+
+/* Leaderboard styles */
+.sidebar { width: min(95vmin, 720px); margin: 0.5rem auto 0; padding: 0.5rem 0.75rem; background: #0f1118; border: 1px solid #2a2f3a; border-radius: 8px; }
+.sidebar h2 { margin: 0 0 0.25rem 0; font-size: 1rem; color: #c7ccda; }
+.leaderboard { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 4px; }
+.leaderboard li { display: flex; justify-content: space-between; align-items: center; padding: 0.25rem 0.5rem; background: #0b0c10; border: 1px solid #232735; border-radius: 6px; }
+.leaderboard li .rank { color: #8a92a6; width: 2ch; display: inline-block; }
+.leaderboard li .name { flex: 1; margin: 0 0.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.leaderboard li .score { font-variant-numeric: tabular-nums; font-weight: 600; }
+.leaderboard li.empty { justify-content: center; color: #8a92a6; }
