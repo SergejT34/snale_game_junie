@@ -90,3 +90,14 @@ Local Dev Server (Node-based)
 - Notes:
   - This does not introduce a build step; it only serves static files with live reload for faster iteration.
   - Docker Compose continues to serve on http://localhost:8080 via nginx and is unaffected.
+
+
+---
+
+Updated: 2025-08-23 19:43 (local)
+
+Documentation Update
+- README.md updated to include npm-based dev server usage.
+  - Steps: `npm install`, `npm run dev` (opens http://localhost:5173 with hot reload), or `npm start` (alias)
+  - Notes: hot reload watches src/, index.html, styles.css; no build step introduced
+- Retained simple static server options: `npx serve .` or `python3 -m http.server` with their respective default ports.

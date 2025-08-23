@@ -11,12 +11,18 @@ A minimal, fully playable Snake game that runs in modern browsers using ES6 modu
 
 ## Run Locally
 
-Use any static file server from the project root:
+Option A — Hot reload dev server (recommended during development)
+
+- npm install
+- npm run dev
+  - Opens http://localhost:5173 and reloads on changes to src/, index.html, styles.css
+- You can also use: `npm start` (alias)
+
+Option B — Simple static server (no reload)
 
 - npx serve .
 - or: python3 -m http.server
-
-Open http://localhost:3000 (serve default) or http://localhost:8000 (python) and play.
+- Then open http://localhost:3000 (serve default) or http://localhost:8000 (python) and play.
 
 ## Publish on GitHub
 
