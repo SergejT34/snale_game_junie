@@ -1,6 +1,45 @@
-* {
-    box-sizing: border-box;
+:root {
+    /* Light theme (default) */
+    --bg: #f7f8fa;
+    --text: #0e0f14;
+    --muted: #5b6375;
+    --topbar-bg: #ffffff;
+    --panel-bg: #ffffff;
+    --panel-border: #dfe3eb;
+    --canvas-bg: #ffffff;
+    --grid-line: #e6eaf2;
+    --snake-head: #3a7afe;
+    --snake-body: #36c275;
+    --food: #ff5151;
+    --btn-bg: #3a7afe;
+    --btn-focus: #a7c4ff;
+    --link: #3a7afe;
+    --github-color: #5b6375;
+    --github-hover-bg: #eef1f7;
+    --overlay-scrim: rgba(0,0,0,0.5);
 }
+
+html[data-theme="dark"] {
+    --bg: #0e0f14;
+    --text: #e8eaf0;
+    --muted: #8a92a6;
+    --topbar-bg: #161821;
+    --panel-bg: #0f1118;
+    --panel-border: #2a2f3a;
+    --canvas-bg: #0b0c10;
+    --grid-line: #141720;
+    --snake-head: #3a7afe;
+    --snake-body: #36c275;
+    --food: #ff6b6b;
+    --btn-bg: #3a7afe;
+    --btn-focus: #a7c4ff;
+    --link: #93b4ff;
+    --github-color: #b0b7c3;
+    --github-hover-bg: #232735;
+    --overlay-scrim: rgba(0,0,0,0.55);
+}
+
+* { box-sizing: border-box; }
 
 html, body {
     height: 100%;
@@ -11,8 +50,8 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
-    background: #0e0f14;
-    color: #e8eaf0;
+    background: var(--bg);
+    color: var(--text);
 }
 
 .topbar {
@@ -20,8 +59,8 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 0.5rem 1rem;
-    background: #161821;
-    border-bottom: 1px solid #2a2f3a;
+    background: var(--topbar-bg);
+    border-bottom: 1px solid var(--panel-border);
 }
 
 .topbar h1 {
@@ -30,9 +69,7 @@ body {
     letter-spacing: 0.03em;
 }
 
-#score {
-    font-variant-numeric: tabular-nums;
-}
+#score { font-variant-numeric: tabular-nums; }
 
 .game {
     flex: 1;
@@ -50,8 +87,8 @@ body {
 #game {
     width: 100%;
     height: 100%;
-    background: #0b0c10;
-    border: 1px solid #2a2f3a;
+    background: var(--canvas-bg);
+    border: 1px solid var(--panel-border);
     display: block;
 }
 
@@ -60,7 +97,7 @@ body {
     inset: 0;
     display: grid;
     place-items: center;
-    background: rgba(0, 0, 0, 0.55);
+    background: var(--overlay-scrim);
     opacity: 0;
     pointer-events: none;
     transition: opacity 140ms ease-out;
@@ -72,8 +109,8 @@ body {
 }
 
 .overlay-content {
-    background: #161821;
-    border: 1px solid #2a2f3a;
+    background: var(--topbar-bg);
+    border: 1px solid var(--panel-border);
     padding: 1rem 1.25rem;
     border-radius: 8px;
     min-width: 220px;
@@ -81,7 +118,7 @@ body {
 }
 
 .btn {
-    background: #3a7afe;
+    background: var(--btn-bg);
     color: white;
     border: none;
     padding: 0.5rem 1rem;
@@ -91,14 +128,14 @@ body {
 }
 
 .btn:focus {
-    outline: 2px solid #a7c4ff;
+    outline: 2px solid var(--btn-focus);
     outline-offset: 2px;
 }
 
 .footer {
     text-align: center;
     padding: 0.5rem;
-    color: #b0b7c3;
+    color: var(--muted);
 }
 
 .visually-hidden {
@@ -119,15 +156,15 @@ body {
     width: min(95vmin, 720px);
     margin: 0.5rem auto 0;
     padding: 0.5rem 0.75rem;
-    background: #0f1118;
-    border: 1px solid #2a2f3a;
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
     border-radius: 8px;
 }
 
 .sidebar h2 {
     margin: 0 0 0.25rem 0;
     font-size: 1rem;
-    color: #c7ccda;
+    color: var(--text);
 }
 
 .leaderboard {
@@ -144,13 +181,13 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 0.25rem 0.5rem;
-    background: #0b0c10;
-    border: 1px solid #232735;
+    background: var(--canvas-bg);
+    border: 1px solid var(--panel-border);
     border-radius: 6px;
 }
 
 .leaderboard li .rank {
-    color: #8a92a6;
+    color: var(--muted);
     width: 2ch;
     display: inline-block;
 }
@@ -168,27 +205,21 @@ body {
     font-weight: 600;
 }
 
-.leaderboard li .difficulty {
-    color: #8a92a6;
-    font-size: 0.9em;
-    margin-right: 0.5rem;
-}
-
+.leaderboard li .difficulty,
 .leaderboard li .time {
-    color: #8a92a6;
-    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+    font-size: 0.9em;
     margin-right: 0.5rem;
 }
 
 .leaderboard li.empty {
     justify-content: center;
-    color: #8a92a6;
+    color: var(--muted);
 }
 
-
-/* GitHub link icon */
-.github-link {
-    color: #b0b7c3;
+/* Header icon buttons */
+.icon-btn, .github-link {
+    color: var(--github-color);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -196,13 +227,26 @@ body {
     height: 28px;
     border-radius: 6px;
     text-decoration: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
 }
-.github-link:hover, .github-link:focus {
-    color: #ffffff;
-    background: #232735;
+
+.github-link:hover, .github-link:focus,
+.icon-btn:hover, .icon-btn:focus {
+    color: var(--text);
+    background: var(--github-hover-bg);
     outline: 2px solid transparent;
 }
-.github-link:focus-visible {
-    outline: 2px solid #a7c4ff;
+
+.github-link:focus-visible,
+.icon-btn:focus-visible {
+    outline: 2px solid var(--btn-focus);
     outline-offset: 2px;
 }
+
+/* Theme toggle icon visibility */
+.icon-sun { display: inline; }
+.icon-moon { display: none; }
+html[data-theme="dark"] .icon-sun { display: none; }
+html[data-theme="dark"] .icon-moon { display: inline; }

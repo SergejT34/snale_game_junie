@@ -251,3 +251,16 @@ Accessibility/Controls
 - Restart can now be triggered using Space or Enter while the Game Over overlay is visible.
   - Implementation: added a global keydown listener in loop.js that, when state.status === 'over', prevents default and calls restart() on Enter/Space, then focuses the Restart button.
   - Rationale: improves keyboard accessibility and provides a convenient restart shortcut without requiring focus movement.
+
+
+---
+
+Updated: 2025-08-23 20:06 (local)
+
+Theming
+- Added Light and Dark themes with a toggle button in the header (sun/moon icon).
+  - Implementation: CSS custom properties define the palette; html[data-theme="light"|"dark"] switches values. The canvas renderer reads CSS variables for background, grid, snake, and food colors so the board adapts instantly on toggle.
+  - Persistence: user selection is stored in localStorage under key `snake.theme.v1`. On first load (no stored preference), the system preference via `prefers-color-scheme` is used.
+  - Accessibility: toggle is a button with an aria-label and aria-pressed reflecting the current state; focus-visible outline is provided.
+- UI polish: top bar and panels now derive colors from theme variables; GitHub link and focus styles adapt to theme.
+- No change to game logic or saved scores; purely visual enhancement.

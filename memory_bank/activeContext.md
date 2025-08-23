@@ -1,9 +1,9 @@
 # Active Context: Browser-based Snake Game (MVP)
 
-Last updated: 2025-08-23 20:02 (local)
+Last updated: 2025-08-23 20:06 (local)
 
 ## Current Work Focus
-Implement and verify the playable Snake MVP per documented scope; ensure accessibility basics and restart flow. Add difficulty levels with distinct speeds.
+Add Light and Dark themes with an accessible header toggle and persist user choice; keep rendering in sync with theme via CSS variables.
 
 ## Recent Changes
 - Implemented ES module-based Snake game (state, input, logic, renderer, loop)
@@ -13,14 +13,15 @@ Implement and verify the playable Snake MVP per documented scope; ensure accessi
 - Leaderboard now stores and displays the difficulty for each score entry (backward compatible with existing entries)
 - Leaderboard also tracks and displays time spent per game (mm:ss) for each entry; stored as durationMs alongside existing fields (backward compatible).
 - Accessibility: Restart can be triggered via Space or Enter when the Game Over overlay is visible (global shortcut).
+- New: Light/Dark theme support via CSS variables; theme toggle button added to header; preference stored in localStorage and respects system preference on first load.
 
 ## Next Steps (Prioritized Checklist)
 1) Cross-browser verification (latest two versions of Chrome, Firefox, Edge, Safari)
    - Launch via a static server (e.g., `npx serve .`), play a full round per browser
    - Confirm: controls, reversal prevention, collisions, overlay, restart, difficulty speeds, no console errors
-   - Note any rendering differences (canvas crispness/DPR) and file them in progress.md
+   - Verify theme toggle behavior and persistence; check canvas colors match theme
 2) Accessibility pass (keyboard and ARIA)
-   - Tab order: header → difficulty → score → canvas → overlay controls when shown
+   - Tab order: header → difficulty → theme toggle → score → canvas → overlay controls when shown
    - Ensure overlay "dialog" traps focus when visible and returns focus to Restart after closing
    - Validate aria-live regions (score, leaderboard) do not spam; labels present on interactive elements
 3) Usability/polish (MVP-safe)
@@ -29,9 +30,7 @@ Implement and verify the playable Snake MVP per documented scope; ensure accessi
    - Confirm visibilitychange pause/resume works reliably
 4) Documentation updates
    - Add “How to run locally” and “Browser support notes” to progress.md
-   - Record cross-browser and a11y findings; create a short checklist for regressions
-5) Optional stretch (post-MVP)
-   - Touch controls for mobile, sound toggle, basic theme switch (remain out-of-scope for MVP)
+   - Record cross-browser, a11y, and theming findings; create a short checklist for regressions
 
 ## Active Decisions and Considerations
 - Use ES6 modules; separate game logic, state, input, loop, and rendering
@@ -40,6 +39,7 @@ Implement and verify the playable Snake MVP per documented scope; ensure accessi
 - Difficulty speeds: easy=200 ms, medium=150 ms, hard=100 ms; reflected in state for transparency
 - Accessibility: keyboard-operable UI with minimal ARIA
 - Keep the MVP framework-free and static (no build step)
+- Theme architecture: CSS custom properties with html[data-theme] switch; renderer uses CSS variables for canvas drawing
 
 ## Important Patterns and Preferences
 - Pure functions for state transitions where feasible

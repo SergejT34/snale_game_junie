@@ -32,6 +32,12 @@
 - Sorted by score desc, then timestamp asc; capped to top 10 entries.
 - Input for a name collected via prompt() on Game Over to avoid complex UI; default name uses the last used name if available (derived from the most recent leaderboard entry by timestamp), otherwise "Player".
 
+## Theming
+- Approach: CSS custom properties define a theme palette. The active theme is controlled via `html[data-theme="light"|"dark"]`.
+- Canvas integration: the renderer reads CSS variables (`--canvas-bg`, `--grid-line`, `--snake-head`, `--snake-body`, `--food`) via `getComputedStyle` to keep canvas visuals in sync with the CSS theme.
+- Persistence: user selection stored in `localStorage` under `snake.theme.v1`. First-load default follows `prefers-color-scheme` if no stored preference exists.
+- Accessibility: header button toggles theme, exposes `aria-label` and `aria-pressed`, and has clear focus styles.
+
 ## Tool Usage Patterns
 - Prefer pure functions for state transitions to improve predictability and testability
 - Use a direction queue for input to avoid mid-tick mutations
