@@ -45,3 +45,4 @@
 - Use requestAnimationFrame only for render smoothness if needed; game logic is governed by setInterval or a fixed-timestep loop (150 ms default)
 - Keep rendering side effects isolated; state and logic remain framework-agnostic
 - Auto-pause/resume using document visibilitychange for better UX without complicating the loop
+- Global movement key bindings are disabled when the Game Over overlay is visible; only overlay-specific handlers (e.g., Enter in the name field) remain active.

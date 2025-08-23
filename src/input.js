@@ -10,6 +10,9 @@ const KEY_TO_DIR = new Map([
 
 export function bindInput(state) {
   function onKeyDown(e) {
+    // Ignore global key bindings when the game is not running (e.g., Game Over overlay shown)
+    if (state.status !== 'running') return;
+
     const dir = KEY_TO_DIR.get(e.code);
     if (!dir) return;
     e.preventDefault();
