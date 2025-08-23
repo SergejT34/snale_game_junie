@@ -101,3 +101,15 @@ Documentation Update
   - Steps: `npm install`, `npm run dev` (opens http://localhost:5173 with hot reload), or `npm start` (alias)
   - Notes: hot reload watches src/, index.html, styles.css; no build step introduced
 - Retained simple static server options: `npx serve .` or `python3 -m http.server` with their respective default ports.
+
+
+---
+
+Updated: 2025-08-23 19:48 (local)
+
+UI/Links
+- Added a GitHub icon link in the top bar that opens the source repository in a new tab.
+  - Location: header right side, next to the score and difficulty selector
+  - URL: https://github.com/SergejT34/snale_game_junie
+  - Accessibility: includes aria-label, focus-visible outline; SVG marked aria-hidden
+- Minor CSS added for hover/focus states without affecting layout.

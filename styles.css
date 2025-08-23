@@ -172,3 +172,25 @@ body {
     justify-content: center;
     color: #8a92a6;
 }
+
+
+/* GitHub link icon */
+.github-link {
+    color: #b0b7c3;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+.github-link:hover, .github-link:focus {
+    color: #ffffff;
+    background: #232735;
+    outline: 2px solid transparent;
+}
+.github-link:focus-visible {
+    outline: 2px solid #a7c4ff;
+    outline-offset: 2px;
+}
