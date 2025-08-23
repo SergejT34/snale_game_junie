@@ -1,6 +1,6 @@
 # Active Context: Browser-based Snake Game (MVP)
 
-Last updated: 2025-08-23 19:59 (local)
+Last updated: 2025-08-23 20:02 (local)
 
 ## Current Work Focus
 Implement and verify the playable Snake MVP per documented scope; ensure accessibility basics and restart flow. Add difficulty levels with distinct speeds.
@@ -11,6 +11,7 @@ Implement and verify the playable Snake MVP per documented scope; ensure accessi
 - Implemented deterministic loop (150 ms default), reversal prevention, collisions, scoring, and restart
 - Added difficulty selector (Easy/Medium/Hard) in the top bar; the game restarts on change to apply speed
 - Leaderboard now stores and displays the difficulty for each score entry (backward compatible with existing entries)
+- Leaderboard also tracks and displays time spent per game (mm:ss) for each entry; stored as durationMs alongside existing fields (backward compatible).
 - Accessibility: Restart can be triggered via Space or Enter when the Game Over overlay is visible (global shortcut).
 
 ## Next Steps (Prioritized Checklist)

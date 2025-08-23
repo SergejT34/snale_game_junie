@@ -45,6 +45,7 @@ export function createInitialState(opts = {}) {
     status: 'running', // 'running' | 'over'
     tickMs,
     difficulty,
+    startedAt: Date.now(), // timestamp when this run started (for duration tracking)
   };
 }
 

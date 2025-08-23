@@ -22,7 +22,8 @@ export function createGame(renderer, dom) {
     step(state);
     renderer.render(state);
     if (state.status === 'over' && lastStatus !== 'over') {
-      dom?.onGameOver?.(state.score);
+      const durationMs = Math.max(0, Date.now() - (state.startedAt || Date.now()));
+      dom?.onGameOver?.(state.score, durationMs);
     }
     lastStatus = state.status;
     if (state.status === 'over') stop();

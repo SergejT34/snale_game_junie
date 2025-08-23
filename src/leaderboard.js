@@ -1,5 +1,5 @@
 // Leaderboard module: manages persistent high scores in localStorage
-const STORAGE_KEY = 'snake.leaderboard.v1';
+const STORAGE_KEY = 'snake.leaderboard.v1'; // schema: { name, score, difficulty, durationMs?, ts }
 const MAX_ENTRIES = 10;
 
 export function loadLeaderboard() {
@@ -22,12 +22,13 @@ export function saveLeaderboard(entries) {
   }
 }
 
-export function addScore(name, score, difficulty, ts = Date.now()) {
+export function addScore(name, score, difficulty, durationMs, ts = Date.now()) {
   const entries = loadLeaderboard();
   const entry = {
     name: normalizeName(name),
     score: Number.isFinite(score) ? Math.max(0, Math.floor(score)) : 0,
     difficulty: normalizeDifficulty(difficulty),
+    durationMs: Number.isFinite(durationMs) ? Math.max(0, Math.floor(durationMs)) : 0,
     ts: typeof ts === 'number' ? ts : Date.now(),
   };
   const merged = [...entries, entry]
@@ -61,7 +62,8 @@ export function renderLeaderboard(listEl, entries = getTop()) {
     entries.forEach((e, idx) => {
       const li = document.createElement('li');
       const diffLabel = labelDifficulty(e.difficulty);
-      li.innerHTML = `<span class="rank">${idx + 1}.</span> <span class="name"></span> <span class="difficulty" aria-label="Difficulty">${diffLabel}</span> <span class="score">${e.score}</span>`;
+      const timeLabel = formatDuration(e.durationMs);
+      li.innerHTML = `<span class="rank">${idx + 1}.</span> <span class="name"></span> <span class="difficulty" aria-label="Difficulty">${diffLabel}</span> <span class="time" aria-label="Time">${timeLabel}</span> <span class="score">${e.score}</span>`;
       li.querySelector('.name').textContent = e.name;
       frag.appendChild(li);
     });
@@ -76,6 +78,7 @@ function sanitize(list) {
       name: normalizeName(e.name),
       score: Number.isFinite(e.score) ? Math.max(0, Math.floor(e.score)) : 0,
       difficulty: normalizeDifficulty(e.difficulty),
+      durationMs: Number.isFinite(e.durationMs) ? Math.max(0, Math.floor(e.durationMs)) : 0,
       ts: typeof e.ts === 'number' ? e.ts : Date.now(),
     }))
     .sort((a, b) => {
@@ -101,4 +104,14 @@ function normalizeDifficulty(difficulty) {
 function labelDifficulty(val) {
   const map = { easy: 'Easy', medium: 'Medium', hard: 'Hard' };
   return map[val] || 'Medium';
+}
+
+function formatDuration(ms) {
+  const n = Number.isFinite(ms) ? Math.max(0, Math.floor(ms)) : 0;
+  const totalSec = Math.floor(n / 1000);
+  const min = Math.floor(totalSec / 60);
+  const sec = totalSec % 60;
+  const mm = String(min);
+  const ss = String(sec).padStart(2, '0');
+  return `${mm}:${ss}`;
 }

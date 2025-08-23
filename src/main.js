@@ -37,12 +37,12 @@ const renderer = createRenderer(canvas, scoreEl, overlayEl, finalScoreEl);
 const game = createGame(renderer, {
   restartBtn,
   difficultySel,
-  onGameOver: (score) => {
+  onGameOver: (score, durationMs) => {
     // Prompt for name; default to last used if exists, otherwise Player
     const defaultName = getLastUsedName();
     const name = window.prompt('New score! Enter your name:', defaultName);
     const difficulty = normalizeDifficulty(difficultySel?.value);
-    addScore(name ?? defaultName, score, difficulty);
+    addScore(name ?? defaultName, score, difficulty, durationMs);
     renderLeaderboard(leaderboardEl, loadLeaderboard());
   },
 });
