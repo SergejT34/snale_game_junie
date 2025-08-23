@@ -291,3 +291,24 @@ Game Over Focus Reliability
 - Ensured the player name input is focused every time the Game Over overlay opens.
   - Implementation: renderer.js now detects the hidden→shown transition of the overlay and focuses/selects the #player-name input after making the overlay visible (with a micro-delay for cross‑browser consistency).
   - Rationale: Timing issues could cause focus to be lost if set before the overlay becomes visible; focusing at the point of showing guarantees consistent UX.
+
+
+---
+
+Updated: 2025-08-23 20:52 (local)
+
+Sound Effects and Mute Toggle
+- Added a lightweight Web Audio-based sound module (src/audio.js) with three effects:
+  - Food: short two-note "coin" bleep on eating food.
+  - Death: descending tone with a thud on game over.
+  - Start: brief arpeggio on game start and restart.
+- Integration:
+  - loop.js detects score increases per tick to trigger the food sound without altering logic.step.
+  - Game over transition triggers the death sound.
+  - Starting/restarting the game plays the start jingle.
+- UI:
+  - A sound toggle button was added to the header (id="sound-toggle"). It is keyboard-accessible and indicates state via aria-pressed and icon swap.
+  - CSS updates ensure the correct icon is shown when muted/unmuted.
+- Accessibility/Policy:
+  - AudioContext is lazily initialized and resumed on first user interaction (pointer/key) to comply with browser autoplay policies.
+  - Users can disable sounds at any time; the setting is session-scoped (no persistence yet, by design for MVP).

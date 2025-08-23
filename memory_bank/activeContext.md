@@ -3,7 +3,7 @@
 Last updated: 2025-08-23 20:39 (local)
 
 ## Current Work Focus
-Add time, difficulty, and leaderboard rank to the Game Over overlay and wire it to the existing leaderboard persistence.
+Add simple retro sound effects (coin on food, fall on death, short start jingle) with a mute toggle, while keeping the app static and accessible.
 
 ## Recent Changes
 - Implemented ES module-based Snake game (state, input, logic, renderer, loop)

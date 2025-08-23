@@ -250,3 +250,9 @@ body {
 .icon-moon { display: none; }
 html[data-theme="dark"] .icon-sun { display: none; }
 html[data-theme="dark"] .icon-moon { display: inline; }
+
+/* Sound toggle icon visibility */
+#sound-toggle .icon-sound-on { display: inline; }
+#sound-toggle .icon-sound-off { display: none; }
+#sound-toggle.muted .icon-sound-on { display: none; }
+#sound-toggle.muted .icon-sound-off { display: inline; }

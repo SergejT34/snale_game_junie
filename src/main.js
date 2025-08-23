@@ -2,6 +2,7 @@ import { createRenderer } from './renderer.js';
 import { createGame } from './loop.js';
 
 import { addScore, renderLeaderboard, loadLeaderboard, getProvisionalRank, MAX_ENTRIES } from './leaderboard.js';
+import { toggleMuted as toggleSoundMuted, isMuted as isSoundMuted, init as initAudio } from './audio.js';
 
 const canvas = document.getElementById('game');
 const scoreEl = document.getElementById('score');
@@ -14,6 +15,7 @@ const restartBtn = document.getElementById('restart');
 const difficultySel = document.getElementById('difficulty');
 const leaderboardEl = document.getElementById('leaderboard');
 const themeToggleBtn = document.getElementById('theme-toggle');
+const soundToggleBtn = document.getElementById('sound-toggle');
 const saveForm = document.getElementById('save-form');
 const nameInput = document.getElementById('player-name');
 const saveBtn = document.getElementById('save-score');
@@ -57,6 +59,30 @@ function initTheme() {
   }
 }
 initTheme();
+
+// ----- Sound toggle -----
+function applySoundButtonState() {
+  if (!soundToggleBtn) return;
+  const muted = isSoundMuted();
+  soundToggleBtn.setAttribute('aria-pressed', String(!muted));
+  soundToggleBtn.setAttribute('aria-label', muted ? 'Enable sound' : 'Disable sound');
+  soundToggleBtn.title = 'Toggle sound';
+  // Simple show/hide of icons via CSS classes; both SVGs present
+  if (muted) {
+    soundToggleBtn.classList.add('muted');
+  } else {
+    soundToggleBtn.classList.remove('muted');
+  }
+}
+
+(function initSoundUI(){
+  try { initAudio(); } catch {}
+  applySoundButtonState();
+  soundToggleBtn?.addEventListener('click', () => {
+    toggleSoundMuted();
+    applySoundButtonState();
+  });
+})();
 
 // ----- Game setup -----
 function getLastUsedName() {

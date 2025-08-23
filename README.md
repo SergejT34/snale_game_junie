@@ -8,6 +8,7 @@ A minimal, fully playable Snake game that runs in modern browsers using ES6 modu
 - Live score, Game Over overlay, Restart without a page reload
 - Difficulty selector (Easy/Medium/Hard)
 - LocalStorage leaderboard (top 10)
+- Simple retro sound effects (coin on food, fall on death, start jingle) with a mute toggle
 
 ## Run Locally
 

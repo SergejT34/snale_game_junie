@@ -52,3 +52,15 @@
   - Display format: "Score: N · Rank: #R" when within top 10; otherwise ">10" is shown for rank outside the top list.
   - Rank is computed client-side each tick using current score vs persisted entries; ties break by earlier timestamp first, consistent with leaderboard ordering.
 - Game Over overlay shows the provisional rank immediately (before the player enters a name or saves the score), using the same ranking logic and display format.
+
+## Audio
+- Implementation: Web Audio API, no assets. Sounds are synthesized (oscillators + gain envelopes) for minimal footprint and retro feel.
+- Effects:
+  - Food: quick two-note square wave ("coin-like").
+  - Death: descending sawtooth sweep with a low sine "thud".
+  - Start: short triangle-wave arpeggio.
+- Integration points:
+  - loop.js observes score delta per tick to infer food consumption (keeps logic.step pure-ish).
+  - Game over transition triggers death sound; start/restart triggers start jingle.
+- Autoplay policy: AudioContext created lazily and resumed on first gesture (pointerdown/keydown).
+- Controls: header sound toggle button with aria-pressed and icon swap; session-scoped mute setting (not persisted for MVP).

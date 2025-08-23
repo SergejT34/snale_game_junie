@@ -2,6 +2,7 @@
 import { createInitialState, DIFFICULTY_SPEEDS, DEFAULT_DIFFICULTY } from './state.js';
 import { step } from './logic.js';
 import { bindInput } from './input.js';
+import { playFood, playDeath, playStart, init as initAudio } from './audio.js';
 
 export function createGame(renderer, dom) {
   function currentDifficulty() {
@@ -17,15 +18,25 @@ export function createGame(renderer, dom) {
   let cleanupInput = bindInput(state);
   let intervalId = null;
 
+  initAudio();
+
   let lastStatus = state.status;
+  let lastScore = state.score;
   function tick() {
+    const beforeScore = state.score;
     step(state);
+    if (state.score > beforeScore) {
+      // Ate food this tick
+      try { playFood(); } catch {}
+    }
     renderer.render(state);
     if (state.status === 'over' && lastStatus !== 'over') {
+      try { playDeath(); } catch {}
       const durationMs = Math.max(0, Date.now() - (state.startedAt || Date.now()));
       dom?.onGameOver?.(state.score, durationMs);
     }
     lastStatus = state.status;
+    lastScore = state.score;
     if (state.status === 'over') stop();
   }
 
@@ -37,6 +48,7 @@ export function createGame(renderer, dom) {
     renderer.resizeToDisplaySize();
     intervalId = window.setInterval(tick, state.tickMs);
     renderer.render(state);
+    try { playStart(); } catch {}
   }
 
   function stop() {
@@ -53,6 +65,7 @@ export function createGame(renderer, dom) {
     cleanupInput = bindInput(state);
     renderer.render(state);
     intervalId = window.setInterval(tick, state.tickMs);
+    try { playStart(); } catch {}
   }
 
   // handle focus/visibility for pause/resume (optional)
