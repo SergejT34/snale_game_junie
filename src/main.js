@@ -11,14 +11,32 @@ const restartBtn = document.getElementById('restart');
 const difficultySel = document.getElementById('difficulty');
 const leaderboardEl = document.getElementById('leaderboard');
 
+function getLastUsedName() {
+  try {
+    const entries = loadLeaderboard();
+    if (!entries || !entries.length) return 'Player';
+    let latest = entries[0];
+    for (const e of entries) {
+      if (typeof e?.ts === 'number' && e.ts > (latest?.ts ?? -Infinity)) {
+        latest = e;
+      }
+    }
+    const name = latest && typeof latest.name === 'string' && latest.name.trim() ? latest.name.trim() : 'Player';
+    return name.slice(0, 20);
+  } catch {
+    return 'Player';
+  }
+}
+
 const renderer = createRenderer(canvas, scoreEl, overlayEl, finalScoreEl);
 const game = createGame(renderer, {
   restartBtn,
   difficultySel,
   onGameOver: (score) => {
-    // Prompt for name; default to Player when canceled/empty
-    const name = window.prompt('New score! Enter your name:', 'Player');
-    addScore(name ?? 'Player', score);
+    // Prompt for name; default to last used if exists, otherwise Player
+    const defaultName = getLastUsedName();
+    const name = window.prompt('New score! Enter your name:', defaultName);
+    addScore(name ?? defaultName, score);
     renderLeaderboard(leaderboardEl, loadLeaderboard());
   },
 });

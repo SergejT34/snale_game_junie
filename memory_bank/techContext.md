@@ -6,7 +6,7 @@
 - Basic CSS for layout and overlays
 
 ## Development Setup
-- No build tooling required; plain ES modules loaded via <script type="module">
+- No build tooling required; plain ES modules loaded via `<script type="module">`
 - Recommended local run options:
   - Node-based with hot reload: `npm run dev` (live-server on http://localhost:5173)
   - Generic static server (no reload): `npx serve .` or `python3 -m http.server`
@@ -29,7 +29,7 @@
 - Leaderboard stored in browser localStorage under key `snake.leaderboard.v1`.
 - Schema: array of entries `{ name: string, score: number, ts: epochMillis }`.
 - Sorted by score desc, then timestamp asc; capped to top 10 entries.
-- Input for a name collected via prompt() on Game Over to avoid complex UI; default name "Player".
+- Input for a name collected via prompt() on Game Over to avoid complex UI; default name uses the last used name if available (derived from the most recent leaderboard entry by timestamp), otherwise "Player".
 
 ## Tool Usage Patterns
 - Prefer pure functions for state transitions to improve predictability and testability
