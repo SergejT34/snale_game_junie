@@ -71,7 +71,7 @@ export function createGame(renderer, dom) {
 
   // Apply new difficulty immediately by restarting
   dom.difficultySel?.addEventListener('change', () => {
-    // Restart only if game is running or over to apply speed; preserves UX simplicity
+    // Restart only if the game is running or over to apply speed; preserves UX simplicity
     restart();
     dom.difficultySel.focus();
   });

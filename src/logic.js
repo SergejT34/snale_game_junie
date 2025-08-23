@@ -23,7 +23,7 @@ export function step(state) {
   const nextKey = key(next.x, next.y);
   const willEat = state.food && next.x === state.food.x && next.y === state.food.y;
 
-  // 4) Collisions: self (allow moving into tail if tail will move this tick when not eating)
+  // 4) Collisions: self (allow moving into tail if tail moves this tick when not eating)
   const tail = state.snake[0];
   const tailKey = key(tail.x, tail.y);
   const collidesWithSelf = state.occupied.has(nextKey) && (!willEat && nextKey !== tailKey);

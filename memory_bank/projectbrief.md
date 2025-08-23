@@ -1,18 +1,18 @@
 # Project Brief: Browser-based Snake Game (MVP)
 
 ## Overview
-A minimal, fully playable Snake game that runs in modern browsers using ES6 modules and HTML5 Canvas. The MVP focuses on essential gameplay: movement on a 20×20 grid, food consumption and growth, collision-based game over, live score, and restart—all keyboard operable and accessible.
+A minimal, fully playable Snake game that runs in modern browsers using ES6 modules and HTML5 Canvas. The MVP focuses on essential gameplay: movement on a 20×20 grid, food consumption and growth, collision-based game over, live score, and restart — all keyboard-operable and accessible.
 
 ## Core Requirements
-- 20×20 grid with snake length 3 at start and one food item spawned in an empty cell
+- 20×20 grid with snake length 3 at the start and one food item spawned in an empty cell
 - Deterministic core game loop at a configurable tick interval (150 ms default)
 - Update order per tick: input → move → collisions/food → render
 - Keyboard controls (Arrow keys and/or WASD) with prevention of 180° reversals
-- Collision handling: wall or self-collision triggers Game Over flow
+- Collision handling: wall or self-collision triggers Game Overflow
 - Live score display that updates as food is eaten
-- Game Over overlay with final score and a Restart button
-- Restart returns to initial state without page reload
-- Accessibility: fully keyboard operable UI; minimal, appropriate ARIA on interactive elements
+- Game Over overlay with the final score and a Restart button
+- Restart returns to the initial state without a page reload
+- Accessibility: fully keyboard-operable UI; the minimal, appropriate ARIA on interactive elements
 - Browser support: latest two major versions of Chrome, Firefox, Edge, Safari
 
 ## Goals

@@ -74,7 +74,7 @@ export function createRenderer(canvas, scoreEl, overlayEl, finalScoreEl) {
     }
   }
 
-  // Make canvas backing store match its CSS size for crisp drawing
+  // Make a canvas backing store match its CSS size for crisp drawing
   function resizeToDisplaySize() {
     const rect = canvas.getBoundingClientRect();
     const dpr = window.devicePixelRatio || 1;

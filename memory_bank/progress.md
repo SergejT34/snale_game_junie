@@ -28,7 +28,7 @@ Last updated: 2025-08-23 19:10 (local)
 - Adopted deterministic update pipeline and input queue for predictability
 - Emphasized separation of logic and rendering to enable future testing and maintenance
 - Added pause on tab hidden via visibilitychange for better UX
-- Introduced difficulty levels with state-backed tick interval; selection restart applies new speed
+- Introduced difficulty levels with the state-backed tick interval; selection restart applies new speed
 
 
 ---
@@ -86,7 +86,7 @@ Local Dev Server (Node-based)
 - Added package.json with a lightweight dev server and hot reload using live-server.
 - How to use:
   - npm install
-  - npm run dev  # opens http://localhost:5173 with live reload on changes to src/, index.html, styles.css
+  - npm run dev # opens http://localhost:5173 with live reload on changes to src/, index.html, styles.css
 - Notes:
   - This does not introduce a build step; it only serves static files with live reload for faster iteration.
   - Docker Compose continues to serve on http://localhost:8080 via nginx and is unaffected.

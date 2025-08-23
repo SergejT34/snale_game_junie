@@ -7,7 +7,7 @@ This repository contains documentation and planning for a Browser-based Snake Ga
 - Keyboard controls (Arrow keys and/or WASD), preventing 180° reversals
 - Live score display, Game Over overlay, and Restart without page reload
 - Accessibility considerations (keyboard operability, minimal ARIA)
-- Support latest two major versions of Chrome, Firefox, Edge, Safari
+- Support the latest two major versions of Chrome, Firefox, Edge, Safari
 
 For detailed specs see: memory_bank/projectbrief.md and snake_game.md.
 
@@ -23,12 +23,12 @@ For detailed specs see: memory_bank/projectbrief.md and snake_game.md.
 
 ## Tests & Build
 - No tests are defined in this repository at present.
-- No build tooling is required for the MVP; plain ES modules in the browser are sufficient.
+- No build tooling is required for the MVP; plain ES modules in the browser are enough.
 
 ## Code Style & Conventions
 - Use ES6+ modules with clear imports/exports.
 - Keep rendering concerns separate from state/logic; prefer pure functions for state transitions.
-- Maintain deterministic update order: input → move → collision/food → render.
+- Maintain a deterministic update order: input → move → collision/food → render.
 - Keep the tick interval configurable (default 150 ms).
 
 ## How Junie Should Work Here

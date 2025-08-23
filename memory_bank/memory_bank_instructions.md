@@ -66,6 +66,6 @@ Update the Memory Bank when:
 3. When the user requests an update of the memory bank (MUST review ALL files)
 4. When context needs clarification
 
-Focus particularly on activeContext.md and progress.md to track current state.
+Focus particularly on activeContext.md and progress.md to track the current state.
 
 REMEMBER: After every memory reset, begin completely fresh. The Memory Bank must be kept accurate, precise, and up to date to ensure effective continuation of work on the Snake MVP.
