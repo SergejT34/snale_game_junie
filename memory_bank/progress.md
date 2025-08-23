@@ -57,3 +57,23 @@ Publishing
   - Push this project to a new/existing GitHub repository
   - Publish via GitHub Pages using either Settings (branch → root) or GitHub Actions (included workflow)
 - Tip: Keep `.nojekyll` to disable Jekyll and serve ES modules/assets as-is.
+
+---
+
+Updated: 2025-08-23 19:23 (local)
+
+Containerization
+- Added Dockerfile using nginx:alpine to serve the static app from /usr/share/nginx/html.
+- Added docker-compose.yml to build and run the container, mapping host 8080 -> container 80.
+
+How to Run with Docker
+- docker build -t snake-game .
+- docker run --rm -p 8080:80 snake-game
+
+How to Run with Docker Compose
+- docker compose up --build
+- Then open http://localhost:8080 in your browser.
+
+Notes
+- This approach keeps the app framework-free and portable; no Node runtime is required in the container.
+- For local iteration without rebuilds, you can uncomment the volumes in docker-compose.yml to bind-mount index.html, styles.css, and src/ (read-only).

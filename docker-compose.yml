@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    # Uncomment the following lines for local development to live-edit files without rebuild
+    # volumes:
+    #   - ./index.html:/usr/share/nginx/html/index.html:ro
+    #   - ./styles.css:/usr/share/nginx/html/styles.css:ro
+    #   - ./src:/usr/share/nginx/html/src:ro
+    restart: unless-stopped
