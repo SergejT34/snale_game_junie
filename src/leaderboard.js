@@ -22,11 +22,12 @@ export function saveLeaderboard(entries) {
   }
 }
 
-export function addScore(name, score, ts = Date.now()) {
+export function addScore(name, score, difficulty, ts = Date.now()) {
   const entries = loadLeaderboard();
   const entry = {
     name: normalizeName(name),
     score: Number.isFinite(score) ? Math.max(0, Math.floor(score)) : 0,
+    difficulty: normalizeDifficulty(difficulty),
     ts: typeof ts === 'number' ? ts : Date.now(),
   };
   const merged = [...entries, entry]
@@ -59,7 +60,8 @@ export function renderLeaderboard(listEl, entries = getTop()) {
   } else {
     entries.forEach((e, idx) => {
       const li = document.createElement('li');
-      li.innerHTML = `<span class="rank">${idx + 1}.</span> <span class="name"></span> <span class="score">${e.score}</span>`;
+      const diffLabel = labelDifficulty(e.difficulty);
+      li.innerHTML = `<span class="rank">${idx + 1}.</span> <span class="name"></span> <span class="difficulty" aria-label="Difficulty">${diffLabel}</span> <span class="score">${e.score}</span>`;
       li.querySelector('.name').textContent = e.name;
       frag.appendChild(li);
     });
@@ -73,6 +75,7 @@ function sanitize(list) {
     .map(e => ({
       name: normalizeName(e.name),
       score: Number.isFinite(e.score) ? Math.max(0, Math.floor(e.score)) : 0,
+      difficulty: normalizeDifficulty(e.difficulty),
       ts: typeof e.ts === 'number' ? e.ts : Date.now(),
     }))
     .sort((a, b) => {
@@ -87,4 +90,15 @@ function normalizeName(name) {
   if (!trimmed) return 'Player';
   // Limit to 20 visible chars
   return trimmed.slice(0, 20);
+}
+
+function normalizeDifficulty(difficulty) {
+  const val = String(difficulty ?? '').toLowerCase();
+  if (val === 'easy' || val === 'medium' || val === 'hard') return val;
+  return 'medium';
+}
+
+function labelDifficulty(val) {
+  const map = { easy: 'Easy', medium: 'Medium', hard: 'Hard' };
+  return map[val] || 'Medium';
 }

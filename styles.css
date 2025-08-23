@@ -168,6 +168,12 @@ body {
     font-weight: 600;
 }
 
+.leaderboard li .difficulty {
+    color: #8a92a6;
+    font-size: 0.9em;
+    margin-right: 0.5rem;
+}
+
 .leaderboard li.empty {
     justify-content: center;
     color: #8a92a6;

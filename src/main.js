@@ -28,6 +28,11 @@ function getLastUsedName() {
   }
 }
 
+function normalizeDifficulty(val) {
+  const v = String(val ?? '').toLowerCase();
+  return (v === 'easy' || v === 'medium' || v === 'hard') ? v : 'medium';
+}
+
 const renderer = createRenderer(canvas, scoreEl, overlayEl, finalScoreEl);
 const game = createGame(renderer, {
   restartBtn,
@@ -36,7 +41,8 @@ const game = createGame(renderer, {
     // Prompt for name; default to last used if exists, otherwise Player
     const defaultName = getLastUsedName();
     const name = window.prompt('New score! Enter your name:', defaultName);
-    addScore(name ?? defaultName, score);
+    const difficulty = normalizeDifficulty(difficultySel?.value);
+    addScore(name ?? defaultName, score, difficulty);
     renderLeaderboard(leaderboardEl, loadLeaderboard());
   },
 });

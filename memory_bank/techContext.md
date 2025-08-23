@@ -27,7 +27,8 @@
 
 ## Persistence Decisions
 - Leaderboard stored in browser localStorage under key `snake.leaderboard.v1`.
-- Schema: array of entries `{ name: string, score: number, ts: epochMillis }`.
+- Schema: array of entries `{ name: string, score: number, difficulty: 'easy'|'medium'|'hard', ts: epochMillis }`.
+  - Backward compatibility: older entries without `difficulty` are treated as `medium`.
 - Sorted by score desc, then timestamp asc; capped to top 10 entries.
 - Input for a name collected via prompt() on Game Over to avoid complex UI; default name uses the last used name if available (derived from the most recent leaderboard entry by timestamp), otherwise "Player".
 

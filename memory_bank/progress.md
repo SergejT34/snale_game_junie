@@ -240,3 +240,14 @@ Name Prompt Default
   - Implementation: on Game Over, default is computed by scanning persisted leaderboard entries for the latest timestamp and using that entry's name; falls back to "Player" when none.
   - Rationale: improves UX by not forcing repeat typing for the same player.
   - Docs: techContext.md updated to reflect new defaulting behavior.
+
+
+
+---
+
+Updated: 2025-08-23 19:59 (local)
+
+Accessibility/Controls
+- Restart can now be triggered using Space or Enter while the Game Over overlay is visible.
+  - Implementation: added a global keydown listener in loop.js that, when state.status === 'over', prevents default and calls restart() on Enter/Space, then focuses the Restart button.
+  - Rationale: improves keyboard accessibility and provides a convenient restart shortcut without requiring focus movement.
