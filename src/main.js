@@ -14,6 +14,9 @@ const restartBtn = document.getElementById('restart');
 const difficultySel = document.getElementById('difficulty');
 const leaderboardEl = document.getElementById('leaderboard');
 const themeToggleBtn = document.getElementById('theme-toggle');
+const saveForm = document.getElementById('save-form');
+const nameInput = document.getElementById('player-name');
+const saveBtn = document.getElementById('save-score');
 
 // ----- Theme management -----
 const THEME_KEY = 'snake.theme.v1';
@@ -79,27 +82,66 @@ function normalizeDifficulty(val) {
 }
 
 const renderer = createRenderer(canvas, scoreEl, overlayEl, finalScoreEl, finalTimeEl, finalDifficultyEl, finalRankEl);
+let lastOnClick = null;
+let lastOnKeyDown = null;
 const game = createGame(renderer, {
   restartBtn,
   difficultySel,
   onGameOver: (score, durationMs) => {
-    // Prompt for name; default to last used if exists, otherwise Player
+    // Non-blocking UI: prefill input and let user save from overlay
     const defaultName = getLastUsedName();
-    const name = window.prompt('New score! Enter your name:', defaultName);
-    const difficulty = normalizeDifficulty(difficultySel?.value);
-    const ts = Date.now();
-    const result = addScore(name ?? defaultName, score, difficulty, durationMs, ts);
-    const entries = result?.entries || loadLeaderboard();
-    const rank = result?.rank;
-    // Update rank in overlay if available
-    if (finalRankEl) {
-      if (Number.isFinite(rank) && rank > 0) {
-        finalRankEl.textContent = `Rank: #${rank}`;
-      } else {
-        finalRankEl.textContent = 'Rank: —';
-      }
+
+    // Remove any lingering listeners from previous game over
+    if (lastOnClick) saveBtn?.removeEventListener('click', lastOnClick);
+    if (lastOnKeyDown) nameInput?.removeEventListener('keydown', lastOnKeyDown);
+
+    if (nameInput) {
+      nameInput.value = defaultName;
+      try { nameInput.focus(); nameInput.select(); } catch {}
     }
-    renderLeaderboard(leaderboardEl, entries);
+    if (saveBtn) {
+      saveBtn.disabled = false;
+    }
+    if (nameInput) nameInput.disabled = false;
+
+    let saved = false;
+    const difficulty = normalizeDifficulty(difficultySel?.value);
+
+    function doSave() {
+      if (saved) return;
+      const ts = Date.now();
+      const entered = (nameInput?.value ?? '').trim() || defaultName;
+      const result = addScore(entered, score, difficulty, durationMs, ts);
+      const entries = result?.entries || loadLeaderboard();
+      const rank = result?.rank;
+      if (finalRankEl) {
+        if (Number.isFinite(rank) && rank > 0) {
+          finalRankEl.textContent = `Rank: #${rank}`;
+        } else {
+          finalRankEl.textContent = 'Rank: —';
+        }
+      }
+      renderLeaderboard(leaderboardEl, entries);
+      saved = true;
+      if (saveBtn) saveBtn.disabled = true;
+      if (nameInput) nameInput.disabled = true;
+    }
+
+    // Attach one-time listeners for this game over
+    const onClick = () => { doSave(); cleanup(); };
+    const onKeyDown = (e) => { if (e.key === 'Enter') { e.preventDefault(); doSave(); cleanup(); } };
+
+    function cleanup() {
+      saveBtn?.removeEventListener('click', onClick);
+      nameInput?.removeEventListener('keydown', onKeyDown);
+      lastOnClick = null;
+      lastOnKeyDown = null;
+    }
+
+    saveBtn?.addEventListener('click', onClick);
+    nameInput?.addEventListener('keydown', onKeyDown);
+    lastOnClick = onClick;
+    lastOnKeyDown = onKeyDown;
   },
 });
 

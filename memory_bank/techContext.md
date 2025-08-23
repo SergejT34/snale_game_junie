@@ -30,7 +30,7 @@
 - Schema: array of entries `{ name: string, score: number, difficulty: 'easy'|'medium'|'hard', durationMs: number, ts: epochMillis }`.
   - Backward compatibility: older entries without `difficulty` are treated as `medium`; older entries without `durationMs` default to 0 when displayed.
 - Sorted by score desc, then timestamp asc; capped to top 10 entries.
-- Input for a name collected via prompt() on Game Over to avoid complex UI; default name uses the last used name if available (derived from the most recent leaderboard entry by timestamp), otherwise "Player".
+- Input for a name is collected via a non-blocking input field in the Game Over overlay. The field is prefilled with the last used name if available (derived from the most recent leaderboard entry by timestamp), otherwise "Player". Pressing Enter or clicking "Save score" persists the entry without blocking the UI.
 
 ## Theming
 - Approach: CSS custom properties define a theme palette. The active theme is controlled via `html[data-theme="light"|"dark"]`.

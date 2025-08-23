@@ -43,6 +43,11 @@
           <p id="final-time">Time: 0:00</p>
           <p id="final-difficulty">Difficulty: Medium</p>
           <p id="final-rank">Rank: —</p>
+          <form id="save-form" class="save-form" aria-label="Save score" onsubmit="return false;">
+            <label for="player-name">Your name</label>
+            <input id="player-name" name="player-name" type="text" maxlength="20" autocomplete="name" placeholder="Player" />
+            <button id="save-score" type="button" class="btn">Save score</button>
+          </form>
           <button id="restart" class="btn" aria-label="Restart game">Restart</button>
         </div>
       </div>
