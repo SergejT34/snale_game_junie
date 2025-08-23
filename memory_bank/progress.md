@@ -281,3 +281,13 @@ Game Over Details and Leaderboard Rank
   - leaderboard.js: addScore now returns an object { entries, rank }, computing the player's rank before truncating to the top 10 and persisting.
   - main.js: uses the returned rank to update the overlay and re-renders the leaderboard.
 - Rationale: provides better feedback at game end and aligns with persistence schema already tracking difficulty and duration.
+
+
+---
+
+Updated: 2025-08-23 20:50 (local)
+
+Game Over Focus Reliability
+- Ensured the player name input is focused every time the Game Over overlay opens.
+  - Implementation: renderer.js now detects the hidden→shown transition of the overlay and focuses/selects the #player-name input after making the overlay visible (with a micro-delay for cross‑browser consistency).
+  - Rationale: Timing issues could cause focus to be lost if set before the overlay becomes visible; focusing at the point of showing guarantees consistent UX.

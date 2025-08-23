@@ -1,6 +1,6 @@
 // Leaderboard module: manages persistent high scores in localStorage
 const STORAGE_KEY = 'snake.leaderboard.v1'; // schema: { name, score, difficulty, durationMs?, ts }
-const MAX_ENTRIES = 10;
+export const MAX_ENTRIES = 10;
 
 export function loadLeaderboard() {
   try {
@@ -70,6 +70,20 @@ export function renderLeaderboard(listEl, entries = getTop()) {
     });
   }
   listEl.appendChild(frag);
+}
+
+// Compute the hypothetical rank for a given score compared to current leaderboard entries.
+// Returns a 1-based rank number. If there are no entries, returns 1 when score >= 0.
+export function getProvisionalRank(score) {
+  const s = Number.isFinite(score) ? Math.max(0, Math.floor(score)) : 0;
+  const entries = loadLeaderboard();
+  const dummy = { name: '__current__', score: s, difficulty: 'medium', durationMs: 0, ts: Date.now() };
+  const merged = [...entries, dummy].sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    return a.ts - b.ts;
+  });
+  const idx = merged.findIndex(e => e === dummy);
+  return idx >= 0 ? idx + 1 : merged.length + 1;
 }
 
 function sanitize(list) {

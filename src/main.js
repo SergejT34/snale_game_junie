@@ -1,7 +1,7 @@
 import { createRenderer } from './renderer.js';
 import { createGame } from './loop.js';
 
-import { addScore, renderLeaderboard, loadLeaderboard } from './leaderboard.js';
+import { addScore, renderLeaderboard, loadLeaderboard, getProvisionalRank, MAX_ENTRIES } from './leaderboard.js';
 
 const canvas = document.getElementById('game');
 const scoreEl = document.getElementById('score');
@@ -88,6 +88,19 @@ const game = createGame(renderer, {
   restartBtn,
   difficultySel,
   onGameOver: (score, durationMs) => {
+    // Show provisional rank immediately before name entry
+    if (finalRankEl) {
+      try {
+        const provRank = getProvisionalRank(score);
+        if (Number.isFinite(provRank) && provRank > 0) {
+          finalRankEl.textContent = `Rank: ${provRank <= MAX_ENTRIES ? '#' + provRank : '>' + MAX_ENTRIES}`;
+        } else {
+          finalRankEl.textContent = 'Rank: —';
+        }
+      } catch {
+        finalRankEl.textContent = 'Rank: —';
+      }
+    }
     // Non-blocking UI: prefill input and let user save from overlay
     const defaultName = getLastUsedName();
 

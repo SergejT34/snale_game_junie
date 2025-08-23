@@ -1,5 +1,6 @@
 // Renderer module: draws to canvas and updates UI
 import { GRID_SIZE } from './state.js';
+import { getProvisionalRank, MAX_ENTRIES } from './leaderboard.js';
 
 export function createRenderer(canvas, scoreEl, overlayEl, finalScoreEl, finalTimeEl, finalDifficultyEl, finalRankEl) {
   const ctx = canvas.getContext('2d');
@@ -80,12 +81,23 @@ export function createRenderer(canvas, scoreEl, overlayEl, finalScoreEl, finalTi
     drawFood(state.food);
     drawSnake(state.snake);
 
-    // Update score UI
-    if (scoreEl) scoreEl.textContent = `Score: ${state.score}`;
+    // Update score UI with live provisional rank compared to leaderboard
+    if (scoreEl) {
+      let rankText = '';
+      try {
+        const rank = getProvisionalRank(state.score);
+        if (Number.isFinite(rank) && rank > 0) {
+          rankText = ` · Rank: ${rank <= MAX_ENTRIES ? '#' + rank : '>' + MAX_ENTRIES}`;
+        }
+      } catch {}
+      scoreEl.textContent = `Score: ${state.score}${rankText}`;
+    }
 
     // Overlay
     if (overlayEl && finalScoreEl) {
       if (state.status === 'over') {
+        // Detect transition from hidden -> shown to run one-time side effects (like focusing input)
+        const wasHidden = overlayEl.getAttribute('aria-hidden') !== 'false';
         overlayEl.classList.add('show');
         overlayEl.setAttribute('aria-hidden', 'false');
         finalScoreEl.textContent = `Score: ${state.score}`;
@@ -95,6 +107,16 @@ export function createRenderer(canvas, scoreEl, overlayEl, finalScoreEl, finalTi
         }
         if (finalDifficultyEl) {
           finalDifficultyEl.textContent = `Difficulty: ${labelDifficulty(state.difficulty)}`;
+        }
+        // Ensure player's name input is focused every time overlay opens
+        if (wasHidden) {
+          const input = document.getElementById('player-name');
+          if (input && typeof input.focus === 'function') {
+            // Delay focus to after DOM/class changes apply for consistent behavior across browsers
+            setTimeout(() => {
+              try { input.focus({ preventScroll: true }); if (typeof input.select === 'function') input.select(); } catch {}
+            }, 0);
+          }
         }
       } else {
         overlayEl.classList.remove('show');
