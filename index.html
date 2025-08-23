@@ -9,7 +9,15 @@
 <body>
   <header class="topbar" role="banner">
     <h1>Snake</h1>
-    <div id="score" aria-live="polite" aria-atomic="true">Score: 0</div>
+    <div style="display:flex; align-items:center; gap:0.75rem;">
+      <label for="difficulty" class="visually-hidden">Difficulty</label>
+      <select id="difficulty" aria-label="Select difficulty">
+        <option value="easy">Easy</option>
+        <option value="medium" selected>Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+      <div id="score" aria-live="polite" aria-atomic="true">Score: 0</div>
+    </div>
   </header>
 
   <main class="game" role="main">

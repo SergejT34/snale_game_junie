@@ -1,6 +1,6 @@
 # Progress: Browser-based Snake Game (MVP)
 
-Last updated: 2025-08-23 18:58 (local)
+Last updated: 2025-08-23 19:03 (local)
 
 ## What Works
 - Memory Bank with core project documentation (brief, product context, instructions, active context, system patterns, tech context)
@@ -10,6 +10,7 @@ Last updated: 2025-08-23 18:58 (local)
   - Keyboard controls (Arrow keys/WASD) with 180° reversal prevention
   - Wall/self collisions trigger Game Over overlay with Restart (no page reload)
   - Live, accessible score display (aria-live)
+  - Difficulty levels: Easy (200 ms), Medium (150 ms), Hard (100 ms) selectable from UI; applies on start/restart
 - Modular separation: state, input, logic, renderer, loop
 
 ## What's Left to Build
@@ -26,3 +27,4 @@ Last updated: 2025-08-23 18:58 (local)
 - Adopted deterministic update pipeline and input queue for predictability
 - Emphasized separation of logic and rendering to enable future testing and maintenance
 - Added pause on tab hidden via visibilitychange for better UX
+- Introduced difficulty levels with state-backed tick interval; selection restart applies new speed

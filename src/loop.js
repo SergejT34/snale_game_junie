@@ -1,10 +1,19 @@
 // Loop module: orchestrates ticking and restart
-import { createInitialState } from './state.js';
+import { createInitialState, DIFFICULTY_SPEEDS, DEFAULT_DIFFICULTY } from './state.js';
 import { step } from './logic.js';
 import { bindInput } from './input.js';
 
 export function createGame(renderer, dom) {
-  let state = createInitialState();
+  function currentDifficulty() {
+    const sel = dom?.difficultySel;
+    const val = sel?.value || DEFAULT_DIFFICULTY;
+    return (val in DIFFICULTY_SPEEDS) ? val : DEFAULT_DIFFICULTY;
+  }
+  function currentTickMs() {
+    return DIFFICULTY_SPEEDS[currentDifficulty()];
+  }
+
+  let state = createInitialState({ tickMs: currentTickMs(), difficulty: currentDifficulty() });
   let cleanupInput = bindInput(state);
   let intervalId = null;
 
@@ -16,6 +25,9 @@ export function createGame(renderer, dom) {
 
   function start() {
     stop();
+    // ensure state reflects current selection
+    state.tickMs = currentTickMs();
+    state.difficulty = currentDifficulty();
     renderer.resizeToDisplaySize();
     intervalId = window.setInterval(tick, state.tickMs);
     renderer.render(state);
@@ -31,7 +43,7 @@ export function createGame(renderer, dom) {
   function restart() {
     stop();
     cleanupInput?.();
-    state = createInitialState();
+    state = createInitialState({ tickMs: currentTickMs(), difficulty: currentDifficulty() });
     cleanupInput = bindInput(state);
     renderer.render(state);
     intervalId = window.setInterval(tick, state.tickMs);
@@ -50,6 +62,13 @@ export function createGame(renderer, dom) {
   dom.restartBtn?.addEventListener('click', () => {
     restart();
     dom.restartBtn.focus();
+  });
+
+  // Apply new difficulty immediately by restarting
+  dom.difficultySel?.addEventListener('change', () => {
+    // Restart only if game is running or over to apply speed; preserves UX simplicity
+    restart();
+    dom.difficultySel.focus();
   });
 
   window.addEventListener('resize', () => {

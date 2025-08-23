@@ -2,6 +2,7 @@
 *.zip
 *.pyc
 *.iml
+*.log
 venv/
 downloads/
 .idea/

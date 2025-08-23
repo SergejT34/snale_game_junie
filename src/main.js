@@ -6,8 +6,9 @@ const scoreEl = document.getElementById('score');
 const overlayEl = document.getElementById('overlay');
 const finalScoreEl = document.getElementById('final-score');
 const restartBtn = document.getElementById('restart');
+const difficultySel = document.getElementById('difficulty');
 
 const renderer = createRenderer(canvas, scoreEl, overlayEl, finalScoreEl);
-const game = createGame(renderer, { restartBtn });
+const game = createGame(renderer, { restartBtn, difficultySel });
 
 game.start();

@@ -2,6 +2,13 @@
 export const GRID_SIZE = 20;
 export const DEFAULT_TICK_MS = 150;
 
+export const DIFFICULTY_SPEEDS = {
+  easy: 200,
+  medium: 150,
+  hard: 100,
+};
+export const DEFAULT_DIFFICULTY = 'medium';
+
 export const DIRS = {
   Up: { x: 0, y: -1, name: 'Up' },
   Down: { x: 0, y: 1, name: 'Down' },
@@ -14,7 +21,8 @@ export function opposite(a, b) {
   return a.x + b.x === 0 && a.y + b.y === 0;
 }
 
-export function createInitialState() {
+export function createInitialState(opts = {}) {
+  const { tickMs = DEFAULT_TICK_MS, difficulty = DEFAULT_DIFFICULTY } = opts;
   const mid = Math.floor(GRID_SIZE / 2);
   // Snake length 3, pointing Right initially
   const snake = [
@@ -35,7 +43,8 @@ export function createInitialState() {
     food,
     score: 0,
     status: 'running', // 'running' | 'over'
-    tickMs: DEFAULT_TICK_MS,
+    tickMs,
+    difficulty,
   };
 }
 

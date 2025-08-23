@@ -13,3 +13,4 @@ body { display: flex; flex-direction: column; background: #0e0f14; color: #e8eaf
 .btn { background: #3a7afe; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; cursor: pointer; }
 .btn:focus { outline: 2px solid #a7c4ff; outline-offset: 2px; }
 .footer { text-align: center; padding: 0.5rem; color: #b0b7c3; }
+.visually-hidden { position: absolute !important; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px); white-space: nowrap; clip-path: inset(50%); border: 0; padding: 0; margin: -1px; }
