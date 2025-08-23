@@ -29,3 +29,21 @@ Last updated: 2025-08-23 19:10 (local)
 - Emphasized separation of logic and rendering to enable future testing and maintenance
 - Added pause on tab hidden via visibilitychange for better UX
 - Introduced difficulty levels with state-backed tick interval; selection restart applies new speed
+
+
+---
+
+Updated: 2025-08-23 19:15 (local)
+
+Planned Next Actions
+- Cross-browser test sweep (Chrome, Firefox, Edge, Safari; latest two versions): play a full round; verify controls, reversal prevention, collisions, overlay visibility, restart behavior, difficulty speeds; confirm zero console errors.
+- Accessibility check: verify tab order; ensure overlay dialog traps focus and returns it to Restart; confirm aria-live usage for score and leaderboard is polite and not spammy; ensure all interactive elements have labels.
+- Usability and polish: confirm canvas DPR sizing looks crisp on HiDPI; confirm visibilitychange pause/resume; ensure focus outlines are visible across browsers.
+- Documentation: add run instructions and record testing findings here; establish a lightweight regression checklist.
+
+How to Run Locally
+- Use a simple static server from the project root:
+  - npx serve .
+  - or: python3 -m http.server
+- Open http://localhost:3000 (serve default) or http://localhost:8000 (python) in your browser.
+- Controls: Arrow keys/WASD. Use the Restart button after Game Over. Difficulty can be changed via the selector.

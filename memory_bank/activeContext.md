@@ -1,6 +1,6 @@
 # Active Context: Browser-based Snake Game (MVP)
 
-Last updated: 2025-08-23 19:03 (local)
+Last updated: 2025-08-23 19:15 (local)
 
 ## Current Work Focus
 Implement and verify the playable Snake MVP per documented scope; ensure accessibility basics and restart flow. Add difficulty levels with distinct speeds.
@@ -11,10 +11,24 @@ Implement and verify the playable Snake MVP per documented scope; ensure accessi
 - Implemented deterministic loop (150 ms default), reversal prevention, collisions, scoring, and restart
 - Added difficulty selector (Easy/Medium/Hard) in the top bar; game restarts on change to apply speed
 
-## Next Steps
-- Manual cross-browser verification (latest Chrome/Firefox/Edge/Safari)
-- Accessibility pass: keyboard focus order and ARIA roles review
-- Document run instructions and any findings in progress.md
+## Next Steps (Prioritized Checklist)
+1) Cross-browser verification (latest two versions of Chrome, Firefox, Edge, Safari)
+   - Launch via a static server (e.g., `npx serve .`), play a full round per browser
+   - Confirm: controls, reversal prevention, collisions, overlay, restart, difficulty speeds, no console errors
+   - Note any rendering differences (canvas crispness/DPR) and file them in progress.md
+2) Accessibility pass (keyboard and ARIA)
+   - Tab order: header → difficulty → score → canvas → overlay controls when shown
+   - Ensure overlay "dialog" traps focus when visible and returns focus to Restart after closing
+   - Validate aria-live regions (score, leaderboard) do not spam; labels present on interactive elements
+3) Usability/polish (MVP-safe)
+   - Ensure canvas resizes responsively; verify devicePixelRatio logic on HiDPI
+   - Tweak focus styles for visible focus on all controls
+   - Confirm visibilitychange pause/resume works reliably
+4) Documentation updates
+   - Add “How to run locally” and “Browser support notes” to progress.md
+   - Record cross-browser and a11y findings; create a short checklist for regressions
+5) Optional stretch (post-MVP)
+   - Touch controls for mobile, sound toggle, basic theme switch (remain out-of-scope for MVP)
 
 ## Active Decisions and Considerations
 - Use ES6 modules; separate game logic, state, input, loop, and rendering
