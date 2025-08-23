@@ -1,6 +1,6 @@
 # Active Context: Browser-based Snake Game (MVP)
 
-Last updated: 2025-08-23 20:29 (local)
+Last updated: 2025-08-23 20:39 (local)
 
 ## Current Work Focus
 Add time, difficulty, and leaderboard rank to the Game Over overlay and wire it to the existing leaderboard persistence.
@@ -12,7 +12,7 @@ Add time, difficulty, and leaderboard rank to the Game Over overlay and wire it 
 - Added difficulty selector (Easy/Medium/Hard) in the top bar; the game restarts on change to apply speed
 - Leaderboard now stores and displays the difficulty for each score entry (backward compatible with existing entries)
 - Leaderboard also tracks and displays time spent per game (mm:ss) for each entry; stored as durationMs alongside existing fields (backward compatible).
-- Accessibility: Restart can be triggered via Space or Enter when the Game Over overlay is visible (global shortcut).
+- Accessibility: Game Over overlay auto-focuses the player name input; pressing Enter in that input saves the score and starts a new game. Global Space/Enter shortcuts are removed.
 - New: Light/Dark theme support via CSS variables; theme toggle button added to header; preference stored in localStorage and respects system preference on first load.
 - Updated game palette to be red–green colorblind‑friendly: snake body is now purple (#9467bd) and food is orange (#ff7f0e); snake head remains blue (#3a7afe). Renderer fallbacks adjusted accordingly. Ensures distinct hues and strong contrast on both themes.
 

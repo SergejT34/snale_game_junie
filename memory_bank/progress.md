@@ -245,12 +245,13 @@ Name Prompt Default
 
 ---
 
-Updated: 2025-08-23 19:59 (local)
+Updated: 2025-08-23 20:39 (local)
 
-Accessibility/Controls
-- Restart can now be triggered using Space or Enter while the Game Over overlay is visible.
-  - Implementation: added a global keydown listener in loop.js that, when state.status === 'over', prevents default and calls restart() on Enter/Space, then focuses the Restart button.
-  - Rationale: improves keyboard accessibility and provides a convenient restart shortcut without requiring focus movement.
+Controls Update
+- Removed global Space/Enter shortcuts for restarting from the Game Over overlay.
+  - Rationale: simplify input model and avoid unexpected restarts from global keys.
+- Game Over overlay now auto-focuses the player name input. Pressing Enter in that input saves the score and starts a new game.
+- The overlay button label is now "Play Agayn".
 
 
 ---
