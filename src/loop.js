@@ -70,19 +70,6 @@ export function createGame(renderer, dom) {
     dom.restartBtn.focus();
   });
 
-  // Allow Space or Enter to trigger restart when Game Over overlay is shown
-  window.addEventListener('keydown', (e) => {
-    if (state.status !== 'over') return;
-    const key = e.key;
-    const code = e.code;
-    const isEnter = key === 'Enter' || code === 'Enter';
-    const isSpace = key === ' ' || key === 'Spacebar' || code === 'Space'; // cover older browsers
-    if (isEnter || isSpace) {
-      e.preventDefault(); // avoid page scroll or unintended default actions
-      restart();
-      dom.restartBtn?.focus();
-    }
-  });
 
   // Apply new difficulty immediately by restarting
   dom.difficultySel?.addEventListener('change', () => {

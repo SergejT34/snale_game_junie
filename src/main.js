@@ -128,8 +128,8 @@ const game = createGame(renderer, {
     }
 
     // Attach one-time listeners for this game over
-    const onClick = () => { doSave(); cleanup(); };
-    const onKeyDown = (e) => { if (e.key === 'Enter') { e.preventDefault(); doSave(); cleanup(); } };
+    const onClick = () => { doSave(); game.restart(); cleanup(); };
+    const onKeyDown = (e) => { if (e.key === 'Enter') { e.preventDefault(); doSave(); game.restart(); cleanup(); } };
 
     function cleanup() {
       saveBtn?.removeEventListener('click', onClick);
