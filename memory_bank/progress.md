@@ -264,3 +264,19 @@ Accessibility (Color Vision)
   - Food changed from red to orange (#ff7f0e).
   - Changes applied via CSS variables for both light and dark themes, and renderer fallbacks updated to match.
   - Rationale: avoid red/green confusion while keeping high contrast against canvas backgrounds; improves distinguishability of snake vs. food for users with deuteranopia/protanopia.
+
+---
+
+Updated: 2025-08-23 20:29 (local)
+
+Game Over Details and Leaderboard Rank
+- Game Over overlay now shows:
+  - Time: duration of the run in mm:ss
+  - Difficulty: Easy/Medium/Hard label for the run
+  - Rank: the player's rank on the leaderboard after saving the score (e.g., #3). If outside top 10, the numerical rank is still computed but only the top 10 are displayed in the list.
+- Implementation details:
+  - index.html: added elements final-time, final-difficulty, final-rank to the overlay.
+  - renderer.js: now fills in time and difficulty when the overlay is shown.
+  - leaderboard.js: addScore now returns an object { entries, rank }, computing the player's rank before truncating to the top 10 and persisting.
+  - main.js: uses the returned rank to update the overlay and re-renders the leaderboard.
+- Rationale: provides better feedback at game end and aligns with persistence schema already tracking difficulty and duration.

@@ -1,7 +1,7 @@
 // Renderer module: draws to canvas and updates UI
 import { GRID_SIZE } from './state.js';
 
-export function createRenderer(canvas, scoreEl, overlayEl, finalScoreEl) {
+export function createRenderer(canvas, scoreEl, overlayEl, finalScoreEl, finalTimeEl, finalDifficultyEl, finalRankEl) {
   const ctx = canvas.getContext('2d');
 
   function cssVar(name, fallback) {
@@ -59,6 +59,21 @@ export function createRenderer(canvas, scoreEl, overlayEl, finalScoreEl) {
     ctx.fill();
   }
 
+  function labelDifficulty(val) {
+    const map = { easy: 'Easy', medium: 'Medium', hard: 'Hard' };
+    return map[val] || 'Medium';
+  }
+
+  function formatDuration(ms) {
+    const n = Number.isFinite(ms) ? Math.max(0, Math.floor(ms)) : 0;
+    const totalSec = Math.floor(n / 1000);
+    const min = Math.floor(totalSec / 60);
+    const sec = totalSec % 60;
+    const mm = String(min);
+    const ss = String(sec).padStart(2, '0');
+    return `${mm}:${ss}`;
+  }
+
   function render(state) {
     clear();
     drawGrid();
@@ -74,6 +89,13 @@ export function createRenderer(canvas, scoreEl, overlayEl, finalScoreEl) {
         overlayEl.classList.add('show');
         overlayEl.setAttribute('aria-hidden', 'false');
         finalScoreEl.textContent = `Score: ${state.score}`;
+        if (finalTimeEl) {
+          const duration = Math.max(0, Date.now() - (state.startedAt || Date.now()));
+          finalTimeEl.textContent = `Time: ${formatDuration(duration)}`;
+        }
+        if (finalDifficultyEl) {
+          finalDifficultyEl.textContent = `Difficulty: ${labelDifficulty(state.difficulty)}`;
+        }
       } else {
         overlayEl.classList.remove('show');
         overlayEl.setAttribute('aria-hidden', 'true');

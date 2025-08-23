@@ -31,14 +31,15 @@ export function addScore(name, score, difficulty, durationMs, ts = Date.now()) {
     durationMs: Number.isFinite(durationMs) ? Math.max(0, Math.floor(durationMs)) : 0,
     ts: typeof ts === 'number' ? ts : Date.now(),
   };
-  const merged = [...entries, entry]
+  const mergedAll = [...entries, entry]
     .sort((a, b) => {
       if (b.score !== a.score) return b.score - a.score; // higher score first
       return a.ts - b.ts; // earlier timestamp first as tiebreaker
-    })
-    .slice(0, MAX_ENTRIES);
-  saveLeaderboard(merged);
-  return merged;
+    });
+  const rank = mergedAll.findIndex(e => e.ts === entry.ts && e.score === entry.score && e.name === entry.name) + 1;
+  const mergedTop = mergedAll.slice(0, MAX_ENTRIES);
+  saveLeaderboard(mergedTop);
+  return { entries: mergedTop, rank };
 }
 
 export function getTop(n = MAX_ENTRIES) {

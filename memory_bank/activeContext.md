@@ -1,9 +1,9 @@
 # Active Context: Browser-based Snake Game (MVP)
 
-Last updated: 2025-08-23 20:24 (local)
+Last updated: 2025-08-23 20:29 (local)
 
 ## Current Work Focus
-Improve visual accessibility for players with red–green color blindness by updating in-game colors (snake body and food) to a safer palette while preserving contrast in both light and dark themes.
+Add time, difficulty, and leaderboard rank to the Game Over overlay and wire it to the existing leaderboard persistence.
 
 ## Recent Changes
 - Implemented ES module-based Snake game (state, input, logic, renderer, loop)

@@ -7,6 +7,9 @@ const canvas = document.getElementById('game');
 const scoreEl = document.getElementById('score');
 const overlayEl = document.getElementById('overlay');
 const finalScoreEl = document.getElementById('final-score');
+const finalTimeEl = document.getElementById('final-time');
+const finalDifficultyEl = document.getElementById('final-difficulty');
+const finalRankEl = document.getElementById('final-rank');
 const restartBtn = document.getElementById('restart');
 const difficultySel = document.getElementById('difficulty');
 const leaderboardEl = document.getElementById('leaderboard');
@@ -75,7 +78,7 @@ function normalizeDifficulty(val) {
   return (v === 'easy' || v === 'medium' || v === 'hard') ? v : 'medium';
 }
 
-const renderer = createRenderer(canvas, scoreEl, overlayEl, finalScoreEl);
+const renderer = createRenderer(canvas, scoreEl, overlayEl, finalScoreEl, finalTimeEl, finalDifficultyEl, finalRankEl);
 const game = createGame(renderer, {
   restartBtn,
   difficultySel,
@@ -84,8 +87,19 @@ const game = createGame(renderer, {
     const defaultName = getLastUsedName();
     const name = window.prompt('New score! Enter your name:', defaultName);
     const difficulty = normalizeDifficulty(difficultySel?.value);
-    addScore(name ?? defaultName, score, difficulty, durationMs);
-    renderLeaderboard(leaderboardEl, loadLeaderboard());
+    const ts = Date.now();
+    const result = addScore(name ?? defaultName, score, difficulty, durationMs, ts);
+    const entries = result?.entries || loadLeaderboard();
+    const rank = result?.rank;
+    // Update rank in overlay if available
+    if (finalRankEl) {
+      if (Number.isFinite(rank) && rank > 0) {
+        finalRankEl.textContent = `Rank: #${rank}`;
+      } else {
+        finalRankEl.textContent = 'Rank: —';
+      }
+    }
+    renderLeaderboard(leaderboardEl, entries);
   },
 });
 
