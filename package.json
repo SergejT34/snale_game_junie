@@ -1,0 +1,13 @@
+{
+  "name": "snake-mvp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Browser-based Snake Game (MVP) - static ES modules + HTML5 Canvas",
+  "scripts": {
+    "dev": "live-server --port=5173 --open=index.html --watch=src,index.html,styles.css --wait=100",
+    "start": "npm run dev"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}

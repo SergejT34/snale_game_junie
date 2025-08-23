@@ -7,9 +7,9 @@
 
 ## Development Setup
 - No build tooling required; plain ES modules loaded via <script type="module">
-- Recommended local run: serve static files with any simple server, e.g.:
-  - npx serve .
-  - python3 -m http.server
+- Recommended local run options:
+  - Node-based with hot reload: `npm run dev` (live-server on http://localhost:5173)
+  - Generic static server (no reload): `npx serve .` or `python3 -m http.server`
 - Organize code into modules: state, input, loop, logic/update, renderer
 - Keep tick interval configurable (default 150 ms) via a constant or settings module
 
@@ -21,8 +21,9 @@
 - Accessibility: keyboard operability, minimal ARIA on interactive elements
 
 ## Dependencies
-- None required beyond browser APIs
-- Optional dev dependency: a static file server for local development
+- None required beyond browser APIs for runtime
+- Optional dev dependency: `live-server` for local development with hot reload (configured via npm scripts)
+  - Scripts: `npm run dev` (opens index.html on port 5173) and `npm start` (alias)
 
 ## Persistence Decisions
 - Leaderboard stored in browser localStorage under key `snake.leaderboard.v1`.

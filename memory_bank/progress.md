@@ -77,3 +77,16 @@ How to Run with Docker Compose
 Notes
 - This approach keeps the app framework-free and portable; no Node runtime is required in the container.
 - For local iteration without rebuilds, you can uncomment the volumes in docker-compose.yml to bind-mount index.html, styles.css, and src/ (read-only).
+
+---
+
+Updated: 2025-08-23 19:25 (local)
+
+Local Dev Server (Node-based)
+- Added package.json with a lightweight dev server and hot reload using live-server.
+- How to use:
+  - npm install
+  - npm run dev  # opens http://localhost:5173 with live reload on changes to src/, index.html, styles.css
+- Notes:
+  - This does not introduce a build step; it only serves static files with live reload for faster iteration.
+  - Docker Compose continues to serve on http://localhost:8080 via nginx and is unaffected.
