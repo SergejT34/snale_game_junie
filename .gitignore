@@ -18,12 +18,8 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 tmp/
-discovery-service/tmp/
 settings.xml
-joynr-generator/js-generator/
-joynr-generator/tmp/
 target/
-joynr-generator/workspace/
 old_site/
 node_modules/
 volumes/
