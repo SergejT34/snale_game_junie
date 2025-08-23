@@ -35,6 +35,7 @@
 ## Theming
 - Approach: CSS custom properties define a theme palette. The active theme is controlled via `html[data-theme="light"|"dark"]`.
 - Canvas integration: the renderer reads CSS variables (`--canvas-bg`, `--grid-line`, `--snake-head`, `--snake-body`, `--food`) via `getComputedStyle` to keep canvas visuals in sync with the CSS theme.
+- Palette (color‑vision friendly): snake head = blue `#3a7afe`, snake body = purple `#9467bd`, food = orange `#ff7f0e`. Avoids red/green confusion and maintains strong contrast on both light and dark backgrounds.
 - Persistence: user selection stored in `localStorage` under `snake.theme.v1`. First-load default follows `prefers-color-scheme` if no stored preference exists.
 - Accessibility: header button toggles theme, exposes `aria-label` and `aria-pressed`, and has clear focus styles.
 

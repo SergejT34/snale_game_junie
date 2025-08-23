@@ -255,12 +255,12 @@ Accessibility/Controls
 
 ---
 
-Updated: 2025-08-23 20:06 (local)
+Updated: 2025-08-23 20:24 (local)
 
-Theming
-- Added Light and Dark themes with a toggle button in the header (sun/moon icon).
-  - Implementation: CSS custom properties define the palette; html[data-theme="light"|"dark"] switches values. The canvas renderer reads CSS variables for background, grid, snake, and food colors so the board adapts instantly on toggle.
-  - Persistence: user selection is stored in localStorage under key `snake.theme.v1`. On first load (no stored preference), the system preference via `prefers-color-scheme` is used.
-  - Accessibility: toggle is a button with an aria-label and aria-pressed reflecting the current state; focus-visible outline is provided.
-- UI polish: top bar and panels now derive colors from theme variables; GitHub link and focus styles adapt to theme.
-- No change to game logic or saved scores; purely visual enhancement.
+Accessibility (Color Vision)
+- Updated in-game colors to be red–green colorblind‑friendly.
+  - Snake head remains blue (#3a7afe) for continuity and contrast.
+  - Snake body changed from green to purple (#9467bd).
+  - Food changed from red to orange (#ff7f0e).
+  - Changes applied via CSS variables for both light and dark themes, and renderer fallbacks updated to match.
+  - Rationale: avoid red/green confusion while keeping high contrast against canvas backgrounds; improves distinguishability of snake vs. food for users with deuteranopia/protanopia.

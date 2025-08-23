@@ -38,7 +38,7 @@ export function createRenderer(canvas, scoreEl, overlayEl, finalScoreEl) {
   function drawSnake(snake) {
     const size = cellSize();
     const headColor = cssVar('--snake-head', '#3a7afe');
-    const bodyColor = cssVar('--snake-body', '#36c275');
+    const bodyColor = cssVar('--snake-body', '#9467bd');
     for (let i = 0; i < snake.length; i++) {
       const { x, y } = snake[i];
       const isHead = i === snake.length - 1;
@@ -50,7 +50,7 @@ export function createRenderer(canvas, scoreEl, overlayEl, finalScoreEl) {
   function drawFood(food) {
     if (!food) return;
     const size = cellSize();
-    ctx.fillStyle = cssVar('--food', '#ff6b6b');
+    ctx.fillStyle = cssVar('--food', '#ff7f0e');
     ctx.beginPath();
     const cx = food.x * size + size / 2;
     const cy = food.y * size + size / 2;

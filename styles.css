@@ -9,8 +9,8 @@
     --canvas-bg: #ffffff;
     --grid-line: #e6eaf2;
     --snake-head: #3a7afe;
-    --snake-body: #36c275;
-    --food: #ff5151;
+    --snake-body: #9467bd;
+    --food: #ff7f0e;
     --btn-bg: #3a7afe;
     --btn-focus: #a7c4ff;
     --link: #3a7afe;
@@ -29,8 +29,8 @@ html[data-theme="dark"] {
     --canvas-bg: #0b0c10;
     --grid-line: #141720;
     --snake-head: #3a7afe;
-    --snake-body: #36c275;
-    --food: #ff6b6b;
+    --snake-body: #9467bd;
+    --food: #ff7f0e;
     --btn-bg: #3a7afe;
     --btn-focus: #a7c4ff;
     --link: #93b4ff;

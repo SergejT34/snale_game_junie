@@ -1,9 +1,9 @@
 # Active Context: Browser-based Snake Game (MVP)
 
-Last updated: 2025-08-23 20:06 (local)
+Last updated: 2025-08-23 20:24 (local)
 
 ## Current Work Focus
-Add Light and Dark themes with an accessible header toggle and persist user choice; keep rendering in sync with theme via CSS variables.
+Improve visual accessibility for players with red–green color blindness by updating in-game colors (snake body and food) to a safer palette while preserving contrast in both light and dark themes.
 
 ## Recent Changes
 - Implemented ES module-based Snake game (state, input, logic, renderer, loop)
@@ -14,6 +14,7 @@ Add Light and Dark themes with an accessible header toggle and persist user choi
 - Leaderboard also tracks and displays time spent per game (mm:ss) for each entry; stored as durationMs alongside existing fields (backward compatible).
 - Accessibility: Restart can be triggered via Space or Enter when the Game Over overlay is visible (global shortcut).
 - New: Light/Dark theme support via CSS variables; theme toggle button added to header; preference stored in localStorage and respects system preference on first load.
+- Updated game palette to be red–green colorblind‑friendly: snake body is now purple (#9467bd) and food is orange (#ff7f0e); snake head remains blue (#3a7afe). Renderer fallbacks adjusted accordingly. Ensures distinct hues and strong contrast on both themes.
 
 ## Next Steps (Prioritized Checklist)
 1) Cross-browser verification (latest two versions of Chrome, Firefox, Edge, Safari)
