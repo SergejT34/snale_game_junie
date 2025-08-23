@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Snake MVP</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar" role="banner">
+    <h1>Snake</h1>
+    <div id="score" aria-live="polite" aria-atomic="true">Score: 0</div>
+  </header>
+
+  <main class="game" role="main">
+    <div class="canvas-wrap">
+      <canvas id="game" width="600" height="600" aria-label="Snake game board" role="img"></canvas>
+      <div id="overlay" class="overlay" aria-hidden="true">
+        <div class="overlay-content" role="dialog" aria-modal="true" aria-labelledby="gameover-title">
+          <h2 id="gameover-title">Game Over</h2>
+          <p id="final-score">Score: 0</p>
+          <button id="restart" class="btn" aria-label="Restart game">Restart</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <small>Arrow keys or WASD to move. Avoid walls and yourself.</small>
+  </footer>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

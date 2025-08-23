@@ -1,0 +1,55 @@
+// State module: holds and initializes game state
+export const GRID_SIZE = 20;
+export const DEFAULT_TICK_MS = 150;
+
+export const DIRS = {
+  Up: { x: 0, y: -1, name: 'Up' },
+  Down: { x: 0, y: 1, name: 'Down' },
+  Left: { x: -1, y: 0, name: 'Left' },
+  Right: { x: 1, y: 0, name: 'Right' },
+};
+
+export function opposite(a, b) {
+  if (!a || !b) return false;
+  return a.x + b.x === 0 && a.y + b.y === 0;
+}
+
+export function createInitialState() {
+  const mid = Math.floor(GRID_SIZE / 2);
+  // Snake length 3, pointing Right initially
+  const snake = [
+    { x: mid - 1, y: mid },
+    { x: mid, y: mid },
+    { x: mid + 1, y: mid },
+  ];
+  const occupied = new Set(snake.map(p => key(p.x, p.y)));
+
+  const food = placeFood(occupied);
+
+  return {
+    grid: GRID_SIZE,
+    snake, // tail -> ... -> head at end
+    occupied, // Set of keys for O(1) collision check
+    dir: DIRS.Right,
+    dirQueue: [], // queued direction inputs this tick
+    food,
+    score: 0,
+    status: 'running', // 'running' | 'over'
+    tickMs: DEFAULT_TICK_MS,
+  };
+}
+
+export function key(x, y) { return `${x},${y}`; }
+
+export function placeFood(occupied) {
+  const empty = [];
+  for (let y = 0; y < GRID_SIZE; y++) {
+    for (let x = 0; x < GRID_SIZE; x++) {
+      const k = key(x, y);
+      if (!occupied.has(k)) empty.push({ x, y });
+    }
+  }
+  if (empty.length === 0) return null; // filled board
+  const idx = Math.floor(Math.random() * empty.length);
+  return empty[idx];
+}
