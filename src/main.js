@@ -83,6 +83,31 @@ const saveForm = document.getElementById('save-form');
 const nameInput = document.getElementById('player-name');
 const saveBtn = document.getElementById('save-score');
 
+// Visual FX: floating 'Game Over MFKR' text + flash/shake on canvas wrap
+function triggerGameOverVisualFx() {
+  const wrap = document.querySelector('.canvas-wrap');
+  if (!wrap) return;
+  // Flash and shake classes
+  try {
+    wrap.classList.add('flash');
+    wrap.classList.add('shake');
+    setTimeout(() => wrap.classList.remove('flash'), 300);
+    setTimeout(() => wrap.classList.remove('shake'), 600);
+  } catch {}
+  // Floating text element
+  try {
+    const el = document.createElement('div');
+    el.className = 'floating-go';
+    el.textContent = 'Game Over MFKR';
+    el.setAttribute('aria-hidden', 'true');
+    wrap.appendChild(el);
+    const cleanup = () => { try { el.remove(); } catch {} };
+    el.addEventListener('animationend', cleanup, { once: true });
+    // Safety cleanup in case animationend isn't fired
+    setTimeout(cleanup, 1500);
+  } catch {}
+}
+
 // ----- Theme management -----
 const THEME_KEY = 'snake.theme.v1';
 function getPreferredTheme() {
@@ -244,7 +269,7 @@ function ensureGame() {
         } catch {}
       } catch {}
 
-      // Populate and show unified overlay as a Game Over screen
+      // Populate overlay content (we will show it after a brief FX)
       const titleEl = document.getElementById('gameover-title');
       if (titleEl) titleEl.textContent = 'Game Over';
       // Hide all final stats on the Game Over view per requirement
@@ -263,11 +288,10 @@ function ensureGame() {
         saveBtn.disabled = false;
       }
 
-      // Show overlay
-      startOverlayEl?.classList.add('show');
-      startOverlayEl?.setAttribute('aria-hidden', 'false');
+      // Trigger visual FX over the grid and delay showing the overlay so it’s visible
+      try { triggerGameOverVisualFx(); } catch {}
 
-      // Wire up restart flow from the overlay
+      // Wire up restart flow from the overlay (we’ll attach listeners now; overlay shows shortly)
       const onClick = () => {
         if (!isNameValid()) { try { nameInput?.focus(); } catch {} return; }
         // Hide overlay and restart game
@@ -287,6 +311,12 @@ function ensureGame() {
       nameInput?.addEventListener('keydown', onKeyDown);
       lastOnClick = onClick;
       lastOnKeyDown = onKeyDown;
+
+      // Show overlay after a short delay to let FX be seen
+      window.setTimeout(() => {
+        startOverlayEl?.classList.add('show');
+        startOverlayEl?.setAttribute('aria-hidden', 'false');
+      }, 900);
     },
   });
   return game;

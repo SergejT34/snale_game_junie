@@ -1146,3 +1146,20 @@ Header Score: Show Player Name, Difficulty, and Rank Holder
     - If the saved rank is outside the displayed range (e.g., > top 10), nothing is highlighted.
     - Changing difficulty removes highlight from previous board as part of the next render cycle.
   - Accessibility: aria-current="true" helps assistive technologies announce the current item.
+
+# Progress: Browser-based Snake Game (MVP)
+
+Last updated: 2025-08-24 17:39 (local)
+
+Game Over Visual and Audio FX
+- Change: On game over, a floating text "Game Over MFKR" appears over the grid with a brief flash and subtle screen shake. A special game‑over sound plays in addition to the existing death tone.
+- Implementation:
+  - styles.css: added .floating-go with a float/fade animation; .canvas-wrap.flash (white flash) and .canvas-wrap.shake (shake animation) with keyframes.
+  - main.js: added triggerGameOverVisualFx() to spawn the floating text and trigger CSS classes; in onGameOver, FX are triggered and the overlay is shown after a short delay (~900 ms) to ensure the effect is visible. Cleanup is automatic after animation.
+  - audio.js: added playGameOverFx() producing a short detuned saw “glitch” burst layered with a click, called alongside playDeath() in loop.js.
+  - loop.js: on transition to game over, call playGameOverFx() in addition to playDeath().
+- Accessibility/Behavior:
+  - The floating text is aria-hidden and does not capture focus; the overlay still appears shortly after the effect.
+  - Sound respects the existing mute toggle; muting stops background music and prevents FX playback.
+- Rationale: Adds satisfying feedback at the moment of failure without heavy assets or frameworks; uses small CSS/WebAudio additions consistent with the MVP’s framework-free approach.
+

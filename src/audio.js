@@ -204,3 +204,33 @@ export function playStart() {
   const notes = [523.25, 659.25, 783.99]; // C5 E5 G5
   notes.forEach((f, i) => createOsc('triangle', f, t + i * 0.06, 0.08, 0.04));
 }
+
+// Special Game Over FX: short glitch/noise burst layered with a pitch drop
+export function playGameOverFx() {
+  if (muted) return;
+  const ac = ensureContext();
+  if (!ac) return;
+  const t = ac.currentTime;
+  // Quick detuned dual saw for grit
+  const o1 = ac.createOscillator();
+  const o2 = ac.createOscillator();
+  const g = ac.createGain();
+  o1.type = 'sawtooth';
+  o2.type = 'sawtooth';
+  o1.frequency.setValueAtTime(420, t);
+  o2.frequency.setValueAtTime(430, t);
+  o1.frequency.exponentialRampToValueAtTime(90, t + 0.35);
+  o2.frequency.exponentialRampToValueAtTime(100, t + 0.35);
+  g.gain.setValueAtTime(0.001, t);
+  g.gain.exponentialRampToValueAtTime(0.12, t + 0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.4);
+  o1.connect(g);
+  o2.connect(g);
+  g.connect(ac.destination);
+  o1.start(t);
+  o2.start(t);
+  o1.stop(t + 0.42);
+  o2.stop(t + 0.42);
+  // Clicky burst using very short high sine
+  createOsc('sine', 1600, t + 0.02, 0.03, 0.03);
+}

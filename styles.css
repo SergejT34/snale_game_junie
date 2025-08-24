@@ -316,3 +316,51 @@ html[data-theme="dark"] .icon-moon { display: inline; }
 html[data-theme="dark"] .leaderboard li.highlight {
     box-shadow: 0 0 0 3px color-mix(in oklab, var(--btn-bg) 20%, transparent);
 }
+
+/* Game Over FX */
+.canvas-wrap.flash::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: white;
+    opacity: 0;
+    pointer-events: none;
+    animation: go-flash 300ms ease-out forwards;
+}
+@keyframes go-flash {
+    0% { opacity: 0.9; }
+    100% { opacity: 0; }
+}
+
+.canvas-wrap.shake {
+    animation: go-shake 600ms cubic-bezier(.36,.07,.19,.97) both;
+}
+@keyframes go-shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+    100% { transform: translate3d(0, 0, 0); }
+}
+
+.floating-go {
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    transform: translate(-50%, -50%);
+    color: #ff1744;
+    text-shadow: 0 2px 0 rgba(0,0,0,0.4), 0 0 10px rgba(255, 23, 68, 0.6);
+    font-weight: 900;
+    font-size: clamp(18px, 6vw, 40px);
+    letter-spacing: 0.03em;
+    pointer-events: none;
+    animation: go-float 1200ms ease-out forwards;
+    z-index: 2;
+}
+html[data-theme="dark"] .floating-go { color: #ff5570; }
+@keyframes go-float {
+    0% { opacity: 0; transform: translate(-50%, -40%) scale(0.9); }
+    15% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+    60% { opacity: 1; transform: translate(-50%, -60%) scale(1.0); }
+    100% { opacity: 0; transform: translate(-50%, -75%) scale(0.98); }
+}
