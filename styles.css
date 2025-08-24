@@ -27,7 +27,7 @@ html[data-theme="dark"] {
     --panel-bg: #0f1118;
     --panel-border: #2a2f3a;
     --canvas-bg: #0b0c10;
-    --grid-line: #141720;
+    --grid-line: #5b6375;
     --snake-head: #3a7afe;
     --snake-body: #9467bd;
     --food: #ff7f0e;
@@ -68,6 +68,32 @@ body {
     font-size: 1.1rem;
     letter-spacing: 0.03em;
 }
+
+/* App logo */
+.logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    line-height: 1;
+}
+.logo .logo-word {
+    font-weight: 900;
+    letter-spacing: 0.02em;
+}
+.logo .logo-mark { display: inline-block; height: 28px; width: auto; }
+
+/* Larger logo for welcome overlay */
+.logo--xl {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.logo--xl .logo-word {
+    font-size: 1.25rem;
+    font-weight: 900;
+}
+.logo--xl .logo-mark { height: 40px; width: auto; }
 
 #score { font-variant-numeric: tabular-nums; justify-self: center; font-weight: 800; font-size: 1.25rem; }
 

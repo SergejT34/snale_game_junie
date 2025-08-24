@@ -56,6 +56,7 @@
 - Global movement key bindings are disabled when the Game Over overlay is visible; only overlay-specific handlers (e.g., Enter in the name field) remain active.
 
 ## HUD
+- Branding: A lightweight, inline SVG logo (snake head + wavy body + food pellet) uses theme CSS variables for colors. It appears in the header (compact) and on the Welcome overlay (larger). The header h1 retains accessible text; the overlay logo is aria-hidden to avoid redundancy with headings.
 - The score is centered in the top bar and displayed larger for prominence. It includes a live rank indicator compared to the leaderboard (top 10 persisted).
   - Display format: "Score: N · Rank: #R" when within top 10; otherwise ">10" is shown for rank outside the top list.
   - The score briefly shakes when the provisional leaderboard rank changes (e.g., when entering a new rank tier). This is a non-disruptive visual cue; aria-live remains polite.
