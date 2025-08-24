@@ -728,3 +728,392 @@ Leaderboards by Difficulty: Per‑difficulty Storage
 - Rank: Provisional rank and saved rank computations now operate only within the selected difficulty list (unchanged behavior, but now avoids scanning other difficulties).
 - UI: No changes required; main.js already renders each board via getTopByDifficulty.
 - Backward compatibility: Entries missing difficulty default to Medium; durationMs defaults to 0.
+
+# Progress: Browser-based Snake Game (MVP)
+
+Last updated: 2025-08-23 19:10 (local)
+
+## What Works
+- Memory Bank with core project documentation (brief, product context, instructions, active context, system patterns, tech context)
+- ES module-based Snake MVP implemented and runnable as static files
+  - 20×20 grid, initial snake length 3, single food spawn
+  - Deterministic loop at 150 ms default; update order: input → move → collisions/food → render
+  - Keyboard controls (Arrow keys/WASD) with 180° reversal prevention
+  - Wall/self collisions trigger Game Over overlay with Restart (no page reload)
+  - Live, accessible score display (aria-live)
+  - Leaderboard persisted in browser localStorage; shows top 10 scores and prompts for a player name on Game Over
+  - Difficulty levels: Easy (200 ms), Medium (150 ms), Hard (100 ms) selectable from UI; applies on start/restart
+- Modular separation: state, input, logic, renderer, loop
+
+## What's Left to Build
+- Accessibility pass (validate ARIA and focus states thoroughly)
+- Cross-browser verification (Chrome/Firefox/Edge/Safari, latest two versions)
+- Optional polish: sounds, themes, mobile touch controls (out of MVP scope)
+
+## Known Issues and Limitations
+- No automated tests are defined
+- Visual style minimal by design; no localization
+
+## Evolution of Project Decisions
+- Confirmed framework-free, static approach to keep MVP simple and portable
+- Adopted deterministic update pipeline and input queue for predictability
+- Emphasized separation of logic and rendering to enable future testing and maintenance
+- Added pause on tab hidden via visibilitychange for better UX
+- Introduced difficulty levels with the state-backed tick interval; selection restart applies new speed
+
+
+---
+
+Updated: 2025-08-23 19:15 (local)
+
+Planned Next Actions
+- Cross-browser test sweep (Chrome, Firefox, Edge, Safari; latest two versions): play a full round; verify controls, reversal prevention, collisions, overlay visibility, restart behavior, difficulty speeds; confirm zero console errors.
+- Accessibility check: verify tab order; ensure overlay dialog traps focus and returns it to Restart; confirm aria-live usage for score and leaderboard is polite and not spammy; ensure all interactive elements have labels.
+- Usability and polish: confirm canvas DPR sizing looks crisp on HiDPI; confirm visibilitychange pause/resume; ensure focus outlines are visible across browsers.
+- Documentation: add run instructions and record testing findings here; establish a lightweight regression checklist.
+
+How to Run Locally
+- Use a simple static server from the project root:
+  - npx serve .
+  - or: python3 -m http.server
+- Open http://localhost:3000 (serve default) or http://localhost:8000 (python) in your browser.
+- Controls: Arrow keys/WASD. Use the Restart button after Game Over. Difficulty can be changed via the selector.
+
+---
+
+Updated: 2025-08-23 19:21 (local)
+
+Publishing
+- See README.md for step-by-step instructions to:
+  - Push this project to a new/existing GitHub repository
+  - Publish via GitHub Pages using either Settings (branch → root) or GitHub Actions (included workflow)
+- Tip: Keep `.nojekyll` to disable Jekyll and serve ES modules/assets as-is.
+
+---
+
+Updated: 2025-08-23 19:23 (local)
+
+Containerization
+- Added Dockerfile using nginx:alpine to serve the static app from /usr/share/nginx/html.
+- Added docker-compose.yml to build and run the container, mapping host 8080 -> container 80.
+
+How to Run with Docker
+- docker build -t snake-game .
+- docker run --rm -p 8080:80 snake-game
+
+How to Run with Docker Compose
+- docker compose up --build
+- Then open http://localhost:8080 in your browser.
+
+Notes
+- This approach keeps the app framework-free and portable; no Node runtime is required in the container.
+- For local iteration without rebuilds, you can uncomment the volumes in docker-compose.yml to bind-mount index.html, styles.css, and src/ (read-only).
+
+---
+
+Updated: 2025-08-23 19:25 (local)
+
+Local Dev Server (Node-based)
+- Added package.json with a lightweight dev server and hot reload using live-server.
+- How to use:
+  - npm install
+  - npm run dev # opens http://localhost:5173 with hot reload on changes to src/, index.html, styles.css
+- Notes:
+  - This does not introduce a build step; it only serves static files with live reload for faster iteration.
+  - Docker Compose continues to serve on http://localhost:8080 via nginx and is unaffected.
+
+
+---
+
+Updated: 2025-08-23 19:43 (local)
+
+Documentation Update
+- README.md updated to include npm-based dev server usage.
+  - Steps: `npm install`, `npm run dev` (opens http://localhost:5173 with hot reload), or `npm start` (alias)
+  - Notes: hot reload watches src/, index.html, styles.css; no build step introduced
+- Retained simple static server options: `npx serve .` or `python3 -m http.server` with their respective default ports.
+
+
+---
+
+Updated: 2025-08-23 19:48 (local)
+
+UI/Links
+- Added a GitHub icon link in the top bar that opens the source repository in a new tab.
+  - Location: header right side, next to the score and difficulty selector
+  - URL: https://github.com/SergejT34/snale_game_junie
+  - Accessibility: includes aria-label, focus-visible outline; SVG marked aria-hidden
+- Minor CSS added for hover/focus states without affecting layout.
+
+# Progress: Browser-based Snake Game (MVP)
+
+Last updated: 2025-08-23 19:10 (local)
+
+## What Works
+- Memory Bank with core project documentation (brief, product context, instructions, active context, system patterns, tech context)
+- ES module-based Snake MVP implemented and runnable as static files
+  - 20×20 grid, initial snake length 3, single food spawn
+  - Deterministic loop at 150 ms default; update order: input → move → collisions/food → render
+  - Keyboard controls (Arrow keys/WASD) with 180° reversal prevention
+  - Wall/self collisions trigger Game Over overlay with Restart (no page reload)
+  - Live, accessible score display (aria-live)
+  - Leaderboard persisted in browser localStorage; shows top 10 scores and prompts for a player name on Game Over
+  - Difficulty levels: Easy (200 ms), Medium (150 ms), Hard (100 ms) selectable from UI; applies on start/restart
+- Modular separation: state, input, logic, renderer, loop
+
+## What's Left to Build
+- Accessibility pass (validate ARIA and focus states thoroughly)
+- Cross-browser verification (Chrome/Firefox/Edge/Safari, latest two versions)
+- Optional polish: sounds, themes, mobile touch controls (out of MVP scope)
+
+## Known Issues and Limitations
+- No automated tests are defined
+- Visual style minimal by design; no localization
+
+## Evolution of Project Decisions
+- Confirmed framework-free, static approach to keep MVP simple and portable
+- Adopted deterministic update pipeline and input queue for predictability
+- Emphasized separation of logic and rendering to enable future testing and maintenance
+- Added pause on tab hidden via visibilitychange for better UX
+- Introduced difficulty levels with the state-backed tick interval; selection restart applies new speed
+
+
+---
+
+Updated: 2025-08-23 19:15 (local)
+
+Planned Next Actions
+- Cross-browser test sweep (Chrome, Firefox, Edge, Safari; latest two versions): play a full round; verify controls, reversal prevention, collisions, overlay visibility, restart behavior, difficulty speeds; confirm zero console errors.
+- Accessibility check: verify tab order; ensure overlay dialog traps focus and returns it to Restart; confirm aria-live usage for score and leaderboard is polite and not spammy; ensure all interactive elements have labels.
+- Usability and polish: confirm canvas DPR sizing looks crisp on HiDPI; confirm visibilitychange pause/resume; ensure focus outlines are visible across browsers.
+- Documentation: add run instructions and record testing findings here; establish a lightweight regression checklist.
+
+How to Run Locally
+- Use a simple static server from the project root:
+  - npx serve .
+  - or: python3 -m http.server
+- Open http://localhost:3000 (serve default) or http://localhost:8000 (python) in your browser.
+- Controls: Arrow keys/WASD. Use the Restart button after Game Over. Difficulty can be changed via the selector.
+
+---
+
+Updated: 2025-08-23 19:21 (local)
+
+Publishing
+- See README.md for step-by-step instructions to:
+  - Push this project to a new/existing GitHub repository
+  - Publish via GitHub Pages using either Settings (branch → root) or GitHub Actions (included workflow)
+- Tip: Keep `.nojekyll` to disable Jekyll and serve ES modules/assets as-is.
+
+---
+
+Updated: 2025-08-23 19:23 (local)
+
+Containerization
+- Added Dockerfile using nginx:alpine to serve the static app from /usr/share/nginx/html.
+- Added docker-compose.yml to build and run the container, mapping host 8080 -> container 80.
+
+How to Run with Docker
+- docker build -t snake-game .
+- docker run --rm -p 8080:80 snake-game
+
+How to Run with Docker Compose
+- docker compose up --build
+- Then open http://localhost:8080 in your browser.
+
+Notes
+- This approach keeps the app framework-free and portable; no Node runtime is required in the container.
+- For local iteration without rebuilds, you can uncomment the volumes in docker-compose.yml to bind-mount index.html, styles.css, and src/ (read-only).
+
+---
+
+Updated: 2025-08-23 19:25 (local)
+
+Local Dev Server (Node-based)
+- Added package.json with a lightweight dev server and hot reload using live-server.
+- How to use:
+  - npm install
+  - npm run dev # opens http://localhost:5173 with hot reload on changes to src/, index.html, styles.css
+- Notes:
+  - This does not introduce a build step; it only serves static files with live reload for faster iteration.
+  - Docker Compose continues to serve on http://localhost:8080 via nginx and is unaffected.
+
+
+---
+
+Updated: 2025-08-24 16:20 (local)
+
+Welcome Overlay and Leaderboard Placement
+- Added a Welcome overlay that is shown on page load. It contains:
+  - A difficulty toggle group (Easy/Medium/Hard)
+  - A Play button
+  - The Leaderboard (top 10 from localStorage)
+- The persistent sidebar leaderboard was removed; the leaderboard is now only visible on the Welcome overlay per product requirement.
+- The game no longer auto-starts; it starts after the user presses Play. Difficulty can be chosen before starting.
+- After Game Over, the existing overlay is used to save the score and immediately restart. The leaderboard remains exclusive to the Welcome overlay.
+
+
+---
+
+Updated: 2025-08-24 16:29 (local)
+
+Unified Welcome/Game Over Overlay
+- Removed the separate Game Over overlay view. The Welcome overlay now also serves as the Game Over screen.
+- On game over, the Welcome overlay reappears showing final score, time, difficulty, rank, and a save form ("Save & Play Again").
+- Renderer now targets the Welcome overlay for game-over visibility and fills in run details; it hides the Welcome section and shows the Game Over section as appropriate.
+- The leaderboard remains on the Welcome overlay (exclusive placement preserved).
+
+
+---
+
+Updated: 2025-08-24 16:33 (local)
+
+Difficulty Change on Game Over
+- Difficulty control is now visible on the Game Over screen (same overlay), allowing users to adjust difficulty after a run.
+- Behavior changes:
+  - When the game is running, changing difficulty still restarts immediately to apply speed and music tempo.
+  - When on the Game Over screen (or before the first start), changing difficulty no longer auto-starts; the new selection is applied on the next Play/Restart. This prevents accidental loss of the chance to save a score.
+
+
+---
+
+Updated: 2025-08-24 16:37 (local)
+
+Single Start/Restart Overlay and Name Requirement
+- Consolidated to one overlay that serves both as the pre-start screen and the Game Over screen; same UI and flow for starting and restarting.
+- The name input is now required before the first play: the Play button remains disabled until a non-empty name is entered.
+- After Game Over, the same overlay shows final stats and the button reads "Save & Play Again"; saving persists the score and immediately restarts at the chosen difficulty.
+
+---
+
+Updated: 2025-08-24 16:42 (local)
+
+Welcome Name Prefill and Enter-to-Start
+- The welcome view now pre-fills the player name with the last known name from the leaderboard (fallback "Player").
+- Pressing Enter in the name field on the welcome view starts the game. The Play button is enabled when the name is non-empty (satisfied by the prefill).
+
+---
+
+Updated: 2025-08-24 16:44 (local)
+
+Removed Game Over Screen (Auto-save & Auto-restart)
+- The Game Over screen has been removed completely. When a run ends, the app does not display any overlay.
+- Behavior:
+  - The game automatically saves the score using the current player name (from the welcome input, falling back to the last known name) and the selected difficulty and duration.
+  - The leaderboard re-renders immediately to reflect the new entry.
+  - After a short delay (~900 ms) to allow the death sound to play, the game restarts automatically at the current difficulty.
+- Rationale: streamline the loop and meet the requirement to remove the Game Over screen entirely, while preserving persistence and flow.
+
+---
+
+Updated: 2025-08-24 16:56 (local)
+
+Bugfix: Start overlay is shown after Game Over
+- Change: On game over, we now re-show the unified start overlay with final stats (score, time, difficulty, rank) instead of auto-restarting without any overlay.
+- Implementation:
+  - main.js: onGameOver now saves the score, updates the overlay contents, shows the overlay, and wires the button to restart the game; it previously auto-restarted after a delay.
+  - renderer.js: continues to keep overlays hidden during gameplay; it does not force-hide them on game over, allowing main.js to display the overlay.
+- Rationale: Aligns behavior with requirement to show the start overlay after game over and provide an explicit restart.
+- UX: The Play button reads "Play again" on the Game Over view; pressing Enter in the name field also restarts. Leaderboard updates immediately after saving.
+
+
+---
+
+Updated: 2025-08-24 16:59 (local)
+
+Game Over View: Hide Stats
+- Change: The Game Over overlay no longer shows run stats (Score, Time, Difficulty, Rank).
+- Implementation: main.js onGameOver now explicitly hides final-score, final-time, final-difficulty, and final-rank elements while still showing the overlay with the "Play again" button and updated leaderboard.
+- Rationale: Aligns with the requirement to not show stats on the Game Over view while preserving the overlay for restart and leaderboard visibility.
+
+# Progress: Browser-based Snake Game (MVP)
+
+Last updated: 2025-08-23 19:10 (local)
+
+## What Works
+- Memory Bank with core project documentation (brief, product context, instructions, active context, system patterns, tech context)
+- ES module-based Snake MVP implemented and runnable as static files
+  - 20×20 grid, initial snake length 3, single food spawn
+  - Deterministic loop at 150 ms default; update order: input → move → collisions/food → render
+  - Keyboard controls (Arrow keys/WASD) with 180° reversal prevention
+  - Wall/self collisions trigger Game Over overlay with Restart (no page reload)
+  - Live, accessible score display (aria-live)
+  - Leaderboard persisted in browser localStorage; shows top 10 scores and prompts for a player name on Game Over
+  - Difficulty levels: Easy (200 ms), Medium (150 ms), Hard (100 ms) selectable from UI; applies on start/restart
+- Modular separation: state, input, logic, renderer, loop
+
+## What's Left to Build
+- Accessibility pass (validate ARIA and focus states thoroughly)
+- Cross-browser verification (Chrome/Firefox/Edge/Safari, latest two versions)
+- Optional polish: sounds, themes, mobile touch controls (out of MVP scope)
+
+## Known Issues and Limitations
+- No automated tests are defined
+- Visual style minimal by design; no localization
+
+## Evolution of Project Decisions
+- Confirmed framework-free, static approach to keep MVP simple and portable
+- Adopted deterministic update pipeline and input queue for predictability
+- Emphasized separation of logic and rendering to enable future testing and maintenance
+- Added pause on tab hidden via visibilitychange for better UX
+- Introduced difficulty levels with the state-backed tick interval; selection restart applies new speed
+
+
+---
+
+Updated: 2025-08-24 17:08 (local)
+
+Leaderboards by Difficulty: Per‑difficulty Storage
+- Change: Leaderboard persistence now saves and loads per difficulty under separate localStorage keys.
+  - Keys: snake.leaderboard.v2.easy, snake.leaderboard.v2.medium, snake.leaderboard.v2.hard.
+  - Saving a score only updates the list for the selected difficulty; each UI board shows only its difficulty.
+- Migration: legacy combined key (snake.leaderboard.v1) is auto-migrated on first load by splitting entries and trimming to top 10 per difficulty. The legacy key is then removed.
+- Rank: Provisional rank and saved rank computations now operate only within the selected difficulty list (unchanged behavior, but now avoids scanning other difficulties).
+- UI: No changes required; main.js already renders each board via getTopByDifficulty.
+- Backward compatibility: Entries missing difficulty default to Medium; durationMs defaults to 0.
+
+---
+
+Updated: 2025-08-24 17:12 (local)
+
+Leaderboards: Show Only Selected Difficulty
+- Change: Only one leaderboard is visible at a time, matching the currently selected difficulty. Players can switch boards by changing the difficulty.
+- Implementation: main.js now includes updateLeaderboardVisibility() which hides non-selected leaderboards (via display:none and aria-hidden), and is called:
+  - after initial leaderboard render,
+  - whenever the difficulty changes,
+  - after re-rendering on Game Over.
+- Default: The Medium leaderboard is shown by default to match the initial difficulty selection.
+- Accessibility: aria-hidden is updated appropriately for non-visible lists.
+
+
+---
+
+Updated: 2025-08-24 17:15 (local)
+
+Leaderboards: Hide Non-selected Sections (Headers Included)
+- Change: Only the currently selected difficulty's leaderboard section is visible. Other difficulties' entire sections (including their headers/captions) are hidden.
+- Implementation: main.js updateLeaderboardVisibility() now hides the wrapper container around each leaderboard <ol> (which includes the <h4> heading) via display:none and sets aria-hidden accordingly. The selected section remains visible. The master "Leaderboards" title stays visible.
+- Triggers: Applied on initial load, on difficulty change, and after re-rendering on Game Over.
+- Rationale: Aligns with the requirement to show exactly one leaderboard table at a time with its header/caption, improving clarity and accessibility.
+
+---
+
+Updated: 2025-08-24 17:17 (local)
+
+Leaderboard UI: Remove Main Heading and Center Full-Width Layout
+- Change: Removed the generic "Leaderboards" heading from the overlay; only the per-difficulty heading (Easy/Medium/Hard) remains for the currently visible board.
+- Layout: The leaderboard area now spans the full width and is centered in the view. The multi-column grid was replaced with a single full-width block. Each leaderboard list (<ol>) is set to width:100%.
+- Files:
+  - index.html: removed h3#leaderboard-title; changed .leaderboards-grid to display:block; added width:100%, margin:0 auto, text-align:center; set each <ol> to width:100%.
+- Rationale: Matches the requirement that the leaderboard has no overall heading and appears centered while filling the available width. Visibility per selected difficulty remains unchanged.
+
+
+---
+
+Updated: 2025-08-24 17:27 (local)
+
+Focus Management: Blur Name and Play When Game Starts
+- Change: When the game starts or restarts, the player-name input and the Play button are explicitly blurred so they do not retain focus while gameplay is running. Focus is moved to the canvas.
+- Implementation:
+  - main.js: in both start flows (initial Play and Game Over “Play again”), added nameInput.blur() and saveBtn.blur() before starting/restarting, then canvas.focus().
+- Rationale: Prevents hidden controls from retaining focus when the overlay is dismissed; improves keyboard UX and adheres to accessibility guidelines.

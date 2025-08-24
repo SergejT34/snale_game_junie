@@ -214,6 +214,8 @@ function ensureGame() {
         renderLeaderboard(leaderboardEasyEl, getTopByDifficulty('easy'));
         renderLeaderboard(leaderboardMediumEl, getTopByDifficulty('medium'));
         renderLeaderboard(leaderboardHardEl, getTopByDifficulty('hard'));
+        // Ensure only the selected difficulty's leaderboard is visible
+        try { updateLeaderboardVisibility(); } catch {}
       } catch {}
 
       // Populate and show unified overlay as a Game Over screen
@@ -245,6 +247,9 @@ function ensureGame() {
         // Hide overlay and restart game
         startOverlayEl?.classList.remove('show');
         startOverlayEl?.setAttribute('aria-hidden', 'true');
+        // Ensure focus is not left on hidden controls during gameplay
+        try { nameInput?.blur(); } catch {}
+        try { saveBtn?.blur(); } catch {}
         try { game.restart(); } catch {}
         try { canvas.focus(); } catch {}
       };
@@ -265,6 +270,33 @@ function ensureGame() {
 renderLeaderboard(leaderboardEasyEl, getTopByDifficulty('easy'));
 renderLeaderboard(leaderboardMediumEl, getTopByDifficulty('medium'));
 renderLeaderboard(leaderboardHardEl, getTopByDifficulty('hard'));
+
+// Show only the leaderboard for the currently selected difficulty (hide section incl. header/caption)
+function updateLeaderboardVisibility() {
+  const cur = normalizeDifficulty(difficultySel?.value);
+  const map = {
+    easy: leaderboardEasyEl,
+    medium: leaderboardMediumEl,
+    hard: leaderboardHardEl,
+  };
+  for (const [key, el] of Object.entries(map)) {
+    if (!el) continue;
+    const container = el.closest('div') || el.parentElement; // wrapper contains heading + list
+    const active = key === cur;
+    // Hide/show whole section (header + list)
+    if (container) {
+      container.style.display = active ? '' : 'none';
+      container.setAttribute('aria-hidden', String(!active));
+    }
+    // Also reflect aria on the list itself for redundancy
+    el.setAttribute('aria-hidden', String(!active));
+    el.style.display = active ? '' : 'none';
+  }
+}
+
+// Apply initial visibility and update when difficulty changes
+updateLeaderboardVisibility();
+try { difficultySel?.addEventListener('change', updateLeaderboardVisibility); } catch {}
 
 function isNameValid() {
   return (nameInput?.value ?? '').trim().length > 0;
@@ -308,6 +340,9 @@ function enterPrestartMode() {
     if (!isNameValid()) { try { nameInput?.focus(); } catch {} return; }
     startOverlayEl?.classList.remove('show');
     startOverlayEl?.setAttribute('aria-hidden', 'true');
+    // Ensure focus is not left on hidden controls during gameplay
+    try { nameInput?.blur(); } catch {}
+    try { saveBtn?.blur(); } catch {}
     ensureGame().start();
     try { canvas.focus(); } catch {}
   };
