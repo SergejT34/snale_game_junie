@@ -38,7 +38,10 @@
 - Palette (color‑vision friendly): snake head = blue `#3a7afe`, snake body = purple `#9467bd`, food = orange `#ff7f0e`. Avoids red/green confusion and maintains strong contrast on both light and dark backgrounds.
 - Persistence: user selection stored in `localStorage` under `snake.theme.v1`. First-load default follows `prefers-color-scheme` if no stored preference exists.
 - Accessibility: header button toggles theme, exposes `aria-label` and `aria-pressed`, and has clear focus styles.
-- Difficulty UI: a three-button toggle group (Easy/Medium/Hard) with aria-pressed reflects the current selection; keyboard accessible (Tab to a button, Space/Enter to choose). On the Welcome overlay, the selection is available before starting; after starting, changes (when the game is running) trigger a restart to apply speed and music tempo.
+- Difficulty UI: a three-button toggle group (Easy/Medium/Hard) with aria-pressed reflects the current selection; keyboard accessible (Tab to a button, Space/Enter to choose). The control is visible on both the Welcome and Game Over states.
+  - Behavior:
+    - Before first start or on the Game Over screen: changing difficulty does not auto-start; the selection applies on the next Play/Restart.
+    - While the game is running: changing difficulty restarts immediately to apply speed and music tempo.
 
 ## Tool Usage Patterns
 - Prefer pure functions for state transitions to improve predictability and testability

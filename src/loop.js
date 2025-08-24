@@ -94,10 +94,13 @@ export function createGame(renderer, dom) {
   });
 
 
-  // Apply new difficulty immediately by restarting
+  // Apply new difficulty:
+  // - If running: restart immediately to apply speed/music tempo
+  // - If over or before first start: do not auto-start; selection applies on next start/restart
   dom.difficultySel?.addEventListener('change', () => {
-    // Restart only if the game is running or over to apply speed; preserves UX simplicity
-    restart();
+    if (state.status === 'running') {
+      restart();
+    }
     dom.difficultySel.focus();
   });
 
