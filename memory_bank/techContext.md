@@ -57,7 +57,7 @@
 - Implementation: Web Audio API, no assets. Sounds are synthesized (oscillators + gain envelopes) for minimal footprint and retro feel.
 - Background music:
   - A lightweight, looping chiptune-style melody (square-wave lead + triangle bass) plays during gameplay.
-  - Tempo ~140 BPM; short notes scheduled at beat intervals. Volume is mixed under SFX via a master Gain node.
+  - Tempo varies by difficulty: Easy ≈ 110 BPM, Medium ≈ 140 BPM, Hard ≈ 170 BPM; short notes scheduled at beat intervals. Volume is mixed under SFX via a master Gain node.
   - Starts on game start/restart and pauses on game over or when the page is hidden; resumes when gameplay resumes.
 - Effects:
   - Food: quick two-note square wave ("coin-like").

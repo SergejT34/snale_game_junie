@@ -73,9 +73,9 @@ function createOsc(type, freq, when, duration, gain = 0.05) {
 // --- Background Music (simple chiptune-like loop) ---
 // A minimal "Mario-like" upbeat pattern using square lead and triangle bass.
 // No external assets; uses short notes scheduled at a steady tempo and loops.
-const BPM = 140;              // fairly brisk
-const BEAT_SEC = 60 / BPM;    // quarter note duration
-const NOTE_SEC = BEAT_SEC * 0.9; // leave tiny gap
+let musicBpm = 140;              // default tempo
+function getBeatSec() { return 60 / musicBpm; }
+function getNoteSec() { return getBeatSec() * 0.9; } // leave tiny gap
 
 // Lead melody (frequencies in Hz), using a C major-like motif over 2 bars (8 beats)
 const C5 = 523.25, D5 = 587.33, E5 = 659.25, G5 = 783.99, A5 = 880.00;
@@ -86,11 +86,16 @@ const melody = [
 const C3 = 130.81, G3 = 196.00;
 const bass = [ C3, C3, G3, C3,  C3, C3, G3, C3 ];
 
-export function startMusic() {
+export function startMusic(bpm) {
   if (musicActive) return; // already playing
   if (muted) return;
   const ac = ensureContext();
   if (!ac) return;
+
+  if (Number.isFinite(bpm)) {
+    // Clamp to a sensible range
+    musicBpm = Math.max(60, Math.min(220, bpm));
+  }
 
   if (!musicGain) {
     musicGain = ac.createGain();
@@ -103,6 +108,7 @@ export function startMusic() {
 
   const scheduleStep = () => {
     if (!musicActive || muted) return;
+    const NOTE_SEC = getNoteSec();
     const now = ac.currentTime;
     const when = now + 0.01; // slight lookahead
 
@@ -140,7 +146,7 @@ export function startMusic() {
   scheduleStep();
   musicTimer = window.setInterval(() => {
     try { scheduleStep(); } catch {}
-  }, BEAT_SEC * 1000);
+  }, getBeatSec() * 1000);
 }
 
 export function stopMusic() {

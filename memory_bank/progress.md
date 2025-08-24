@@ -325,3 +325,15 @@ Background Music
   - Integration: loop.js calls startMusic()/stopMusic() alongside existing SFX triggers.
   - Controls: existing sound toggle also mutes/stops the background music.
 - Rationale: enhance game feel without increasing bundle size or adding asset licensing complexity.
+
+
+---
+
+Updated: 2025-08-24 16:07 (local)
+
+Background Music Tempo by Difficulty
+- Music tempo now adapts to the selected difficulty.
+  - Mapping: Easy ≈ 110 BPM, Medium ≈ 140 BPM, Hard ≈ 170 BPM.
+  - Implementation: audio.js now accepts a BPM in startMusic and computes beat/note durations dynamically; loop.js passes BPM based on the current difficulty on start/restart/visibility resume.
+- Controls: existing header sound toggle mutes/unmutes all audio and stops music immediately when muted (unchanged behavior, documented here for clarity).
+- Rationale: aligns game feel with difficulty setting without adding assets.

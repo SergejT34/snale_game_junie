@@ -13,6 +13,12 @@ export function createGame(renderer, dom) {
   function currentTickMs() {
     return DIFFICULTY_SPEEDS[currentDifficulty()];
   }
+  function currentMusicBpm() {
+    const d = currentDifficulty();
+    if (d === 'easy') return 110;
+    if (d === 'hard') return 170;
+    return 140; // medium
+  }
 
   let state = createInitialState({ tickMs: currentTickMs(), difficulty: currentDifficulty() });
   let cleanupInput = bindInput(state);
@@ -49,7 +55,7 @@ export function createGame(renderer, dom) {
     intervalId = window.setInterval(tick, state.tickMs);
     renderer.render(state);
     try { playStart(); } catch {}
-    try { startMusic(); } catch {}
+    try { startMusic(currentMusicBpm()); } catch {}
   }
 
   function stop() {
@@ -68,7 +74,7 @@ export function createGame(renderer, dom) {
     renderer.render(state);
     intervalId = window.setInterval(tick, state.tickMs);
     try { playStart(); } catch {}
-    try { startMusic(); } catch {}
+    try { startMusic(currentMusicBpm()); } catch {}
   }
 
   // handle focus/visibility for pause/resume (optional)
@@ -77,7 +83,7 @@ export function createGame(renderer, dom) {
       stop();
     } else if (state.status === 'running' && intervalId === null) {
       intervalId = window.setInterval(tick, state.tickMs);
-      try { startMusic(); } catch {}
+      try { startMusic(currentMusicBpm()); } catch {}
     }
   });
 
