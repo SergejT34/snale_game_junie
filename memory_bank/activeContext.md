@@ -1,6 +1,6 @@
 # Active Context: Browser-based Snake Game (MVP)
 
-Last updated: 2025-08-24 16:44 (local)
+Last updated: 2025-08-24 17:01 (local)
 
 ## Current Work Focus
 UI polish: centered, enlarged score with live rank; shake animation on rank change for better feedback. Next focus: cross‑browser verification and accessibility pass.
@@ -13,7 +13,7 @@ UI polish: centered, enlarged score with live rank; shake animation on rank chan
 - Game Over screen removed entirely: after a run ends, there is no Game Over UI shown. The game auto-saves the score using the current/last name and then automatically restarts after a short delay for SFX.
 - Difficulty control is visible on the Welcome overlay (pre-start). While the game is running, changing difficulty restarts immediately to apply speed/music. Since there is no Game Over UI anymore, post-run changes are applied on the next auto-restart cycle or next manual start.
 - Unified a single screen for both starting a new game and restarting after Game Over. The same overlay is used in both cases. The welcome view pre-fills the player name with the last known name (fallback “Player”) and Enter starts the game immediately. Users must have a non-empty name set before first play (now typically satisfied by the prefill).
-- Leaderboard now stores and displays the difficulty for each score entry (backward compatible with existing entries)
+- Leaderboard is now split into three separate boards (Easy, Medium, Hard). Each board keeps its own top 10 and displays entries for that difficulty only. Persistence now saves per-difficulty lists under separate keys; legacy combined storage is migrated automatically.
 - Leaderboard also tracks and displays time spent per game (mm:ss) for each entry; stored as durationMs alongside existing fields (backward compatible).
 - Accessibility: The overlay is only used for the Welcome/start screen. The player name input is focused on load and pressing Enter starts the game. Global Space/Enter shortcuts are removed.
 - New: Light/Dark theme support via CSS variables; theme toggle button added to header; preference stored in localStorage and respects system preference on first load.

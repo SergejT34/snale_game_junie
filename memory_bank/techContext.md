@@ -26,11 +26,14 @@
   - Scripts: `npm run dev` (opens index.html on port 5173) and `npm start` (alias)
 
 ## Persistence Decisions
-- Leaderboard stored in browser localStorage under key `snake.leaderboard.v1`.
-- Schema: array of entries `{ name: string, score: number, difficulty: 'easy'|'medium'|'hard', durationMs: number, ts: epochMillis }`.
+- Leaderboard is stored per difficulty in browser localStorage under keys:
+  - `snake.leaderboard.v2.easy`, `snake.leaderboard.v2.medium`, `snake.leaderboard.v2.hard`.
+- Schema (each list): array of entries `{ name: string, score: number, difficulty: 'easy'|'medium'|'hard', durationMs: number, ts: epochMillis }`.
+  - Migration: legacy combined key `snake.leaderboard.v1` is automatically migrated on first load by splitting entries into the per‑difficulty keys and trimming each list to the top 10; the legacy key is then removed.
   - Backward compatibility: older entries without `difficulty` are treated as `medium`; older entries without `durationMs` default to 0 when displayed.
-- Sorted by score desc, then timestamp asc; capped to top 10 entries.
-- Name entry is handled only on the Welcome overlay (pre-start). The name field is prefilled with the last used name from the leaderboard (fallback "Player"). The Play button is enabled when the name is non-empty; pressing Enter in the field starts the game. After a run ends, there is no Game Over screen: the game automatically saves the score with the current name and restarts after a short delay. Global Space/Enter shortcuts are not used.
+- Ordering: score desc, then timestamp asc; each difficulty list is capped to top 10.
+- UI renders three separate leaderboards (Easy, Medium, Hard). Each board shows only results from games played at that difficulty; saving a score only affects that difficulty’s list.
+- Name entry is handled only on the Welcome overlay (pre-start). The name field is prefilled with the last used name from any leaderboard (fallback "Player"). The Play button is enabled when the name is non-empty; pressing Enter in the field starts the game. Global Space/Enter shortcuts are not used.
 
 ## Theming
 - Approach: CSS custom properties define a theme palette. The active theme is controlled via `html[data-theme="light"|"dark"]`.

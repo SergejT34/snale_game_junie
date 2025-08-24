@@ -88,7 +88,7 @@ export function createRenderer(canvas, scoreEl, overlayEl, finalScoreEl, finalTi
       let rankText = '';
       let currentRank = null;
       try {
-        const rank = getProvisionalRank(state.score);
+        const rank = getProvisionalRank(state.score, state.difficulty);
         if (Number.isFinite(rank) && rank > 0) {
           currentRank = rank;
           rankText = ` · Rank: ${rank <= MAX_ENTRIES ? '#' + rank : '>' + MAX_ENTRIES}`;

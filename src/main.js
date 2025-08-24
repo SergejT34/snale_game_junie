@@ -1,7 +1,7 @@
 import { createRenderer } from './renderer.js';
 import { createGame } from './loop.js';
 
-import { addScore, renderLeaderboard, loadLeaderboard, getProvisionalRank, MAX_ENTRIES } from './leaderboard.js';
+import { addScore, renderLeaderboard, loadLeaderboard, getProvisionalRank, MAX_ENTRIES, getTopByDifficulty } from './leaderboard.js';
 import { toggleMuted as toggleSoundMuted, isMuted as isSoundMuted, init as initAudio } from './audio.js';
 
 const canvas = document.getElementById('game');
@@ -74,7 +74,9 @@ function createDifficultyControl(groupEl, initial = 'medium') {
 }
 
 const difficultySel = difficultyGroup ? createDifficultyControl(difficultyGroup, 'medium') : document.getElementById('difficulty');
-const leaderboardEl = document.getElementById('leaderboard');
+const leaderboardEasyEl = document.getElementById('leaderboard-easy');
+const leaderboardMediumEl = document.getElementById('leaderboard-medium');
+const leaderboardHardEl = document.getElementById('leaderboard-hard');
 const themeToggleBtn = document.getElementById('theme-toggle');
 const soundToggleBtn = document.getElementById('sound-toggle');
 const saveForm = document.getElementById('save-form');
@@ -208,7 +210,10 @@ function ensureGame() {
         const result = addScore(entered, score, difficulty, durationMs, Date.now());
         const entries = result?.entries || loadLeaderboard();
         savedRank = result?.rank ?? null;
-        renderLeaderboard(leaderboardEl, entries);
+        // Re-render all three leaderboards by difficulty
+        renderLeaderboard(leaderboardEasyEl, getTopByDifficulty('easy'));
+        renderLeaderboard(leaderboardMediumEl, getTopByDifficulty('medium'));
+        renderLeaderboard(leaderboardHardEl, getTopByDifficulty('hard'));
       } catch {}
 
       // Populate and show unified overlay as a Game Over screen
@@ -257,7 +262,9 @@ function ensureGame() {
 }
 
 // Initial leaderboard render on the welcome/restart overlay
-renderLeaderboard(leaderboardEl, loadLeaderboard());
+renderLeaderboard(leaderboardEasyEl, getTopByDifficulty('easy'));
+renderLeaderboard(leaderboardMediumEl, getTopByDifficulty('medium'));
+renderLeaderboard(leaderboardHardEl, getTopByDifficulty('hard'));
 
 function isNameValid() {
   return (nameInput?.value ?? '').trim().length > 0;

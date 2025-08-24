@@ -682,3 +682,49 @@ Game Over View: Hide Stats
 - Change: The Game Over overlay no longer shows run stats (Score, Time, Difficulty, Rank).
 - Implementation: main.js onGameOver now explicitly hides final-score, final-time, final-difficulty, and final-rank elements while still showing the overlay with the "Play again" button and updated leaderboard.
 - Rationale: Aligns with the requirement to not show stats on the Game Over view while preserving the overlay for restart and leaderboard visibility.
+
+# Progress: Browser-based Snake Game (MVP)
+
+Last updated: 2025-08-23 19:10 (local)
+
+## What Works
+- Memory Bank with core project documentation (brief, product context, instructions, active context, system patterns, tech context)
+- ES module-based Snake MVP implemented and runnable as static files
+  - 20×20 grid, initial snake length 3, single food spawn
+  - Deterministic loop at 150 ms default; update order: input → move → collisions/food → render
+  - Keyboard controls (Arrow keys/WASD) with 180° reversal prevention
+  - Wall/self collisions trigger Game Over overlay with Restart (no page reload)
+  - Live, accessible score display (aria-live)
+  - Leaderboard persisted in browser localStorage; shows top 10 scores and prompts for a player name on Game Over
+  - Difficulty levels: Easy (200 ms), Medium (150 ms), Hard (100 ms) selectable from UI; applies on start/restart
+- Modular separation: state, input, logic, renderer, loop
+
+## What's Left to Build
+- Accessibility pass (validate ARIA and focus states thoroughly)
+- Cross-browser verification (Chrome/Firefox/Edge/Safari, latest two versions)
+- Optional polish: sounds, themes, mobile touch controls (out of MVP scope)
+
+## Known Issues and Limitations
+- No automated tests are defined
+- Visual style minimal by design; no localization
+
+## Evolution of Project Decisions
+- Confirmed framework-free, static approach to keep MVP simple and portable
+- Adopted deterministic update pipeline and input queue for predictability
+- Emphasized separation of logic and rendering to enable future testing and maintenance
+- Added pause on tab hidden via visibilitychange for better UX
+- Introduced difficulty levels with the state-backed tick interval; selection restart applies new speed
+
+
+---
+
+Updated: 2025-08-24 17:08 (local)
+
+Leaderboards by Difficulty: Per‑difficulty Storage
+- Change: Leaderboard persistence now saves and loads per difficulty under separate localStorage keys.
+  - Keys: snake.leaderboard.v2.easy, snake.leaderboard.v2.medium, snake.leaderboard.v2.hard.
+  - Saving a score only updates the list for the selected difficulty; each UI board shows only its difficulty.
+- Migration: legacy combined key (snake.leaderboard.v1) is auto-migrated on first load by splitting entries and trimming to top 10 per difficulty. The legacy key is then removed.
+- Rank: Provisional rank and saved rank computations now operate only within the selected difficulty list (unchanged behavior, but now avoids scanning other difficulties).
+- UI: No changes required; main.js already renders each board via getTopByDifficulty.
+- Backward compatibility: Entries missing difficulty default to Medium; durationMs defaults to 0.

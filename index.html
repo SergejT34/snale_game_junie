@@ -59,8 +59,21 @@
               <button id="save-score" type="button" class="btn">Play</button>
             </form>
           </div>
-          <h3 id="leaderboard-title" style="margin-top:0.75rem;">Leaderboard</h3>
-          <ol id="leaderboard" class="leaderboard" aria-live="polite" aria-atomic="true"></ol>
+          <h3 id="leaderboard-title" style="margin-top:0.75rem;">Leaderboards</h3>
+          <div class="leaderboards-grid" style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem;">
+            <div>
+              <h4 class="lb-heading">Easy</h4>
+              <ol id="leaderboard-easy" class="leaderboard" aria-live="polite" aria-atomic="true"></ol>
+            </div>
+            <div>
+              <h4 class="lb-heading">Medium</h4>
+              <ol id="leaderboard-medium" class="leaderboard" aria-live="polite" aria-atomic="true"></ol>
+            </div>
+            <div>
+              <h4 class="lb-heading">Hard</h4>
+              <ol id="leaderboard-hard" class="leaderboard" aria-live="polite" aria-atomic="true"></ol>
+            </div>
+          </div>
         </div>
       </div>
     </div>
