@@ -108,41 +108,15 @@ export function createRenderer(canvas, scoreEl, overlayEl, finalScoreEl, finalTi
       }
     }
 
-    // Overlay
+    // Overlay behavior: do NOT show any Game Over screen.
+    // Keep the overlay hidden during gameplay and after game over; it is only used for the initial welcome/start.
     if (overlayEl && finalScoreEl) {
-      const welcomeGroup = document.getElementById('welcome-group');
-      const gameoverGroup = document.getElementById('gameover-group');
-      if (state.status === 'over') {
-        // Detect transition from hidden -> shown to run one-time side effects (like focusing input)
-        const wasHidden = overlayEl.getAttribute('aria-hidden') !== 'false';
-        overlayEl.classList.add('show');
-        overlayEl.setAttribute('aria-hidden', 'false');
-        if (welcomeGroup) welcomeGroup.hidden = true;
-        if (gameoverGroup) gameoverGroup.hidden = false;
-        finalScoreEl.textContent = `Score: ${state.score}`;
-        if (finalTimeEl) {
-          const duration = Math.max(0, Date.now() - (state.startedAt || Date.now()));
-          finalTimeEl.textContent = `Time: ${formatDuration(duration)}`;
-        }
-        if (finalDifficultyEl) {
-          finalDifficultyEl.textContent = `Difficulty: ${labelDifficulty(state.difficulty)}`;
-        }
-        // Ensure player's name input is focused every time overlay opens
-        if (wasHidden) {
-          const input = document.getElementById('player-name');
-          if (input && typeof input.focus === 'function') {
-            // Delay focus to after DOM/class changes apply for consistent behavior across browsers
-            setTimeout(() => {
-              try { input.focus({ preventScroll: true }); if (typeof input.select === 'function') input.select(); } catch {}
-            }, 0);
-          }
-        }
-      } else {
+      // Always hide during gameplay
+      if (state.status !== 'over') {
         overlayEl.classList.remove('show');
         overlayEl.setAttribute('aria-hidden', 'true');
-        if (welcomeGroup) welcomeGroup.hidden = false;
-        if (gameoverGroup) gameoverGroup.hidden = true;
       }
+      // When over, do nothing special: overlay remains hidden; no stats are shown.
     }
   }
 

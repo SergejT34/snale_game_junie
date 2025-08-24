@@ -179,85 +179,87 @@ function ensureGame() {
     restartBtn,
     difficultySel,
     onGameOver: (score, durationMs) => {
-      // Show provisional rank immediately before name entry
-      if (finalRankEl) {
-        try {
-          const provRank = getProvisionalRank(score);
-          if (Number.isFinite(provRank) && provRank > 0) {
-            finalRankEl.textContent = `Rank: ${provRank <= MAX_ENTRIES ? '#' + provRank : '>' + MAX_ENTRIES}`;
-          } else {
-            finalRankEl.textContent = 'Rank: —';
-          }
-        } catch {
-          finalRankEl.textContent = 'Rank: —';
-        }
-      }
-      // Non-blocking UI: prefill input and let user save from overlay
-      const defaultName = getLastUsedName();
-
-      // Remove any lingering listeners from previous game over
+      // Remove any lingering listeners from any previous overlay-driven flow
       if (lastOnClick) saveBtn?.removeEventListener('click', lastOnClick);
       if (lastOnKeyDown) nameInput?.removeEventListener('keydown', lastOnKeyDown);
+      lastOnClick = null;
+      lastOnKeyDown = null;
 
-      if (nameInput) {
-        nameInput.value = defaultName;
-        try { nameInput.focus(); nameInput.select(); } catch {}
-      }
-      if (saveBtn) {
-        saveBtn.disabled = false;
-      }
-      if (nameInput) nameInput.disabled = false;
-
-      let saved = false;
+      // Auto-save the score without showing any Game Over screen
       const difficulty = normalizeDifficulty(difficultySel?.value);
-
-      function doSave() {
-        if (saved) return;
-        const ts = Date.now();
-        const entered = (nameInput?.value ?? '').trim() || defaultName;
-        const result = addScore(entered, score, difficulty, durationMs, ts);
+      const defaultName = getLastUsedName();
+      const entered = (nameInput?.value ?? '').trim() || defaultName;
+      try {
+        const result = addScore(entered, score, difficulty, durationMs, Date.now());
         const entries = result?.entries || loadLeaderboard();
-        const rank = result?.rank;
-        if (finalRankEl) {
-          if (Number.isFinite(rank) && rank > 0) {
-            finalRankEl.textContent = `Rank: #${rank}`;
-          } else {
-            finalRankEl.textContent = 'Rank: —';
-          }
-        }
         renderLeaderboard(leaderboardEl, entries);
-        saved = true;
-        if (saveBtn) saveBtn.disabled = true;
-        if (nameInput) nameInput.disabled = true;
-      }
+      } catch {}
 
-      // Attach one-time listeners for this game over
-      const onClick = () => { doSave(); game.restart(); cleanup(); };
-      const onKeyDown = (e) => { if (e.key === 'Enter') { e.preventDefault(); doSave(); game.restart(); cleanup(); } };
-
-      function cleanup() {
-        saveBtn?.removeEventListener('click', onClick);
-        nameInput?.removeEventListener('keydown', onKeyDown);
-        lastOnClick = null;
-        lastOnKeyDown = null;
-      }
-
-      saveBtn?.addEventListener('click', onClick);
-      nameInput?.addEventListener('keydown', onKeyDown);
-      lastOnClick = onClick;
-      lastOnKeyDown = onKeyDown;
+      // Auto-restart after a short delay to allow death SFX to play
+      setTimeout(() => {
+        try { game.restart(); } catch {}
+      }, 900);
     },
   });
   return game;
 }
 
-// Initial leaderboard render on the welcome overlay
+// Initial leaderboard render on the welcome/restart overlay
 renderLeaderboard(leaderboardEl, loadLeaderboard());
 
-// Play button starts the game and hides the start overlay
-playBtn?.addEventListener('click', () => {
-  startOverlayEl?.classList.remove('show');
-  startOverlayEl?.setAttribute('aria-hidden', 'true');
-  ensureGame().start();
-  try { canvas.focus(); } catch {}
-});
+function isNameValid() {
+  return (nameInput?.value ?? '').trim().length > 0;
+}
+
+function updatePlayButtonState() {
+  if (!saveBtn) return;
+  // Enable only when a non-empty name is provided
+  saveBtn.disabled = !isNameValid();
+}
+
+function enterPrestartMode() {
+  // Configure the unified overlay for starting a new game
+  const titleEl = document.getElementById('gameover-title');
+  titleEl && (titleEl.textContent = 'Welcome to Snake');
+  // Hide any final stats from a previous run
+  if (finalScoreEl) finalScoreEl.hidden = true;
+  if (finalTimeEl) finalTimeEl.hidden = true;
+  if (finalDifficultyEl) finalDifficultyEl.hidden = true;
+  if (finalRankEl) finalRankEl.hidden = true;
+
+  if (lastOnClick) saveBtn?.removeEventListener('click', lastOnClick);
+  if (lastOnKeyDown) nameInput?.removeEventListener('keydown', lastOnKeyDown);
+  lastOnClick = null;
+  lastOnKeyDown = null;
+
+  if (nameInput) {
+    // Prefill with last known name (fallback to "Player") and allow immediate start
+    nameInput.disabled = false;
+    const defaultName = getLastUsedName();
+    nameInput.value = defaultName;
+    try { nameInput.focus(); if (typeof nameInput.select === 'function') nameInput.select(); } catch {}
+  }
+  if (saveBtn) {
+    saveBtn.textContent = 'Play';
+  }
+  updatePlayButtonState();
+
+  // When valid, start the game and hide the overlay
+  const onClick = () => {
+    if (!isNameValid()) { try { nameInput?.focus(); } catch {} return; }
+    startOverlayEl?.classList.remove('show');
+    startOverlayEl?.setAttribute('aria-hidden', 'true');
+    ensureGame().start();
+    try { canvas.focus(); } catch {}
+  };
+  const onKeyDown = (e) => { if (e.key === 'Enter') { e.preventDefault(); onClick(); } };
+
+  saveBtn?.addEventListener('click', onClick);
+  nameInput?.addEventListener('keydown', onKeyDown);
+  nameInput?.addEventListener('input', updatePlayButtonState);
+  lastOnClick = onClick;
+  lastOnKeyDown = onKeyDown;
+}
+
+// Initialize unified overlay in pre-start mode
+enterPrestartMode();

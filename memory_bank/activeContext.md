@@ -1,6 +1,6 @@
 # Active Context: Browser-based Snake Game (MVP)
 
-Last updated: 2025-08-24 16:33 (local)
+Last updated: 2025-08-24 16:44 (local)
 
 ## Current Work Focus
 UI polish: centered, enlarged score with live rank; shake animation on rank change for better feedback. Next focus: cross‑browser verification and accessibility pass.
@@ -10,11 +10,12 @@ UI polish: centered, enlarged score with live rank; shake animation on rank chan
 - Added index.html and styles.css with accessible UI (aria-live score, overlay dialog, restart button)
 - Implemented deterministic loop (150 ms default), reversal prevention, collisions, scoring, and restart
 - Introduced a Welcome overlay shown on page load, with difficulty selection and a Play button. The Leaderboard is displayed only on this overlay.
-- Game Over functionality has been merged into the Welcome overlay: after a run ends, the same overlay reappears with final score, time, difficulty, rank, and a save form. The separate Game Over overlay has been removed.
-- Difficulty control is visible on both Welcome and Game Over states (same overlay). When the game is running, changing difficulty restarts immediately to apply speed/music. When on the Game Over screen (or before first start), changing difficulty does not auto-start; it applies on the next Play/Restart.
+- Game Over screen removed entirely: after a run ends, there is no Game Over UI shown. The game auto-saves the score using the current/last name and then automatically restarts after a short delay for SFX.
+- Difficulty control is visible on the Welcome overlay (pre-start). While the game is running, changing difficulty restarts immediately to apply speed/music. Since there is no Game Over UI anymore, post-run changes are applied on the next auto-restart cycle or next manual start.
+- Unified a single screen for both starting a new game and restarting after Game Over. The same overlay is used in both cases. The welcome view pre-fills the player name with the last known name (fallback “Player”) and Enter starts the game immediately. Users must have a non-empty name set before first play (now typically satisfied by the prefill).
 - Leaderboard now stores and displays the difficulty for each score entry (backward compatible with existing entries)
 - Leaderboard also tracks and displays time spent per game (mm:ss) for each entry; stored as durationMs alongside existing fields (backward compatible).
-- Accessibility: Game Over overlay auto-focuses the player name input; pressing Enter in that input saves the score and starts a new game. Global Space/Enter shortcuts are removed.
+- Accessibility: The overlay is only used for the Welcome/start screen. The player name input is focused on load and pressing Enter starts the game. Global Space/Enter shortcuts are removed.
 - New: Light/Dark theme support via CSS variables; theme toggle button added to header; preference stored in localStorage and respects system preference on first load.
 - Updated game palette to be red–green colorblind‑friendly: snake body is now purple (#9467bd) and food is orange (#ff7f0e); snake head remains blue (#3a7afe). Renderer fallbacks adjusted accordingly. Ensures distinct hues and strong contrast on both themes.
 

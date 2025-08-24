@@ -30,7 +30,7 @@
 - Schema: array of entries `{ name: string, score: number, difficulty: 'easy'|'medium'|'hard', durationMs: number, ts: epochMillis }`.
   - Backward compatibility: older entries without `difficulty` are treated as `medium`; older entries without `durationMs` default to 0 when displayed.
 - Sorted by score desc, then timestamp asc; capped to top 10 entries.
-- Input for a name is collected via a non-blocking input field on the Welcome overlay after a run ends (the Welcome overlay doubles as the Game Over view). The field is prefilled with the last used name if available (derived from the most recent leaderboard entry by timestamp), otherwise "Player". A single button ("Save & Play Again") persists the entry and immediately starts the next game; pressing Enter in the name field does the same. Global Space/Enter shortcuts are not used.
+- Name entry is handled only on the Welcome overlay (pre-start). The name field is prefilled with the last used name from the leaderboard (fallback "Player"). The Play button is enabled when the name is non-empty; pressing Enter in the field starts the game. After a run ends, there is no Game Over screen: the game automatically saves the score with the current name and restarts after a short delay. Global Space/Enter shortcuts are not used.
 
 ## Theming
 - Approach: CSS custom properties define a theme palette. The active theme is controlled via `html[data-theme="light"|"dark"]`.
@@ -56,7 +56,7 @@
   - Display format: "Score: N · Rank: #R" when within top 10; otherwise ">10" is shown for rank outside the top list.
   - The score briefly shakes when the provisional leaderboard rank changes (e.g., when entering a new rank tier). This is a non-disruptive visual cue; aria-live remains polite.
   - Rank is computed client-side each tick using current score vs persisted entries; ties break by earlier timestamp first, consistent with leaderboard ordering.
-- Game Over overlay shows the provisional rank immediately (before the player enters a name or saves the score), using the same ranking logic and display format.
+- There is no Game Over screen; on run end the app auto-saves and restarts. No post-run rank UI is shown.
 
 ## Audio
 - Implementation: Web Audio API, no assets. Sounds are synthesized (oscillators + gain envelopes) for minimal footprint and retro feel.

@@ -630,3 +630,33 @@ Difficulty Change on Game Over
 - Behavior changes:
   - When the game is running, changing difficulty still restarts immediately to apply speed and music tempo.
   - When on the Game Over screen (or before the first start), changing difficulty no longer auto-starts; the new selection is applied on the next Play/Restart. This prevents accidental loss of the chance to save a score.
+
+
+---
+
+Updated: 2025-08-24 16:37 (local)
+
+Single Start/Restart Overlay and Name Requirement
+- Consolidated to one overlay that serves both as the pre-start screen and the Game Over screen; same UI and flow for starting and restarting.
+- The name input is now required before the first play: the Play button remains disabled until a non-empty name is entered.
+- After Game Over, the same overlay shows final stats and the button reads "Save & Play Again"; saving persists the score and immediately restarts at the chosen difficulty.
+
+---
+
+Updated: 2025-08-24 16:42 (local)
+
+Welcome Name Prefill and Enter-to-Start
+- The welcome view now pre-fills the player name with the last known name from the leaderboard (fallback "Player").
+- Pressing Enter in the name field on the welcome view starts the game. The Play button is enabled when the name is non-empty (satisfied by the prefill).
+
+---
+
+Updated: 2025-08-24 16:44 (local)
+
+Removed Game Over Screen (Auto-save & Auto-restart)
+- The Game Over screen has been removed completely. When a run ends, the app does not display any overlay.
+- Behavior:
+  - The game automatically saves the score using the current player name (from the welcome input, falling back to the last known name) and the selected difficulty and duration.
+  - The leaderboard re-renders immediately to reflect the new entry.
+  - After a short delay (~900 ms) to allow the death sound to play, the game restarts automatically at the current difficulty.
+- Rationale: streamline the loop and meet the requirement to remove the Game Over screen entirely, while preserving persistence and flow.
