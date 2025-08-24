@@ -12,7 +12,66 @@ const finalTimeEl = document.getElementById('final-time');
 const finalDifficultyEl = document.getElementById('final-difficulty');
 const finalRankEl = document.getElementById('final-rank');
 const restartBtn = document.getElementById('restart');
-const difficultySel = document.getElementById('difficulty');
+const difficultyGroup = document.getElementById('difficulty-group');
+
+// Difficulty control shim to mimic select API (value + change events)
+function createDifficultyControl(groupEl, initial = 'medium') {
+  const btns = Array.from(groupEl?.querySelectorAll('button[data-difficulty]') || []);
+  const valid = new Set(['easy', 'medium', 'hard']);
+  let current = valid.has(initial) ? initial : 'medium';
+  const listeners = new Set();
+
+  function setPressed(val) {
+    btns.forEach(btn => {
+      const v = btn.getAttribute('data-difficulty');
+      const pressed = v === val;
+      btn.setAttribute('aria-pressed', String(pressed));
+      // simple selected class for styling if needed
+      if (pressed) btn.classList.add('selected'); else btn.classList.remove('selected');
+    });
+  }
+
+  function emitChange() {
+    listeners.forEach(fn => {
+      try { fn({ type: 'change' }); } catch {}
+    });
+  }
+
+  function setValue(v, { silent } = {}) {
+    const nv = String(v || '').toLowerCase();
+    if (!valid.has(nv)) return;
+    if (nv === current) return;
+    current = nv;
+    setPressed(current);
+    if (!silent) emitChange();
+  }
+
+  // init pressed state
+  setPressed(current);
+
+  // clicks update value
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const v = btn.getAttribute('data-difficulty');
+      setValue(v);
+    });
+  });
+
+  return {
+    get value() { return current; },
+    set value(v) { setValue(v); },
+    addEventListener(type, fn) { if (type === 'change' && typeof fn === 'function') listeners.add(fn); },
+    removeEventListener(type, fn) { if (type === 'change') listeners.delete(fn); },
+    focus() {
+      const active = groupEl?.querySelector('button[aria-pressed="true"]');
+      if (active) active.focus(); else groupEl?.focus?.();
+    },
+    // For completeness, allow programmatic init without firing change
+    _init(v) { setValue(v, { silent: true }); }
+  };
+}
+
+const difficultySel = difficultyGroup ? createDifficultyControl(difficultyGroup, 'medium') : document.getElementById('difficulty');
 const leaderboardEl = document.getElementById('leaderboard');
 const themeToggleBtn = document.getElementById('theme-toggle');
 const soundToggleBtn = document.getElementById('sound-toggle');

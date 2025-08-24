@@ -256,3 +256,31 @@ html[data-theme="dark"] .icon-moon { display: inline; }
 #sound-toggle .icon-sound-off { display: none; }
 #sound-toggle.muted .icon-sound-on { display: none; }
 #sound-toggle.muted .icon-sound-off { display: inline; }
+
+/* Difficulty toggle group */
+.difficulty-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding: 2px;
+}
+.difficulty-group .toggle-btn {
+    background: transparent;
+    color: var(--text);
+    border: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+.difficulty-group .toggle-btn[aria-pressed="true"] {
+    background: var(--btn-bg);
+    color: #fff;
+}
+.difficulty-group .toggle-btn:focus-visible {
+    outline: 2px solid var(--btn-focus);
+    outline-offset: 1px;
+}

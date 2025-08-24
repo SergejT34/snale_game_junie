@@ -1,6 +1,6 @@
 # Active Context: Browser-based Snake Game (MVP)
 
-Last updated: 2025-08-24 16:07 (local)
+Last updated: 2025-08-24 16:12 (local)
 
 ## Current Work Focus
 Background music tempo now adapts to difficulty (Easy≈110, Medium≈140, Hard≈170 BPM). Music remains controlled by the header mute toggle. Next focus: cross‑browser verification and accessibility pass.
@@ -9,7 +9,7 @@ Background music tempo now adapts to difficulty (Easy≈110, Medium≈140, Hard�
 - Implemented ES module-based Snake game (state, input, logic, renderer, loop)
 - Added index.html and styles.css with accessible UI (aria-live score, overlay dialog, restart button)
 - Implemented deterministic loop (150 ms default), reversal prevention, collisions, scoring, and restart
-- Added difficulty selector (Easy/Medium/Hard) in the top bar; the game restarts on change to apply speed
+- Difficulty control is now a toggle button group (Easy/Medium/Hard) in the top bar; the game restarts on change to apply speed
 - Leaderboard now stores and displays the difficulty for each score entry (backward compatible with existing entries)
 - Leaderboard also tracks and displays time spent per game (mm:ss) for each entry; stored as durationMs alongside existing fields (backward compatible).
 - Accessibility: Game Over overlay auto-focuses the player name input; pressing Enter in that input saves the score and starts a new game. Global Space/Enter shortcuts are removed.

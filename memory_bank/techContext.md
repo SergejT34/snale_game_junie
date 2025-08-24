@@ -38,6 +38,7 @@
 - Palette (color‑vision friendly): snake head = blue `#3a7afe`, snake body = purple `#9467bd`, food = orange `#ff7f0e`. Avoids red/green confusion and maintains strong contrast on both light and dark backgrounds.
 - Persistence: user selection stored in `localStorage` under `snake.theme.v1`. First-load default follows `prefers-color-scheme` if no stored preference exists.
 - Accessibility: header button toggles theme, exposes `aria-label` and `aria-pressed`, and has clear focus styles.
+- Difficulty UI: a three-button toggle group (Easy/Medium/Hard) with aria-pressed reflects the current selection; keyboard accessible (Tab to a button, Space/Enter to choose). Game restarts on change to apply speed and music tempo.
 
 ## Tool Usage Patterns
 - Prefer pure functions for state transitions to improve predictability and testability

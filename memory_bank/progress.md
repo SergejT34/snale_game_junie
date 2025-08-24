@@ -337,3 +337,14 @@ Background Music Tempo by Difficulty
   - Implementation: audio.js now accepts a BPM in startMusic and computes beat/note durations dynamically; loop.js passes BPM based on the current difficulty on start/restart/visibility resume.
 - Controls: existing header sound toggle mutes/unmutes all audio and stops music immediately when muted (unchanged behavior, documented here for clarity).
 - Rationale: aligns game feel with difficulty setting without adding assets.
+
+
+---
+
+Updated: 2025-08-24 16:12 (local)
+
+Difficulty UI: Toggle Button Group
+- Replaced the difficulty <select> with a three-button toggle group (Easy/Medium/Hard) in the header.
+  - Accessibility: uses aria-pressed on buttons and is fully keyboard-operable (Tab + Space/Enter).
+  - Behavior: selecting a difficulty immediately restarts the game to apply speed and background music tempo changes.
+  - Implementation: a small shim in main.js exposes a select-like API (value + change events) so existing loop.js and main.js logic required no changes.
