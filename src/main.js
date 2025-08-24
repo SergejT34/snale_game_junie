@@ -108,6 +108,54 @@ function triggerGameOverVisualFx() {
   } catch {}
 }
 
+// Visual FX: floating 'Go Go Go !!1' text on game start
+function triggerStartVisualFx() {
+  const wrap = document.querySelector('.canvas-wrap');
+  if (!wrap) return;
+  try {
+    const el = document.createElement('div');
+    el.className = 'floating-start';
+    el.textContent = 'Go Go Go !!1';
+    el.setAttribute('aria-hidden', 'true');
+    wrap.appendChild(el);
+    const cleanup = () => { try { el.remove(); } catch {} };
+    el.addEventListener('animationend', cleanup, { once: true });
+    setTimeout(cleanup, 1500);
+  } catch {}
+}
+
+// Visual FX: on eating normal food
+function triggerFoodEatenVisualFx() {
+  const wrap = document.querySelector('.canvas-wrap');
+  if (!wrap) return;
+  try {
+    const el = document.createElement('div');
+    el.className = 'floating-food';
+    el.textContent = 'Nom Nom 😋';
+    el.setAttribute('aria-hidden', 'true');
+    wrap.appendChild(el);
+    const cleanup = () => { try { el.remove(); } catch {} };
+    el.addEventListener('animationend', cleanup, { once: true });
+    setTimeout(cleanup, 1500);
+  } catch {}
+}
+
+// Visual FX: on eating shrinker (non-eatable item)
+function triggerShrinkerEatenVisualFx() {
+  const wrap = document.querySelector('.canvas-wrap');
+  if (!wrap) return;
+  try {
+    const el = document.createElement('div');
+    el.className = 'floating-shrinker';
+    el.textContent = 'Take this MFKR 🤮';
+    el.setAttribute('aria-hidden', 'true');
+    wrap.appendChild(el);
+    const cleanup = () => { try { el.remove(); } catch {} };
+    el.addEventListener('animationend', cleanup, { once: true });
+    setTimeout(cleanup, 1500);
+  } catch {}
+}
+
 // ----- Theme management -----
 const THEME_KEY = 'snake.theme.v1';
 function getPreferredTheme() {
@@ -220,6 +268,9 @@ function ensureGame() {
   game = createGame(renderer, {
     restartBtn,
     difficultySel,
+    onStartFx: () => { try { triggerStartVisualFx(); } catch {} },
+    onEatFoodFx: () => { try { triggerFoodEatenVisualFx(); } catch {} },
+    onEatShrinkerFx: () => { try { triggerShrinkerEatenVisualFx(); } catch {} },
     onGameOver: (score, durationMs) => {
       // Remove any lingering listeners from any previous overlay-driven flow
       if (lastOnClick) saveBtn?.removeEventListener('click', lastOnClick);

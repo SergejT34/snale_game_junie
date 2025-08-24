@@ -60,7 +60,7 @@
   - Display format: "Score: N · Rank: #R" when within top 10; otherwise ">10" is shown for rank outside the top list.
   - The score briefly shakes when the provisional leaderboard rank changes (e.g., when entering a new rank tier). This is a non-disruptive visual cue; aria-live remains polite.
   - Rank is computed client-side each tick using current score vs persisted entries; ties break by earlier timestamp first, consistent with leaderboard ordering.
-- There is no Game Over screen; on run end the app auto-saves and restarts. No post-run rank UI is shown.
+- Visual FX: A brief floating "Go Go Go !!1" text is shown over the board on start/restart; eating normal food triggers a floating "Nom Nom 😋"; eating a non‑eatable shrinker triggers a floating "Take this MFKR 🤮"; Game Over triggers a flash/shake and a floating text.
 
 ## Audio
 - Implementation: Web Audio API, no assets. Sounds are synthesized (oscillators + gain envelopes) for minimal footprint and retro feel.

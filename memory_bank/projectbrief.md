@@ -11,6 +11,7 @@ A minimal, fully playable Snake game that runs in modern browsers using ES6 modu
 - Keyboard controls (Arrow keys and/or WASD) with prevention of 180° reversals
 - Collision handling: wall or self-collision triggers Game Over
 - Live score display that updates as food is eaten
+- Visual FX: On game start, display a brief floating “Go Go Go !!1” text over the board; when eating normal food, show a brief floating “Nom Nom 😋”; when eating a non‑eatable item, show “Take this MFKR 🤮”; on game over, trigger a flash/shake plus floating text.
 - Game Over overlay with the final score and a Restart button
 - Restart returns to the initial state without a page reload
 - Accessibility: fully keyboard-operable UI; the minimal, appropriate ARIA on interactive elements

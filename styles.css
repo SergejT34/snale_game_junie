@@ -358,6 +358,58 @@ html[data-theme="dark"] .leaderboard li.highlight {
     z-index: 2;
 }
 html[data-theme="dark"] .floating-go { color: #ff5570; }
+
+/* Start-of-game FX floating text */
+.floating-start {
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+    color: #22c55e; /* green */
+    text-shadow: 0 2px 0 rgba(0,0,0,0.35), 0 0 10px rgba(34, 197, 94, 0.5);
+    font-weight: 900;
+    font-size: clamp(18px, 6vw, 40px);
+    letter-spacing: 0.04em;
+    pointer-events: none;
+    animation: go-float 1200ms ease-out forwards;
+    z-index: 2;
+}
+html[data-theme="dark"] .floating-start { color: #34d399; }
+
+/* Eating FX: normal food */
+.floating-food {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: #ff7f0e; /* use food accent */
+    text-shadow: 0 2px 0 rgba(0,0,0,0.35), 0 0 10px rgba(255, 127, 14, 0.5);
+    font-weight: 900;
+    font-size: clamp(16px, 5.5vw, 36px);
+    letter-spacing: 0.03em;
+    pointer-events: none;
+    animation: go-float 1100ms ease-out forwards;
+    z-index: 2;
+}
+html[data-theme="dark"] .floating-food { color: #ff9f4e; }
+
+/* Eating FX: shrinker (hazard) */
+.floating-shrinker {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: #22c55e; /* greenish to match gag/recovery vibe */
+    text-shadow: 0 2px 0 rgba(0,0,0,0.35), 0 0 10px rgba(34, 197, 94, 0.4);
+    font-weight: 900;
+    font-size: clamp(16px, 5.5vw, 36px);
+    letter-spacing: 0.03em;
+    pointer-events: none;
+    animation: go-float 1100ms ease-out forwards;
+    z-index: 2;
+}
+html[data-theme="dark"] .floating-shrinker { color: #34d399; }
+
 @keyframes go-float {
     0% { opacity: 0; transform: translate(-50%, -40%) scale(0.9); }
     15% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }

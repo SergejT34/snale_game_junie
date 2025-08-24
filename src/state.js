@@ -46,6 +46,9 @@ export function createInitialState(opts = {}) {
     shrinker,
     // When true, clear shrinker at the start of the next tick (after food spawned)
     pendingShrinkerClear: false,
+    // Transient FX flags (set by logic; consumed by loop and reset):
+    fxEatFood: false,
+    fxEatShrinker: false,
     score: 0,
     status: 'running', // 'running' | 'over'
     tickMs,

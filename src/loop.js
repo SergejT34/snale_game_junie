@@ -36,6 +36,9 @@ export function createGame(renderer, dom) {
       try { playFood(); } catch {}
     }
     renderer.render(state);
+    // Eating FX after render (floating text overlay)
+    if (state.fxEatFood) { try { dom?.onEatFoodFx?.(); } catch {} state.fxEatFood = false; }
+    if (state.fxEatShrinker) { try { dom?.onEatShrinkerFx?.(); } catch {} state.fxEatShrinker = false; }
     if (state.status === 'over' && lastStatus !== 'over') {
       try { playDeath(); } catch {}
       try { playGameOverFx(); } catch {}
@@ -57,6 +60,7 @@ export function createGame(renderer, dom) {
     renderer.render(state);
     try { playStart(); } catch {}
     try { startMusic(currentMusicBpm()); } catch {}
+    try { dom?.onStartFx?.(); } catch {}
   }
 
   function stop() {
@@ -76,6 +80,7 @@ export function createGame(renderer, dom) {
     intervalId = window.setInterval(tick, state.tickMs);
     try { playStart(); } catch {}
     try { startMusic(currentMusicBpm()); } catch {}
+    try { dom?.onStartFx?.(); } catch {}
   }
 
   // handle focus/visibility for pause/resume (optional)

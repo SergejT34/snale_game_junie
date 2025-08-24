@@ -4,6 +4,10 @@ import { key, placeFood, placeShrinker, HAZARD_SPAWN_CHANCE } from './state.js';
 export function step(state) {
   if (state.status !== 'running') return state;
 
+  // Reset transient FX flags
+  state.fxEatFood = false;
+  state.fxEatShrinker = false;
+
   // 0) Deferred hazard clear between ticks (after food spawn on previous tick)
   let clearedThisTick = false;
   if (state.pendingShrinkerClear) {
@@ -49,6 +53,7 @@ export function step(state) {
 
   if (willEatFood) {
     state.score += 1;
+    state.fxEatFood = true;
     // Place new food; ensure it does not overlap the shrinker
     let nf = placeFood(state.occupied);
     if (nf && state.shrinker && nf.x === state.shrinker.x && nf.y === state.shrinker.y) {
@@ -66,6 +71,7 @@ export function step(state) {
     if (willEatShrinker) {
       // Score decreases when eating a non-eatable item (clamped to 0)
       state.score = Math.max(0, state.score - 1);
+      state.fxEatShrinker = true;
       // Respawn shrinker probabilistically; avoid overlapping with food
       let ns = null;
       if (Math.random() < HAZARD_SPAWN_CHANCE) {
