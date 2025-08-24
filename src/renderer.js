@@ -4,6 +4,8 @@ import { getProvisionalRank, MAX_ENTRIES } from './leaderboard.js';
 
 export function createRenderer(canvas, scoreEl, overlayEl, finalScoreEl, finalTimeEl, finalDifficultyEl, finalRankEl) {
   const ctx = canvas.getContext('2d');
+  // Track last shown provisional rank to trigger UI effects on change
+  let lastRankShown = null;
 
   function cssVar(name, fallback) {
     const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -84,13 +86,26 @@ export function createRenderer(canvas, scoreEl, overlayEl, finalScoreEl, finalTi
     // Update score UI with live provisional rank compared to leaderboard
     if (scoreEl) {
       let rankText = '';
+      let currentRank = null;
       try {
         const rank = getProvisionalRank(state.score);
         if (Number.isFinite(rank) && rank > 0) {
+          currentRank = rank;
           rankText = ` · Rank: ${rank <= MAX_ENTRIES ? '#' + rank : '>' + MAX_ENTRIES}`;
         }
       } catch {}
       scoreEl.textContent = `Score: ${state.score}${rankText}`;
+      // If rank changed (including from null to a number), trigger a brief shake animation
+      if (currentRank !== lastRankShown) {
+        lastRankShown = currentRank;
+        scoreEl.classList.remove('shake');
+        // Force reflow to restart animation
+        // eslint-disable-next-line no-unused-expressions
+        void scoreEl.offsetWidth;
+        scoreEl.classList.add('shake');
+        // Remove the class after animation ends to allow future re-triggers
+        setTimeout(() => scoreEl.classList.remove('shake'), 500);
+      }
     }
 
     // Overlay

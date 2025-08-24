@@ -1,9 +1,9 @@
 # Active Context: Browser-based Snake Game (MVP)
 
-Last updated: 2025-08-24 16:12 (local)
+Last updated: 2025-08-24 16:16 (local)
 
 ## Current Work Focus
-Background music tempo now adapts to difficulty (Easy≈110, Medium≈140, Hard≈170 BPM). Music remains controlled by the header mute toggle. Next focus: cross‑browser verification and accessibility pass.
+UI polish: centered, enlarged score with live rank; shake animation on rank change for better feedback. Next focus: cross‑browser verification and accessibility pass.
 
 ## Recent Changes
 - Implemented ES module-based Snake game (state, input, logic, renderer, loop)

@@ -49,8 +49,9 @@
 - Global movement key bindings are disabled when the Game Over overlay is visible; only overlay-specific handlers (e.g., Enter in the name field) remain active.
 
 ## HUD
-- Header score now includes a live rank indicator compared to the leaderboard (top 10 persisted).
+- The score is centered in the top bar and displayed larger for prominence. It includes a live rank indicator compared to the leaderboard (top 10 persisted).
   - Display format: "Score: N · Rank: #R" when within top 10; otherwise ">10" is shown for rank outside the top list.
+  - The score briefly shakes when the provisional leaderboard rank changes (e.g., when entering a new rank tier). This is a non-disruptive visual cue; aria-live remains polite.
   - Rank is computed client-side each tick using current score vs persisted entries; ties break by earlier timestamp first, consistent with leaderboard ordering.
 - Game Over overlay shows the provisional rank immediately (before the player enters a name or saves the score), using the same ranking logic and display format.
 

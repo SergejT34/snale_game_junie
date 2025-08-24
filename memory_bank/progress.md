@@ -348,3 +348,15 @@ Difficulty UI: Toggle Button Group
   - Accessibility: uses aria-pressed on buttons and is fully keyboard-operable (Tab + Space/Enter).
   - Behavior: selecting a difficulty immediately restarts the game to apply speed and background music tempo changes.
   - Implementation: a small shim in main.js exposes a select-like API (value + change events) so existing loop.js and main.js logic required no changes.
+
+
+---
+
+Updated: 2025-08-24 16:16 (local)
+
+Centered Score and Rank Shake
+- Score display moved to the center of the top bar and enlarged for better visibility.
+  - Implementation: top bar switched to CSS grid (three columns: left title, centered score, right controls). #score now uses larger font and bold weight.
+- Rank change feedback: the score element now briefly shakes whenever the provisional leaderboard rank changes during play.
+  - Implementation: renderer tracks the last shown rank and toggles a CSS animation class when the rank changes; accessible as aria-live remains polite and atomic.
+- No functional changes to leaderboard logic; purely presentational with a small UI cue.
