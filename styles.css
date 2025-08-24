@@ -305,3 +305,14 @@ html[data-theme="dark"] .icon-moon { display: inline; }
 #score.shake {
     animation: score-shake 350ms ease-in-out;
 }
+
+/* Highlight the most recent score on leaderboard */
+.leaderboard li.highlight {
+    outline: 2px solid var(--btn-bg);
+    outline-offset: 0;
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--btn-bg) 30%, transparent);
+    background: color-mix(in oklab, var(--btn-bg) 12%, var(--canvas-bg));
+}
+html[data-theme="dark"] .leaderboard li.highlight {
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--btn-bg) 20%, transparent);
+}

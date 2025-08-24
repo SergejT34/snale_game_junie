@@ -216,6 +216,32 @@ function ensureGame() {
         renderLeaderboard(leaderboardHardEl, getTopByDifficulty('hard'));
         // Ensure only the selected difficulty's leaderboard is visible
         try { updateLeaderboardVisibility(); } catch {}
+        // Highlight the just-saved score if visible
+        try {
+          // Clear previous highlights on all boards
+          [leaderboardEasyEl, leaderboardMediumEl, leaderboardHardEl].forEach(list => {
+            if (!list) return;
+            list.querySelectorAll('li.highlight').forEach(li => li.classList.remove('highlight'));
+            list.querySelectorAll('li[aria-current="true"]').forEach(li => li.removeAttribute('aria-current'));
+          });
+          const d = difficulty;
+          const rank = savedRank;
+          if (Number.isFinite(rank) && rank > 0) {
+            const map = { easy: leaderboardEasyEl, medium: leaderboardMediumEl, hard: leaderboardHardEl };
+            const listEl = map[d];
+            const container = listEl ? (listEl.closest('div') || listEl.parentElement) : null;
+            const isVisible = !!(container && container.style.display !== 'none');
+            if (listEl && isVisible) {
+              const idx = rank - 1;
+              const items = Array.from(listEl.children);
+              if (idx >= 0 && idx < items.length) {
+                const li = items[idx];
+                li.classList.add('highlight');
+                li.setAttribute('aria-current', 'true');
+              }
+            }
+          }
+        } catch {}
       } catch {}
 
       // Populate and show unified overlay as a Game Over screen

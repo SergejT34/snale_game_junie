@@ -1131,3 +1131,18 @@ Header Score: Show Player Name, Difficulty, and Rank Holder
 - Notes:
   - The header updates live during gameplay and reflects difficulty changes on restart (as before).
   - Accessibility: #score remains aria-live="polite" and aria-atomic="true" so updates are announced succinctly.
+
+  ---
+
+  Updated: 2025-08-24 17:36 (local)
+
+  Leaderboard: Highlight Current Score After Game Over
+  - Change: After saving the score on Game Over, the corresponding leaderboard line is highlighted if that leaderboard is currently visible (i.e., matches the selected difficulty).
+  - Implementation:
+    - main.js: after re-rendering leaderboards and applying visibility, clears any previous highlights and adds class "highlight" plus aria-current="true" to the saved rank’s list item when within the visible list.
+    - styles.css: added .leaderboard li.highlight styling to visually emphasize the row (accent outline and subtle background).
+  - Scope/Behavior:
+    - Only the visible difficulty’s leaderboard can get highlighted; others remain unchanged.
+    - If the saved rank is outside the displayed range (e.g., > top 10), nothing is highlighted.
+    - Changing difficulty removes highlight from previous board as part of the next render cycle.
+  - Accessibility: aria-current="true" helps assistive technologies announce the current item.
