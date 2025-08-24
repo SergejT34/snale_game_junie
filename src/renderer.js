@@ -53,13 +53,26 @@ export function createRenderer(canvas, scoreEl, overlayEl, finalScoreEl, finalTi
   function drawFood(food) {
     if (!food) return;
     const size = cellSize();
-    ctx.fillStyle = cssVar('--food', '#ff7f0e');
-    ctx.beginPath();
     const cx = food.x * size + size / 2;
     const cy = food.y * size + size / 2;
-    const r = Math.floor(size * 0.3);
-    ctx.arc(cx, cy, r, 0, Math.PI * 2);
-    ctx.fill();
+    const emoji = food.emoji;
+    if (emoji && typeof emoji === 'string') {
+      // Render emoji centered in the cell; scale relative to cell size
+      const fontSize = Math.floor(size * 0.8);
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = `${fontSize}px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", system-ui, sans-serif`;
+      ctx.fillText(emoji, cx, cy + Math.floor(size * 0.02)); // tiny vertical tweak
+      ctx.restore();
+    } else {
+      // Fallback to circle if no emoji provided
+      ctx.fillStyle = cssVar('--food', '#ff7f0e');
+      ctx.beginPath();
+      const r = Math.floor(size * 0.3);
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
 
   function labelDifficulty(val) {

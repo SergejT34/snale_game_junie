@@ -51,6 +51,11 @@ export function createInitialState(opts = {}) {
 
 export function key(x, y) { return `${x},${y}`; }
 
+export const FOOD_EMOJIS = [
+  '🍎','🍌','🍒','🍇','🍓','🍉','🍋','🍊','🍐','🥝',
+  '🥕','🌽','🍆','🥦','🧀','🍕','🍪','🍩','🍙','🍔'
+];
+
 export function placeFood(occupied) {
   const empty = [];
   for (let y = 0; y < GRID_SIZE; y++) {
@@ -61,5 +66,7 @@ export function placeFood(occupied) {
   }
   if (empty.length === 0) return null; // filled board
   const idx = Math.floor(Math.random() * empty.length);
-  return empty[idx];
+  const spot = empty[idx];
+  const emoji = FOOD_EMOJIS[(Math.random() * FOOD_EMOJIS.length) | 0];
+  return { x: spot.x, y: spot.y, emoji };
 }

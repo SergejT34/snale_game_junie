@@ -1176,3 +1176,15 @@ Game Over Visual and Audio FX
   - Sound respects the existing mute toggle; muting stops background music and prevents FX playback.
 - Rationale: Adds satisfying feedback at the moment of failure without heavy assets or frameworks; uses small CSS/WebAudio additions consistent with the MVP’s framework-free approach.
 
+---
+
+Updated: 2025-08-24 17:44 (local)
+
+Emoji Food Items
+- Change: Replaced the circular food marker with randomly selected food emojis (e.g., 🍎🍌🍒🍇🥕🧀🍕🍪🍩🍙, etc.). Each time food spawns, it gets a random emoji.
+- Implementation:
+  - state.js: added FOOD_EMOJIS and updated placeFood() to return { x, y, emoji }.
+  - renderer.js: drawFood now renders the emoji centered in the cell using canvas text (with Apple Color Emoji / Segoe UI Emoji / Noto Color Emoji fallback). If emoji is missing for any reason, it falls back to the previous orange circle.
+- Behavior: No gameplay changes — collision, scoring, and sounds remain the same; only visuals are updated.
+- Accessibility/Compatibility: Emoji rendering relies on the system emoji font; modern Chrome/Firefox/Edge/Safari support color emoji. On platforms without color emoji, monochrome glyphs will be shown automatically. Font size scales with cell size for crispness on HiDPI (backing store already uses DPR).
+
