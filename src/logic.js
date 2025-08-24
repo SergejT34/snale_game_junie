@@ -1,5 +1,5 @@
 // Logic module: one-tick update pipeline
-import { key, placeFood, placeShrinker, HAZARD_SPAWN_CHANCE } from './state.js';
+import { key, placeFood, placeShrinker, hazardSpawnChance } from './state.js';
 
 export function step(state) {
   if (state.status !== 'running') return state;
@@ -74,7 +74,7 @@ export function step(state) {
       state.fxEatShrinker = true;
       // Respawn shrinker probabilistically; avoid overlapping with food
       let ns = null;
-      if (Math.random() < HAZARD_SPAWN_CHANCE) {
+      if (Math.random() < hazardSpawnChance(state.difficulty)) {
         ns = placeShrinker(state.occupied, state.food);
       }
       state.shrinker = ns;
@@ -93,7 +93,7 @@ export function step(state) {
 
   // 6) Periodic hazard spawn: if absent, try to spawn probabilistically this tick
   //    Do not immediately respawn on the same tick we ate normal food, and also skip spawn on the tick we clear it between ticks
-  if (!state.shrinker && !willEatFood && !clearedThisTick && Math.random() < HAZARD_SPAWN_CHANCE) {
+  if (!state.shrinker && !willEatFood && !clearedThisTick && Math.random() < hazardSpawnChance(state.difficulty)) {
     state.shrinker = placeShrinker(state.occupied, state.food);
   }
 

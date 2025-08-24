@@ -5,7 +5,7 @@ A minimal, fully playable Snake game that runs in modern browsers using ES6 modu
 
 ## Core Requirements
 - 20×20 grid with snake length 3 at the start and one food item spawned in an empty cell
-- A non-food “shrinker” emoji item can spawn on the grid at random times. Eating it shrinks the snake by 1 and decreases score by 1 (score does not go below 0). It is placed on an empty cell, never overlapping the snake or the food. After a normal food is eaten, any existing shrinker disappears at the boundary before the next tick (i.e., after the new food is spawned, between ticks). It can appear multiple times during a run; when absent, each tick has a chance to spawn one (it will not immediately reappear on the exact tick a food item was eaten, and spawn is also skipped on the tick when the deferred disappearance occurs).
+- A non-food “shrinker” emoji item can spawn on the grid at random times. Eating it shrinks the snake by 1 and decreases score by 1 (score does not go below 0). It is placed on an empty cell, never overlapping the snake or the food. After a normal food is eaten, any existing shrinker disappears at the boundary before the next tick (i.e., after the new food is spawned, between ticks). It can appear multiple times during a run; when absent, each tick has a chance to spawn one (it will not immediately reappear on the exact tick a food item was eaten, and spawn is also skipped on the tick when the deferred disappearance occurs). The spawn chance depends on difficulty: Easy ≈ 30%, Medium ≈ 50%, Hard ≈ 70%.
 - Deterministic core game loop at a configurable tick interval (150 ms default)
 - Update order per tick: input → move → collisions/food → render
 - Keyboard controls (Arrow keys and/or WASD) with prevention of 180° reversals

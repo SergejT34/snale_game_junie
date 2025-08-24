@@ -34,7 +34,7 @@ export function createInitialState(opts = {}) {
 
   const food = placeFood(occupied);
   // Place a shrinker (hazard) item based on spawn chance; may start absent
-  const shrinker = (Math.random() < HAZARD_SPAWN_CHANCE) ? placeShrinker(occupied, food) : null;
+  const shrinker = (Math.random() < hazardSpawnChance(difficulty)) ? placeShrinker(occupied, food) : null;
 
   return {
     grid: GRID_SIZE,
@@ -68,8 +68,16 @@ export const HAZARD_EMOJIS = [
   '💣','☠️','💀','🧨','🧫','🧪'
 ];
 
-// Probability to spawn a non-eatable hazard when eligible (0..1)
-export const HAZARD_SPAWN_CHANCE = 0.5;
+// Probability to spawn a non-eatable hazard when eligible (0..1), depends on difficulty
+export const DIFFICULTY_HAZARD_CHANCE = {
+  easy: 0.2,
+  medium: 0.5,
+  hard: 0.8,
+};
+export function hazardSpawnChance(difficulty) {
+  const d = (difficulty === 'easy' || difficulty === 'hard' || difficulty === 'medium') ? difficulty : DEFAULT_DIFFICULTY;
+  return DIFFICULTY_HAZARD_CHANCE[d] ?? DIFFICULTY_HAZARD_CHANCE[DEFAULT_DIFFICULTY];
+}
 
 export function placeFood(occupied) {
   const empty = [];

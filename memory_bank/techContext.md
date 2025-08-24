@@ -19,7 +19,7 @@
 - Support the latest two major versions of Chrome, Firefox, Edge, Safari
 - Deterministic update order: input → move → collisions/food → render
 - Accessibility: keyboard operability, minimal ARIA on interactive elements
-- Hazard items: a single “shrinker” emoji item may appear on the grid based on a spawn probability. When eaten, it reduces snake length by 1 (net vs previous tick) and decreases score by 1 (clamped to 0). After eating normal food, any existing shrinker is marked to disappear and is cleared at the start of the next tick (between ticks, after the new food has already spawned). When absent, each game tick has a chance to spawn a new shrinker; it will not immediately reappear on the same tick that food was eaten, and we also skip spawning on the tick when the deferred disappearance occurs. Hazard placement always avoids overlapping with the snake and the food.
+- Hazard items: a single “shrinker” emoji item may appear on the grid based on a spawn probability that depends on difficulty (Easy ≈ 30%, Medium ≈ 50%, Hard ≈ 70%). When eaten, it reduces snake length by 1 (net vs previous tick) and decreases score by 1 (clamped to 0). After eating normal food, any existing shrinker is marked to disappear and is cleared at the start of the next tick (between ticks, after the new food has already spawned). When absent, each game tick has a chance to spawn a new shrinker; it will not immediately reappear on the same tick that food was eaten, and we also skip spawning on the tick when the deferred disappearance occurs. Hazard placement always avoids overlapping with the snake and the food.
 
 ## Dependencies
 - None required beyond browser APIs for runtime
