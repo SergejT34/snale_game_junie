@@ -71,10 +71,11 @@
   - Starts on game start/restart and pauses on game over or when the page is hidden; resumes when gameplay resumes.
 - Effects:
   - Food: quick two-note square wave ("coin-like").
+  - Hazard (non-eatable shrinker): a short dissonant, downward chirp to contrast the food sound.
   - Death: descending sawtooth sweep with a low sine "thud".
   - Start: short triangle-wave arpeggio.
 - Integration points:
-  - loop.js observes score delta per tick to infer food consumption (keeps logic.step pure-ish).
+  - loop.js observes score delta per tick to infer food consumption (keeps logic.step pure-ish) and listens for fxEatShrinker to play the hazard SFX.
   - Game over transition triggers death sound; start/restart triggers start jingle and starts the background music.
 - Autoplay policy: AudioContext created lazily and resumed on first gesture (pointerdown/keydown).
 - Controls: header sound toggle button with aria-pressed and icon swap; session-scoped mute setting (not persisted for MVP). Muting also stops background music immediately.

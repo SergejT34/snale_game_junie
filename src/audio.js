@@ -173,6 +173,21 @@ export function playFood() {
   createOsc('square', 1320, t + 0.06, 0.05, 0.05);
 }
 
+// Hazard (non-eatable) sound: quick dissonant downward chirp
+// Designed to contrast the food 'coin' sound: slight detune, minor-second interval, short decay
+export function playHazard() {
+  if (muted) return;
+  const ac = ensureContext();
+  if (!ac) return;
+  const t = ac.currentTime;
+  // Two slightly detuned sawtooth blips descending
+  // First: minor second clash
+  createOsc('sawtooth', 740, t, 0.07, 0.045);   // ~F#5
+  createOsc('sawtooth', 698.46, t, 0.07, 0.04); // G5- slightly detuned
+  // Follow-up lower blip
+  createOsc('square', 392, t + 0.06, 0.08, 0.05); // G4
+}
+
 // Death sound: descending sawtooth with slight detune and a thud
 export function playDeath() {
   if (muted) return;

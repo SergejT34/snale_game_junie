@@ -2,7 +2,7 @@
 import { createInitialState, DIFFICULTY_SPEEDS, DEFAULT_DIFFICULTY } from './state.js';
 import { step } from './logic.js';
 import { bindInput } from './input.js';
-import { playFood, playDeath, playStart, init as initAudio, startMusic, stopMusic, playGameOverFx } from './audio.js';
+import { playFood, playDeath, playStart, init as initAudio, startMusic, stopMusic, playGameOverFx, playHazard } from './audio.js';
 
 export function createGame(renderer, dom) {
   function currentDifficulty() {
@@ -38,7 +38,7 @@ export function createGame(renderer, dom) {
     renderer.render(state);
     // Eating FX after render (floating text overlay)
     if (state.fxEatFood) { try { dom?.onEatFoodFx?.(); } catch {} state.fxEatFood = false; }
-    if (state.fxEatShrinker) { try { dom?.onEatShrinkerFx?.(); } catch {} state.fxEatShrinker = false; }
+    if (state.fxEatShrinker) { try { playHazard(); } catch {} try { dom?.onEatShrinkerFx?.(); } catch {} state.fxEatShrinker = false; }
     if (state.status === 'over' && lastStatus !== 'over') {
       try { playDeath(); } catch {}
       try { playGameOverFx(); } catch {}
