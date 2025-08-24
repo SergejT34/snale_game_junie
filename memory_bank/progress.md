@@ -360,3 +360,17 @@ Centered Score and Rank Shake
 - Rank change feedback: the score element now briefly shakes whenever the provisional leaderboard rank changes during play.
   - Implementation: renderer tracks the last shown rank and toggles a CSS animation class when the rank changes; accessible as aria-live remains polite and atomic.
 - No functional changes to leaderboard logic; purely presentational with a small UI cue.
+
+
+---
+
+Updated: 2025-08-24 16:20 (local)
+
+Welcome Overlay and Leaderboard Placement
+- Added a Welcome overlay that is shown on page load. It contains:
+  - A difficulty toggle group (Easy/Medium/Hard)
+  - A Play button
+  - The Leaderboard (top 10 from localStorage)
+- The persistent sidebar leaderboard was removed; the leaderboard is now only visible on the Welcome overlay per product requirement.
+- The game no longer auto-starts; it starts after the user presses Play. Difficulty can be chosen before starting.
+- After Game Over, the existing overlay is used to save the score and immediately restart. The leaderboard remains exclusive to the Welcome overlay.

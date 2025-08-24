@@ -11,11 +11,6 @@
     <h1>Snake</h1>
     <div id="score" aria-live="polite" aria-atomic="true">Score: 0</div>
     <div class="topbar-right" style="display:flex; align-items:center; gap:0.75rem;">
-      <div id="difficulty-group" class="difficulty-group" role="group" aria-label="Difficulty">
-        <button type="button" class="toggle-btn" data-difficulty="easy" aria-pressed="false">Easy</button>
-        <button type="button" class="toggle-btn" data-difficulty="medium" aria-pressed="true">Medium</button>
-        <button type="button" class="toggle-btn" data-difficulty="hard" aria-pressed="false">Hard</button>
-      </div>
       <button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" aria-pressed="false" title="Toggle theme">
         <svg class="icon-sun" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" focusable="false">
           <path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zM1 13h3v-2H1v2zm10 10h2v-3h-2v3zm9-10v-2h-3v2h3zm-2.34 6.95l1.41-1.41-1.79-1.8-1.41 1.42 1.79 1.79zM13 1h-2v3h2V1zm4.24 3.05l-1.41 1.41 1.79 1.79 1.41-1.41-1.79-1.79zM12 6a6 6 0 100 12 6 6 0 000-12z"/>
@@ -43,6 +38,24 @@
   <main class="game" role="main">
     <div class="canvas-wrap">
       <canvas id="game" width="600" height="600" aria-label="Snake game board" role="img"></canvas>
+      <!-- Start/Welcome Overlay -->
+      <div id="start-overlay" class="overlay show" aria-hidden="false">
+        <div class="overlay-content" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+          <h2 id="welcome-title">Welcome to Snake</h2>
+          <p>Choose a difficulty and press Play to start.</p>
+          <div id="difficulty-group" class="difficulty-group" role="group" aria-label="Difficulty">
+            <button type="button" class="toggle-btn" data-difficulty="easy" aria-pressed="false">Easy</button>
+            <button type="button" class="toggle-btn" data-difficulty="medium" aria-pressed="true">Medium</button>
+            <button type="button" class="toggle-btn" data-difficulty="hard" aria-pressed="false">Hard</button>
+          </div>
+          <div style="margin:0.75rem 0 0.5rem 0;">
+            <button id="play-btn" type="button" class="btn">Play</button>
+          </div>
+          <h3 id="leaderboard-title" style="margin-top:0.75rem;">Leaderboard</h3>
+          <ol id="leaderboard" class="leaderboard" aria-live="polite" aria-atomic="true"></ol>
+        </div>
+      </div>
+      <!-- Game Over Overlay -->
       <div id="overlay" class="overlay" aria-hidden="true">
         <div class="overlay-content" role="dialog" aria-modal="true" aria-labelledby="gameover-title">
           <h2 id="gameover-title">Game Over</h2>
@@ -53,15 +66,11 @@
           <form id="save-form" class="save-form" aria-label="Save score" onsubmit="return false;">
             <label for="player-name">Your name</label>
             <input id="player-name" name="player-name" type="text" maxlength="20" autocomplete="name" placeholder="Player" />
-            <button id="save-score" type="button" class="btn">Play Agayn</button>
+            <button id="save-score" type="button" class="btn">Save & Play Again</button>
           </form>
         </div>
       </div>
     </div>
-    <aside class="sidebar" aria-labelledby="leaderboard-title">
-    <h2 id="leaderboard-title">Leaderboard</h2>
-    <ol id="leaderboard" class="leaderboard" aria-live="polite" aria-atomic="true"></ol>
-  </aside>
 </main>
 
   <footer class="footer" role="contentinfo">

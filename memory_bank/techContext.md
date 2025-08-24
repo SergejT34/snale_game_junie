@@ -30,7 +30,7 @@
 - Schema: array of entries `{ name: string, score: number, difficulty: 'easy'|'medium'|'hard', durationMs: number, ts: epochMillis }`.
   - Backward compatibility: older entries without `difficulty` are treated as `medium`; older entries without `durationMs` default to 0 when displayed.
 - Sorted by score desc, then timestamp asc; capped to top 10 entries.
-- Input for a name is collected via a non-blocking input field in the Game Over overlay. The field is prefilled with the last used name if available (derived from the most recent leaderboard entry by timestamp), otherwise "Player". A single button ("Play Agayn") persists the entry and immediately starts the next game; pressing Enter in the name field does the same. Global Space/Enter shortcuts are not used.
+- Input for a name is collected via a non-blocking input field in the Game Over overlay. The field is prefilled with the last used name if available (derived from the most recent leaderboard entry by timestamp), otherwise "Player". A single button ("Save & Play Again") persists the entry and immediately starts the next game; pressing Enter in the name field does the same. Global Space/Enter shortcuts are not used.
 
 ## Theming
 - Approach: CSS custom properties define a theme palette. The active theme is controlled via `html[data-theme="light"|"dark"]`.
@@ -38,7 +38,7 @@
 - Palette (color‑vision friendly): snake head = blue `#3a7afe`, snake body = purple `#9467bd`, food = orange `#ff7f0e`. Avoids red/green confusion and maintains strong contrast on both light and dark backgrounds.
 - Persistence: user selection stored in `localStorage` under `snake.theme.v1`. First-load default follows `prefers-color-scheme` if no stored preference exists.
 - Accessibility: header button toggles theme, exposes `aria-label` and `aria-pressed`, and has clear focus styles.
-- Difficulty UI: a three-button toggle group (Easy/Medium/Hard) with aria-pressed reflects the current selection; keyboard accessible (Tab to a button, Space/Enter to choose). Game restarts on change to apply speed and music tempo.
+- Difficulty UI: a three-button toggle group (Easy/Medium/Hard) with aria-pressed reflects the current selection; keyboard accessible (Tab to a button, Space/Enter to choose). On the Welcome overlay, the selection is available before starting; after starting, changes (when the game is running) trigger a restart to apply speed and music tempo.
 
 ## Tool Usage Patterns
 - Prefer pure functions for state transitions to improve predictability and testability
