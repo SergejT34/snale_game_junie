@@ -168,6 +168,20 @@ function normalizeDifficulty(val) {
   return (v === 'easy' || v === 'medium' || v === 'hard') ? v : 'medium';
 }
 
+function labelDifficulty(val) {
+  const map = { easy: 'Easy', medium: 'Medium', hard: 'Hard' };
+  return map[val] || 'Medium';
+}
+function formatDuration(ms) {
+  const n = Number.isFinite(ms) ? Math.max(0, Math.floor(ms)) : 0;
+  const totalSec = Math.floor(n / 1000);
+  const min = Math.floor(totalSec / 60);
+  const sec = totalSec % 60;
+  const mm = String(min);
+  const ss = String(sec).padStart(2, '0');
+  return `${mm}:${ss}`;
+}
+
 const renderer = createRenderer(canvas, scoreEl, overlayEl, finalScoreEl, finalTimeEl, finalDifficultyEl, finalRankEl);
 let lastOnClick = null;
 let lastOnKeyDown = null;
@@ -185,20 +199,58 @@ function ensureGame() {
       lastOnClick = null;
       lastOnKeyDown = null;
 
-      // Auto-save the score without showing any Game Over screen
+      // Save the score immediately so leaderboard reflects final rank
       const difficulty = normalizeDifficulty(difficultySel?.value);
       const defaultName = getLastUsedName();
       const entered = (nameInput?.value ?? '').trim() || defaultName;
+      let savedRank = null;
       try {
         const result = addScore(entered, score, difficulty, durationMs, Date.now());
         const entries = result?.entries || loadLeaderboard();
+        savedRank = result?.rank ?? null;
         renderLeaderboard(leaderboardEl, entries);
       } catch {}
 
-      // Auto-restart after a short delay to allow death SFX to play
-      setTimeout(() => {
+      // Populate and show unified overlay as a Game Over screen
+      const titleEl = document.getElementById('gameover-title');
+      if (titleEl) titleEl.textContent = 'Game Over';
+      // Hide all final stats on the Game Over view per requirement
+      if (finalScoreEl) finalScoreEl.hidden = true;
+      if (finalTimeEl) finalTimeEl.hidden = true;
+      if (finalDifficultyEl) finalDifficultyEl.hidden = true;
+      if (finalRankEl) finalRankEl.hidden = true;
+
+      if (nameInput) {
+        // Keep the last used/entered name for the next run; allow editing now
+        nameInput.disabled = false;
+        if (!nameInput.value) nameInput.value = defaultName;
+      }
+      if (saveBtn) {
+        saveBtn.textContent = 'Play again';
+        saveBtn.disabled = false;
+      }
+
+      // Show overlay
+      startOverlayEl?.classList.add('show');
+      startOverlayEl?.setAttribute('aria-hidden', 'false');
+
+      // Wire up restart flow from the overlay
+      const onClick = () => {
+        if (!isNameValid()) { try { nameInput?.focus(); } catch {} return; }
+        // Hide overlay and restart game
+        startOverlayEl?.classList.remove('show');
+        startOverlayEl?.setAttribute('aria-hidden', 'true');
         try { game.restart(); } catch {}
-      }, 900);
+        try { canvas.focus(); } catch {}
+      };
+      const onKeyDown = (e) => { if (e.key === 'Enter') { e.preventDefault(); onClick(); } };
+
+      saveBtn?.removeEventListener('click', onClick); // ensure no dupes (just in case)
+      nameInput?.removeEventListener('keydown', onKeyDown);
+      saveBtn?.addEventListener('click', onClick);
+      nameInput?.addEventListener('keydown', onKeyDown);
+      lastOnClick = onClick;
+      lastOnKeyDown = onKeyDown;
     },
   });
   return game;

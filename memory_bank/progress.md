@@ -660,3 +660,25 @@ Removed Game Over Screen (Auto-save & Auto-restart)
   - The leaderboard re-renders immediately to reflect the new entry.
   - After a short delay (~900 ms) to allow the death sound to play, the game restarts automatically at the current difficulty.
 - Rationale: streamline the loop and meet the requirement to remove the Game Over screen entirely, while preserving persistence and flow.
+
+---
+
+Updated: 2025-08-24 16:56 (local)
+
+Bugfix: Start overlay is shown after Game Over
+- Change: On game over, we now re-show the unified start overlay with final stats (score, time, difficulty, rank) instead of auto-restarting without any overlay.
+- Implementation:
+  - main.js: onGameOver now saves the score, updates the overlay contents, shows the overlay, and wires the button to restart the game; it previously auto-restarted after a delay.
+  - renderer.js: continues to keep overlays hidden during gameplay; it does not force-hide them on game over, allowing main.js to display the overlay.
+- Rationale: Aligns behavior with requirement to show the start overlay after game over and provide an explicit restart.
+- UX: The Play button reads "Play again" on the Game Over view; pressing Enter in the name field also restarts. Leaderboard updates immediately after saving.
+
+
+---
+
+Updated: 2025-08-24 16:59 (local)
+
+Game Over View: Hide Stats
+- Change: The Game Over overlay no longer shows run stats (Score, Time, Difficulty, Rank).
+- Implementation: main.js onGameOver now explicitly hides final-score, final-time, final-difficulty, and final-rank elements while still showing the overlay with the "Play again" button and updated leaderboard.
+- Rationale: Aligns with the requirement to not show stats on the Game Over view while preserving the overlay for restart and leaderboard visibility.
