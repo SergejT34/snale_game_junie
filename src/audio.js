@@ -1,10 +1,16 @@
 // Audio module: simple retro-style effects with Web Audio API
 // Provides small, dependency-free effects reminiscent of classic platformer sounds.
-// Exports: init(), playFood(), playDeath(), playStart(), toggleMuted(), setMuted(), isMuted()
+// Exports: init(), playFood(), playDeath(), playStart(), startMusic(), stopMusic(), isMusicPlaying(), toggleMuted(), setMuted(), isMuted()
 
 let ctx = null;
 let muted = false;
 let initialized = false;
+
+// Background music state
+let musicTimer = null; // setInterval id
+let musicStep = 0;     // index into pattern
+let musicGain = null;  // master gain for music
+let musicActive = false;
 
 function ensureContext() {
   if (muted) return null;
@@ -34,6 +40,10 @@ export function init() {
 
 export function setMuted(v) {
   muted = !!v;
+  if (muted) {
+    // Hard stop any ongoing music on mute
+    stopMusic();
+  }
 }
 
 export function toggleMuted() {
@@ -60,6 +70,93 @@ function createOsc(type, freq, when, duration, gain = 0.05) {
   return { osc, g };
 }
 
+// --- Background Music (simple chiptune-like loop) ---
+// A minimal "Mario-like" upbeat pattern using square lead and triangle bass.
+// No external assets; uses short notes scheduled at a steady tempo and loops.
+const BPM = 140;              // fairly brisk
+const BEAT_SEC = 60 / BPM;    // quarter note duration
+const NOTE_SEC = BEAT_SEC * 0.9; // leave tiny gap
+
+// Lead melody (frequencies in Hz), using a C major-like motif over 2 bars (8 beats)
+const C5 = 523.25, D5 = 587.33, E5 = 659.25, G5 = 783.99, A5 = 880.00;
+const melody = [
+  C5, E5, G5, E5,   D5, E5, G5, C5,
+];
+// Bass notes (triangle) one per beat (C major root + dominant)
+const C3 = 130.81, G3 = 196.00;
+const bass = [ C3, C3, G3, C3,  C3, C3, G3, C3 ];
+
+export function startMusic() {
+  if (musicActive) return; // already playing
+  if (muted) return;
+  const ac = ensureContext();
+  if (!ac) return;
+
+  if (!musicGain) {
+    musicGain = ac.createGain();
+    musicGain.gain.value = 0.12; // master music level (quiet under SFX)
+    musicGain.connect(ac.destination);
+  }
+
+  musicActive = true;
+  musicStep = musicStep % melody.length;
+
+  const scheduleStep = () => {
+    if (!musicActive || muted) return;
+    const now = ac.currentTime;
+    const when = now + 0.01; // slight lookahead
+
+    // Lead note
+    const leadFreq = melody[musicStep % melody.length];
+    const leadGain = Math.random() * 0.01 + 0.035; // tiny variation keeps it lively
+    const lead = ac.createOscillator();
+    const leadEnv = ac.createGain();
+    lead.type = 'square';
+    lead.frequency.setValueAtTime(leadFreq, when);
+    leadEnv.gain.setValueAtTime(0.0001, when);
+    leadEnv.gain.exponentialRampToValueAtTime(leadGain, when + 0.01);
+    leadEnv.gain.exponentialRampToValueAtTime(0.0001, when + NOTE_SEC);
+    lead.connect(leadEnv).connect(musicGain);
+    lead.start(when);
+    lead.stop(when + NOTE_SEC + 0.02);
+
+    // Bass note (on every beat)
+    const bassFreq = bass[musicStep % bass.length];
+    const b = ac.createOscillator();
+    const bEnv = ac.createGain();
+    b.type = 'triangle';
+    b.frequency.setValueAtTime(bassFreq, when);
+    bEnv.gain.setValueAtTime(0.0001, when);
+    bEnv.gain.exponentialRampToValueAtTime(0.03, when + 0.015);
+    bEnv.gain.exponentialRampToValueAtTime(0.0001, when + NOTE_SEC);
+    b.connect(bEnv).connect(musicGain);
+    b.start(when);
+    b.stop(when + NOTE_SEC + 0.02);
+
+    musicStep = (musicStep + 1) % melody.length;
+  };
+
+  // Schedule first immediately, then at tempo intervals
+  scheduleStep();
+  musicTimer = window.setInterval(() => {
+    try { scheduleStep(); } catch {}
+  }, BEAT_SEC * 1000);
+}
+
+export function stopMusic() {
+  if (!musicActive) return;
+  musicActive = false;
+  if (musicTimer !== null) {
+    clearInterval(musicTimer);
+    musicTimer = null;
+  }
+}
+
+export function isMusicPlaying() {
+  return musicActive;
+}
+
+// --- Sound Effects ---
 // Coin-like sound: two quick ascending square blips
 export function playFood() {
   if (muted) return;
@@ -85,7 +182,7 @@ export function playDeath() {
   g.gain.setValueAtTime(0.001, t);
   g.gain.exponentialRampToValueAtTime(0.08, t + 0.02);
   g.gain.exponentialRampToValueAtTime(0.0001, t + 0.6);
-  o.connect(g).connect(ac.destination);
+  o.connect(g).connect(ctx ? ctx.destination : null);
   o.start(t);
   o.stop(t + 0.65);
   // Thud (short noise burst via very low sine)

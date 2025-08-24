@@ -312,3 +312,16 @@ Sound Effects and Mute Toggle
 - Accessibility/Policy:
   - AudioContext is lazily initialized and resumed on first user interaction (pointer/key) to comply with browser autoplay policies.
   - Users can disable sounds at any time; the setting is session-scoped (no persistence yet, by design for MVP).
+
+
+---
+
+Updated: 2025-08-24 16:03 (local)
+
+Background Music
+- Added continuous, looping background music during gameplay, inspired by classic platformers.
+  - Implementation: procedural chiptune using Web Audio API (square-wave lead + triangle bass), no external assets.
+  - Behavior: starts on game start/restart; pauses on game over and when the tab is hidden; resumes when gameplay resumes.
+  - Integration: loop.js calls startMusic()/stopMusic() alongside existing SFX triggers.
+  - Controls: existing sound toggle also mutes/stops the background music.
+- Rationale: enhance game feel without increasing bundle size or adding asset licensing complexity.

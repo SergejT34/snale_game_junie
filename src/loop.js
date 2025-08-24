@@ -2,7 +2,7 @@
 import { createInitialState, DIFFICULTY_SPEEDS, DEFAULT_DIFFICULTY } from './state.js';
 import { step } from './logic.js';
 import { bindInput } from './input.js';
-import { playFood, playDeath, playStart, init as initAudio } from './audio.js';
+import { playFood, playDeath, playStart, init as initAudio, startMusic, stopMusic } from './audio.js';
 
 export function createGame(renderer, dom) {
   function currentDifficulty() {
@@ -49,6 +49,7 @@ export function createGame(renderer, dom) {
     intervalId = window.setInterval(tick, state.tickMs);
     renderer.render(state);
     try { playStart(); } catch {}
+    try { startMusic(); } catch {}
   }
 
   function stop() {
@@ -56,6 +57,7 @@ export function createGame(renderer, dom) {
       clearInterval(intervalId);
       intervalId = null;
     }
+    try { stopMusic(); } catch {}
   }
 
   function restart() {
@@ -66,6 +68,7 @@ export function createGame(renderer, dom) {
     renderer.render(state);
     intervalId = window.setInterval(tick, state.tickMs);
     try { playStart(); } catch {}
+    try { startMusic(); } catch {}
   }
 
   // handle focus/visibility for pause/resume (optional)
@@ -74,6 +77,7 @@ export function createGame(renderer, dom) {
       stop();
     } else if (state.status === 'running' && intervalId === null) {
       intervalId = window.setInterval(tick, state.tickMs);
+      try { startMusic(); } catch {}
     }
   });
 

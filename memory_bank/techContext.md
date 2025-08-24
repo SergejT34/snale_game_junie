@@ -55,12 +55,16 @@
 
 ## Audio
 - Implementation: Web Audio API, no assets. Sounds are synthesized (oscillators + gain envelopes) for minimal footprint and retro feel.
+- Background music:
+  - A lightweight, looping chiptune-style melody (square-wave lead + triangle bass) plays during gameplay.
+  - Tempo ~140 BPM; short notes scheduled at beat intervals. Volume is mixed under SFX via a master Gain node.
+  - Starts on game start/restart and pauses on game over or when the page is hidden; resumes when gameplay resumes.
 - Effects:
   - Food: quick two-note square wave ("coin-like").
   - Death: descending sawtooth sweep with a low sine "thud".
   - Start: short triangle-wave arpeggio.
 - Integration points:
   - loop.js observes score delta per tick to infer food consumption (keeps logic.step pure-ish).
-  - Game over transition triggers death sound; start/restart triggers start jingle.
+  - Game over transition triggers death sound; start/restart triggers start jingle and starts the background music.
 - Autoplay policy: AudioContext created lazily and resumed on first gesture (pointerdown/keydown).
-- Controls: header sound toggle button with aria-pressed and icon swap; session-scoped mute setting (not persisted for MVP).
+- Controls: header sound toggle button with aria-pressed and icon swap; session-scoped mute setting (not persisted for MVP). Muting also stops background music immediately.

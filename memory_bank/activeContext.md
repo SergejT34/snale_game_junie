@@ -1,9 +1,9 @@
 # Active Context: Browser-based Snake Game (MVP)
 
-Last updated: 2025-08-23 20:39 (local)
+Last updated: 2025-08-24 16:03 (local)
 
 ## Current Work Focus
-Add simple retro sound effects (coin on food, fall on death, short start jingle) with a mute toggle, while keeping the app static and accessible.
+Background music added: a looping, Mario-like chiptune plays during gameplay. Sound effects and mute toggle remain in place. Next focus: cross‑browser verification and accessibility pass.
 
 ## Recent Changes
 - Implemented ES module-based Snake game (state, input, logic, renderer, loop)
