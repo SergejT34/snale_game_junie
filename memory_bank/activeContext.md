@@ -1,6 +1,6 @@
 # Active Context: Browser-based Snake Game (MVP)
 
-Last updated: 2025-08-24 16:20 (local)
+Last updated: 2025-08-24 16:29 (local)
 
 ## Current Work Focus
 UI polish: centered, enlarged score with live rank; shake animation on rank change for better feedback. Next focus: cross‑browser verification and accessibility pass.
@@ -10,6 +10,7 @@ UI polish: centered, enlarged score with live rank; shake animation on rank chan
 - Added index.html and styles.css with accessible UI (aria-live score, overlay dialog, restart button)
 - Implemented deterministic loop (150 ms default), reversal prevention, collisions, scoring, and restart
 - Introduced a Welcome overlay shown on page load, with difficulty selection and a Play button. The Leaderboard is displayed only on this overlay.
+- Game Over functionality has been merged into the Welcome overlay: after a run ends, the same overlay reappears with final score, time, difficulty, rank, and a save form. The separate Game Over overlay has been removed.
 - Moved difficulty controls into the Welcome overlay before starting the game; after starting, difficulty changes (when game is running) still trigger a restart to apply speed.
 - Leaderboard now stores and displays the difficulty for each score entry (backward compatible with existing entries)
 - Leaderboard also tracks and displays time spent per game (mm:ss) for each entry; stored as durationMs alongside existing fields (backward compatible).

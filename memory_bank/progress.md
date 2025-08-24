@@ -374,3 +374,14 @@ Welcome Overlay and Leaderboard Placement
 - The persistent sidebar leaderboard was removed; the leaderboard is now only visible on the Welcome overlay per product requirement.
 - The game no longer auto-starts; it starts after the user presses Play. Difficulty can be chosen before starting.
 - After Game Over, the existing overlay is used to save the score and immediately restart. The leaderboard remains exclusive to the Welcome overlay.
+
+
+---
+
+Updated: 2025-08-24 16:29 (local)
+
+Unified Welcome/Game Over Overlay
+- Removed the separate Game Over overlay view. The Welcome overlay now also serves as the Game Over screen.
+- On game over, the Welcome overlay reappears showing final score, time, difficulty, rank, and a save form ("Save & Play Again").
+- Renderer now targets the Welcome overlay for game-over visibility and fills in run details; it hides the Welcome section and shows the Game Over section as appropriate.
+- The leaderboard remains on the Welcome overlay (exclusive placement preserved).

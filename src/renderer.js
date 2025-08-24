@@ -110,11 +110,15 @@ export function createRenderer(canvas, scoreEl, overlayEl, finalScoreEl, finalTi
 
     // Overlay
     if (overlayEl && finalScoreEl) {
+      const welcomeGroup = document.getElementById('welcome-group');
+      const gameoverGroup = document.getElementById('gameover-group');
       if (state.status === 'over') {
         // Detect transition from hidden -> shown to run one-time side effects (like focusing input)
         const wasHidden = overlayEl.getAttribute('aria-hidden') !== 'false';
         overlayEl.classList.add('show');
         overlayEl.setAttribute('aria-hidden', 'false');
+        if (welcomeGroup) welcomeGroup.hidden = true;
+        if (gameoverGroup) gameoverGroup.hidden = false;
         finalScoreEl.textContent = `Score: ${state.score}`;
         if (finalTimeEl) {
           const duration = Math.max(0, Date.now() - (state.startedAt || Date.now()));
@@ -136,6 +140,8 @@ export function createRenderer(canvas, scoreEl, overlayEl, finalScoreEl, finalTi
       } else {
         overlayEl.classList.remove('show');
         overlayEl.setAttribute('aria-hidden', 'true');
+        if (welcomeGroup) welcomeGroup.hidden = false;
+        if (gameoverGroup) gameoverGroup.hidden = true;
       }
     }
   }
