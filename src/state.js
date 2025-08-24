@@ -33,6 +33,8 @@ export function createInitialState(opts = {}) {
   const occupied = new Set(snake.map(p => key(p.x, p.y)));
 
   const food = placeFood(occupied);
+  // Place a shrinker (hazard) item based on spawn chance; may start absent
+  const shrinker = (Math.random() < HAZARD_SPAWN_CHANCE) ? placeShrinker(occupied, food) : null;
 
   return {
     grid: GRID_SIZE,
@@ -41,6 +43,9 @@ export function createInitialState(opts = {}) {
     dir: DIRS.Right,
     dirQueue: [], // queued direction inputs this tick
     food,
+    shrinker,
+    // When true, clear shrinker at the start of the next tick (after food spawned)
+    pendingShrinkerClear: false,
     score: 0,
     status: 'running', // 'running' | 'over'
     tickMs,
@@ -56,6 +61,13 @@ export const FOOD_EMOJIS = [
   '🥕','🌽','🍆','🥦','🧀','🍕','🍪','🍩','🍙','🍔'
 ];
 
+export const HAZARD_EMOJIS = [
+  '💣','☠️','💀','🧨','🧫','🧪'
+];
+
+// Probability to spawn a non-eatable hazard when eligible (0..1)
+export const HAZARD_SPAWN_CHANCE = 0.5;
+
 export function placeFood(occupied) {
   const empty = [];
   for (let y = 0; y < GRID_SIZE; y++) {
@@ -68,5 +80,21 @@ export function placeFood(occupied) {
   const idx = Math.floor(Math.random() * empty.length);
   const spot = empty[idx];
   const emoji = FOOD_EMOJIS[(Math.random() * FOOD_EMOJIS.length) | 0];
+  return { x: spot.x, y: spot.y, emoji };
+}
+
+export function placeShrinker(occupied, avoidFood) {
+  const empty = [];
+  const avoidKey = avoidFood ? key(avoidFood.x, avoidFood.y) : null;
+  for (let y = 0; y < GRID_SIZE; y++) {
+    for (let x = 0; x < GRID_SIZE; x++) {
+      const k = key(x, y);
+      if (!occupied.has(k) && k !== avoidKey) empty.push({ x, y });
+    }
+  }
+  if (empty.length === 0) return null;
+  const idx = Math.floor(Math.random() * empty.length);
+  const spot = empty[idx];
+  const emoji = HAZARD_EMOJIS[(Math.random() * HAZARD_EMOJIS.length) | 0];
   return { x: spot.x, y: spot.y, emoji };
 }

@@ -75,6 +75,21 @@ export function createRenderer(canvas, scoreEl, overlayEl, finalScoreEl, finalTi
     }
   }
 
+  function drawShrinker(shrinker) {
+    if (!shrinker) return;
+    const size = cellSize();
+    const cx = shrinker.x * size + size / 2;
+    const cy = shrinker.y * size + size / 2;
+    const emoji = shrinker.emoji || '💣';
+    const fontSize = Math.floor(size * 0.8);
+    ctx.save();
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = `${fontSize}px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", system-ui, sans-serif`;
+    ctx.fillText(emoji, cx, cy + Math.floor(size * 0.02));
+    ctx.restore();
+  }
+
   function labelDifficulty(val) {
     const map = { easy: 'Easy', medium: 'Medium', hard: 'Hard' };
     return map[val] || 'Medium';
@@ -94,6 +109,7 @@ export function createRenderer(canvas, scoreEl, overlayEl, finalScoreEl, finalTi
     clear();
     drawGrid();
     drawFood(state.food);
+    drawShrinker(state.shrinker);
     drawSnake(state.snake);
 
     // Update score UI with live provisional rank compared to leaderboard, plus player name and difficulty
