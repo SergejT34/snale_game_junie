@@ -1147,6 +1147,19 @@ Header Score: Show Player Name, Difficulty, and Rank Holder
     - Changing difficulty removes highlight from previous board as part of the next render cycle.
   - Accessibility: aria-current="true" helps assistive technologies announce the current item.
 
+---
+
+Updated: 2025-08-24 17:42 (local)
+
+Game Over View: Enter Key Starts the Game
+- Change: While the Game Over overlay is visible, pressing Enter starts the game (same as clicking "Play again").
+- Implementation:
+  - main.js: added a temporary document-level keydown handler that, when the overlay is visible, intercepts Enter outside editable elements and triggers the restart action. The existing Enter-on-name-input handler remains, so Enter works whether focus is in the input or not.
+  - Robust cleanup: the handler is removed on each game-over setup and when returning to prestart mode to avoid leaks/duplication.
+- Notes:
+  - The global gameplay hotkeys (Space/Enter pause toggle) still ignore keys while the overlay is shown, so there is no conflict.
+  - Accessibility: avoids unexpected restarts when typing in the input by ignoring Enter in editable fields (input/textarea/contenteditable), where a dedicated handler already starts the game.
+
 # Progress: Browser-based Snake Game (MVP)
 
 Last updated: 2025-08-24 17:39 (local)

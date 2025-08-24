@@ -212,6 +212,7 @@ function formatDuration(ms) {
 const renderer = createRenderer(canvas, scoreEl, overlayEl, finalScoreEl, finalTimeEl, finalDifficultyEl, finalRankEl);
 let lastOnClick = null;
 let lastOnKeyDown = null;
+let lastOnDocKeyDown = null;
 let game = null;
 
 function ensureGame() {
@@ -223,8 +224,10 @@ function ensureGame() {
       // Remove any lingering listeners from any previous overlay-driven flow
       if (lastOnClick) saveBtn?.removeEventListener('click', lastOnClick);
       if (lastOnKeyDown) nameInput?.removeEventListener('keydown', lastOnKeyDown);
+      if (lastOnDocKeyDown) document.removeEventListener('keydown', lastOnDocKeyDown);
       lastOnClick = null;
       lastOnKeyDown = null;
+      lastOnDocKeyDown = null;
 
       // Save the score immediately so leaderboard reflects final rank
       const difficulty = normalizeDifficulty(difficultySel?.value);
@@ -309,13 +312,32 @@ function ensureGame() {
       nameInput?.removeEventListener('keydown', onKeyDown);
       saveBtn?.addEventListener('click', onClick);
       nameInput?.addEventListener('keydown', onKeyDown);
+
+      // Also allow Enter anywhere on the Game Over overlay to start (except inside editable fields)
+      const onDocKeyDown = (e) => {
+        if (e.key !== 'Enter') return;
+        // Only act if overlay is visible
+        const overlayVisible = !!startOverlayEl && startOverlayEl.classList.contains('show');
+        if (!overlayVisible) return;
+        const t = e.target;
+        const tag = (t && t.tagName) ? t.tagName.toLowerCase() : '';
+        const isEditable = tag === 'input' || tag === 'textarea' || tag === 'select' || (t && t.isContentEditable === true);
+        if (isEditable) return; // nameInput handler already covers Enter inside the field
+        e.preventDefault();
+        onClick();
+      };
+      document.addEventListener('keydown', onDocKeyDown);
+
       lastOnClick = onClick;
       lastOnKeyDown = onKeyDown;
+      lastOnDocKeyDown = onDocKeyDown;
 
       // Show overlay after a short delay to let FX be seen
       window.setTimeout(() => {
         startOverlayEl?.classList.add('show');
         startOverlayEl?.setAttribute('aria-hidden', 'false');
+        // Optional: focus the name input for convenience
+        try { nameInput?.focus(); if (typeof nameInput?.select === 'function') nameInput.select(); } catch {}
       }, 900);
     },
   });
@@ -376,8 +398,10 @@ function enterPrestartMode() {
 
   if (lastOnClick) saveBtn?.removeEventListener('click', lastOnClick);
   if (lastOnKeyDown) nameInput?.removeEventListener('keydown', lastOnKeyDown);
+  if (lastOnDocKeyDown) document.removeEventListener('keydown', lastOnDocKeyDown);
   lastOnClick = null;
   lastOnKeyDown = null;
+  lastOnDocKeyDown = null;
 
   if (nameInput) {
     // Prefill with last known name (fallback to "Player") and allow immediate start
