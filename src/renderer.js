@@ -1,6 +1,6 @@
 // Renderer module: draws to canvas and updates UI
 import { GRID_SIZE } from './state.js';
-import { getProvisionalRank, MAX_ENTRIES } from './leaderboard.js';
+import { getProvisionalRank, MAX_ENTRIES, getTopByDifficulty } from './leaderboard.js';
 
 export function createRenderer(canvas, scoreEl, overlayEl, finalScoreEl, finalTimeEl, finalDifficultyEl, finalRankEl) {
   const ctx = canvas.getContext('2d');
@@ -83,18 +83,30 @@ export function createRenderer(canvas, scoreEl, overlayEl, finalScoreEl, finalTi
     drawFood(state.food);
     drawSnake(state.snake);
 
-    // Update score UI with live provisional rank compared to leaderboard
+    // Update score UI with live provisional rank compared to leaderboard, plus player name and difficulty
     if (scoreEl) {
+      const playerNameInput = document.getElementById('player-name');
+      const playerName = (playerNameInput?.value ?? '').trim() || 'Player';
+      const diffLabel = labelDifficulty(state.difficulty);
+
       let rankText = '';
+      let holderText = '';
       let currentRank = null;
       try {
         const rank = getProvisionalRank(state.score, state.difficulty);
         if (Number.isFinite(rank) && rank > 0) {
           currentRank = rank;
-          rankText = ` · Rank: ${rank <= MAX_ENTRIES ? '#' + rank : '>' + MAX_ENTRIES}`;
+          rankText = `Rank: ${rank <= MAX_ENTRIES ? '#' + rank : '>' + MAX_ENTRIES}`;
+          // Determine current holder of that rank for the selected difficulty
+          const entries = getTopByDifficulty(state.difficulty) || [];
+          const holderNameRaw = entries[rank - 1]?.name;
+          if (holderNameRaw) {
+            const same = holderNameRaw.trim().toLowerCase() === playerName.toLowerCase();
+            holderText = ` — ${same ? 'You' : holderNameRaw}`;
+          }
         }
       } catch {}
-      scoreEl.textContent = `Score: ${state.score}${rankText}`;
+      scoreEl.textContent = `${playerName} · Score: ${state.score} · ${rankText}${holderText} (${diffLabel})`;
       // If rank changed (including from null to a number), trigger a brief shake animation
       if (currentRank !== lastRankShown) {
         lastRankShown = currentRank;

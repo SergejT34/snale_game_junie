@@ -1117,3 +1117,17 @@ Focus Management: Blur Name and Play When Game Starts
 - Implementation:
   - main.js: in both start flows (initial Play and Game Over “Play again”), added nameInput.blur() and saveBtn.blur() before starting/restarting, then canvas.focus().
 - Rationale: Prevents hidden controls from retaining focus when the overlay is dismissed; improves keyboard UX and adheres to accessibility guidelines.
+
+---
+
+Updated: 2025-08-24 17:29 (local)
+
+Header Score: Show Player Name, Difficulty, and Rank Holder
+- Change: The top bar score section now also shows the current player name and the selected difficulty. Next to the rank, it shows the name of the player who currently holds that rank; if that is the current player, it displays “You”.
+- Implementation:
+  - renderer.js now composes the score header as: "Score: <points> · Player: <name> · Difficulty: <Easy/Medium/Hard> · Rank: #N — <holder|You>".
+  - Provisional rank is computed per current difficulty; holder name is taken from the corresponding leaderboard top list.
+  - Player name is read from the welcome overlay input (fallback "Player").
+- Notes:
+  - The header updates live during gameplay and reflects difficulty changes on restart (as before).
+  - Accessibility: #score remains aria-live="polite" and aria-atomic="true" so updates are announced succinctly.
